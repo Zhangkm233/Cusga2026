@@ -9,6 +9,8 @@ public class TileController : MonoBehaviour
     public TMP_Text tileEnergy;
     public TMP_Text tileAtk;
     public TMP_Text tileDef;
+    public TMP_Text tileStorageNum;
+    public TMP_Text tileStorageCard;
     public Land land;
     public GameObject tileCanvas;
     void Awake(){
@@ -48,6 +50,12 @@ public class TileController : MonoBehaviour
         if (tileDef == null) {
             tileDef = tileCanvas.transform.Find("TileDef").GetComponent<TMP_Text>();
         }
+        if (tileStorageCard == null) {
+            tileStorageCard = tileCanvas.transform.Find("TileStorageCard").GetComponent<TMP_Text>();
+        }
+        if (tileStorageNum == null) {
+            tileStorageNum = tileCanvas.transform.Find("TileStorageNum").GetComponent<TMP_Text>();
+        }
         UpdateTile();
     }
 
@@ -57,5 +65,12 @@ public class TileController : MonoBehaviour
         tileEnergy.text = "ÄÜÁ¿: " + land.energyCounter.ToString();
         tileAtk.text = "¹¥»÷: " + land.atk.ToString();
         tileDef.text = "»¤¶Ü: " + land.def.ToString();
+        if (land.storageCardType != MaterialType.NULL || land.storageCardNum == 0) {
+            tileStorageCard.text = GameData.HanizeMaterial(land.storageCardType);
+            tileStorageNum.text = land.storageCardNum.ToString();
+        } else {
+            tileStorageCard.text = " ";
+            tileStorageNum.text = " ";
+        }
     }
 }

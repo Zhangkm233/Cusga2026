@@ -28,7 +28,7 @@ public abstract class Land : MonoBehaviour
     public int storageCardNum = 0; //´æ´¢µÄ¿¨Æ¬ÊıÁ¿
     public int atk = 0;
     public int def = 0;
-
+    public bool IsArmed = false;
     public int EnergyCounter {
         get { return energyCounter; }
         set { energyCounter = value; }

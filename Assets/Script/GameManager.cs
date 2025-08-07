@@ -33,13 +33,27 @@ public class GameManager : MonoBehaviour
                 GameObject clickedObject = hit.collider?.gameObject;
                 if (clickedObject.CompareTag("TileGameobject") && selectCard != null) {
                     int temp = DeckManager.Instance.hand.Count;
+                    bool Costed = false;
                     if (selectCard.GetComponent<CardController>().card.CardType == CardType.MATERIAL) {
                         clickedObject.GetComponent<TileController>().land.MaterialEffect((MaterialCard)selectCard.GetComponent<CardController>().card);
+                        Costed = true;
                     }
-                    DeckManager.Instance.hand.Remove(selectCard.GetComponent<CardController>().card);
-                    selectCard.GetComponent<CardController>().card = null; // 清除选中的卡片
+                    if (selectCard.GetComponent<CardController>().card.CardType == CardType.SKILL) {
+                        ((SkillCard)selectCard.GetComponent<CardController>().card).ApplyEffect(clickedObject.GetComponent<TileController>().land);
+                        Costed = true;
+                    }
+                    if (selectCard.GetComponent<CardController>().card.CardType == CardType.EQUIP && clickedObject.GetComponent<TileController>().land.IsArmed == false) {
+                        ((EquipCard)selectCard.GetComponent<CardController>().card).ApplyEffect(clickedObject.GetComponent<TileController>().land);
+                        clickedObject.GetComponent<TileController>().land.IsArmed = true; // 设置地块为已装备状态
+                        Costed = true;
+                    }
+                    if (Costed) {
+                        DeckManager.Instance.hand.Remove(selectCard.GetComponent<CardController>().card);
+                        selectCard.GetComponent<CardController>().card = null; // 清除选中的卡片
+                        //UIManager.Instance.cards[temp - 1].GetComponent<CardController>().UpdateCard(); // 更新UI
+                    }
+                    UIManager.Instance.CancelAllSelect();
                     selectCard = null;
-                    UIManager.Instance.cards[temp - 1].GetComponent<CardController>().UpdateCard(); // 更新UI
                 }
                 if (clickedObject.CompareTag("CardGameobject")) {
                     CardController cardController = clickedObject.GetComponent<CardController>();

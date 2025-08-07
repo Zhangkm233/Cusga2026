@@ -156,6 +156,18 @@ public class EquipCard : Card
     }
 
     public override void ApplyEffect(Land targetLand) {
-
+        switch (equipType) {
+            case EquipType.ROLLROCK:
+                targetLand.atk += 4;
+                break;
+            case EquipType.SPEAR:
+                targetLand.atk += 5;
+                break;
+            case EquipType.BOW:
+                targetLand.atk += 7;
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -42,4 +42,18 @@ public static class GameData
                 return "未知";
         }
     }
+
+    public static string HanizeMaterial(MaterialType materialType) { switch (materialType) {
+            case MaterialType.NULL:
+                return " ";
+            case MaterialType.HAY:
+                return "干草";
+            case MaterialType.WOOD:
+                return "木材";
+            case MaterialType.STONE:
+                return "石头";
+            default:
+                return "未知";
+        }
+    }
 }
