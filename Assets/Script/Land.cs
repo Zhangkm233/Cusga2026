@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UnityEngine;
 
 public enum LandType
@@ -32,6 +33,17 @@ public abstract class Land : MonoBehaviour
     public int hunterarea = 0;//猎圈值 额外收益的概率增加一倍
     public static int maxSoild = 1; //最大坚固值
     public static int maxHunterarea = 2; //最大猎圈值
+    public int mapRow; //地形所在地图行
+    public int mapCol; //地形所在地图列
+
+    public int MapRow {
+        get { return mapRow; }
+        set { mapRow = value; }
+    }
+    public int MapCol {
+        get { return mapCol; }
+        set { mapCol = value; }
+    }
 
     public int EnergyCounter {
         get { return energyCounter; }
@@ -75,50 +87,53 @@ public abstract class Land : MonoBehaviour
     public void ChangeLandType(LandType landType) {
         //这里是转变地形的函数 如果想解耦合，还需要改一改到游戏里面的调用，应该UI层面需要全部重写
         //需要在逻辑层里面添加存储 然后再显示到游戏/UE层
+
+        MapManager.Instance.LandMap[mapRow][mapCol] = null;
         Land newLand = null;
         switch (landType) {
             case LandType.HILL:
-                newLand =  this.gameObject.AddComponent<HillLand>();
+                newLand = new HillLand(mapRow,mapCol);
                 break;
             case LandType.PLAIN:
-                newLand = this.gameObject.AddComponent<PlainLand>();
+                newLand = new PlainLand(mapRow,mapCol);
                 break;
             case LandType.FOREST:
-                newLand = this.gameObject.AddComponent<ForestLand>();
+                newLand = new ForestLand(mapRow,mapCol);
                 break;
             case LandType.THATCH:
-                newLand = this.gameObject.AddComponent<ThatchLand>();
+                newLand = new ThatchLand(mapRow,mapCol);
                 break;
             case LandType.CABIN:
-                newLand = this.gameObject.AddComponent<CabinLand>();
+                newLand = new CabinLand(mapRow,mapCol);
                 break;
             case LandType.MOUNTAIN:
-                newLand = this.gameObject.AddComponent<MountainLand>();
+                newLand = new MountainLand(mapRow,mapCol);
                 break;
             case LandType.TOWN:
-                newLand = this.gameObject.AddComponent<TownLand>();
+                newLand = new TownLand(mapRow,mapCol);
                 break;
             case LandType.TOWER:
-                newLand = this.gameObject.AddComponent<TowerLand>();
+                newLand = new TowerLand(mapRow,mapCol);
                 break;
             case LandType.WAREHOUSE:
-                newLand = this.gameObject.AddComponent<WarehouseLand>();
+                newLand = new WarehouseLand(mapRow,mapCol);
                 break;
             case LandType.WINDMILL:
-                // newLand = this.gameObject.AddComponent<WindmillLand>();
+                newLand = new WindmillLand(mapRow,mapCol);
                 break;
             case LandType.JUNGLE:
-                // newLand = this.gameObject.AddComponent<JungleLand>();
+                newLand = new JungleLand(mapRow,mapCol);
                 break;
             case LandType.WHEATLAND:
-                // newLand = this.gameObject.AddComponent<WheatlandLand>();
+                newLand = new WheatLand(mapRow,mapCol);
                 break;
         }
-        //if (landType != LandType.DESERT) {
-            //继承所有特殊属性（坚固和猎圈之类的）
-            newLand.soild = this.soild;
-            newLand.hunterarea = this.hunterarea;
-        //}
+        //继承所有特殊属性（坚固和猎圈之类的）
+        newLand.soild = this.soild;
+        newLand.hunterarea = this.hunterarea;
+        MapManager.Instance.LandMap[mapRow][mapCol] = newLand;
+        this.gameObject.AddComponent(newLand.GetType()); // 添加新的地形组件
+        //这里我不知道写的对不对，尚待商榷
         Destroy(this); // 销毁当前地形组件
     }
 }
@@ -126,10 +141,12 @@ public abstract class Land : MonoBehaviour
 public class HillLand : Land 
 {
     // 山丘地形
-    public HillLand() {
+    public HillLand(int row, int col) {
         LandType = LandType.HILL;
         requiredEnergy = 4;
         preference = 20;
+        mapRow = row;
+        mapCol = col;
     }
 
     public override void PassiveEffect() {
@@ -179,10 +196,12 @@ public class HillLand : Land
 public class PlainLand : Land
 {
     // 平原地形
-    public PlainLand() {
+    public PlainLand(int row,int col) {
         LandType = LandType.PLAIN;
         requiredEnergy = 3;
         preference = 30;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         // 平原地形的被动效果 3时产1草
@@ -231,10 +250,12 @@ public class PlainLand : Land
 public class ForestLand : Land
 {
     // 森林地形
-    public ForestLand() {
+    public ForestLand(int col,int row) {
         LandType = LandType.FOREST;
         requiredEnergy = 2;
         preference = 35;
+        mapRow = row;
+        mapCol = col;
     }
 
     public override void PassiveEffect() {
@@ -274,9 +295,11 @@ public class ForestLand : Land
 
 public class MountainLand : Land
 {
-    public MountainLand() {
+    public MountainLand(int row,int col) {
         LandType = LandType.MOUNTAIN;
         requiredEnergy = 4;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         // 山脉地形的被动效果 4时产2石
@@ -309,9 +332,11 @@ public class MountainLand : Land
 
 public class JungleLand : Land
 {
-    public JungleLand() {
+    public JungleLand(int row,int col) {
         LandType = LandType.JUNGLE;
         requiredEnergy = 0;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         if (energyCounter >= requiredEnergy) {
@@ -339,9 +364,11 @@ public class JungleLand : Land
 
 public class WheatLand : Land
 {
-    public WheatLand() {
+    public WheatLand(int row,int col) {
         LandType = LandType.WHEATLAND;
         requiredEnergy = 0;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         if (energyCounter >= requiredEnergy) {
@@ -369,9 +396,11 @@ public class WheatLand : Land
 
 public class ThatchLand : Land
 {
-    public ThatchLand() {
+    public ThatchLand(int row,int col) {
         LandType = LandType.THATCH;
         requiredEnergy = 4;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         // 茅屋地形的被动效果
@@ -402,9 +431,11 @@ public class ThatchLand : Land
 
 public class CabinLand : Land
 {
-    public CabinLand() {
+    public CabinLand(int row,int col) {
         LandType = LandType.CABIN;
         requiredEnergy = 3;
+        mapRow = row;
+        mapCol = col;
     }
     
     public override void PassiveEffect() {
@@ -437,9 +468,11 @@ public class CabinLand : Land
 
 public class TownLand : Land
 {
-    public TownLand() {
+    public TownLand(int row,int col) {
         LandType = LandType.TOWN;
         requiredEnergy = 5;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         // 城镇地形的被动效果
@@ -470,9 +503,11 @@ public class TownLand : Land
 
 public class TowerLand : Land
 {
-    public TowerLand() {
+    public TowerLand(int row,int col) {
         LandType = LandType.TOWER;
         requiredEnergy = 10;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         // 塔地形的被动效果
@@ -499,9 +534,11 @@ public class TowerLand : Land
 
 public class WarehouseLand : Land
 {
-    public WarehouseLand() {
+    public WarehouseLand(int row,int col) {
         LandType = LandType.WAREHOUSE;
         requiredEnergy = 2;
+        mapRow = row;
+        mapCol = col;
     }
     public override void PassiveEffect() {
         // 仓库地形的被动效果
@@ -532,9 +569,11 @@ public class WarehouseLand : Land
 
 public class WindmillLand : Land
 {
-    public WindmillLand() {
+    public WindmillLand(int row,int col) {
         LandType = LandType.WINDMILL;
         requiredEnergy = 0;
+        mapRow = row;
+        mapCol = col;
 
     }
     public override void PassiveEffect() {

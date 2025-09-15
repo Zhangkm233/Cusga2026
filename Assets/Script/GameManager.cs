@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     //这里需要重写 要记得和逻辑层解耦合
+    //用于管理游戏内的整体流程
     public GameObject selectCard;
     public static GameManager Instance { get; private set; }
     private void Awake() {
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     public void DetectMouse() {
         // 检测鼠标点击逻辑
+        /*
         if (Input.GetMouseButtonDown(0)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("没有点击到任何对象");
             }
         }
+        */
     }
 
     public void StartGame() {
@@ -83,6 +86,8 @@ public class GameManager : MonoBehaviour
         // 这里可以添加更多的逻辑，比如更新UI，处理状态等
         DeckManager.Instance.ClearHand();
         // 每个地块能量+1 然后触发被动效果
+
+        // 这里需要重写
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("TileGameobject");
         foreach (GameObject tile in tiles) {
             tile.GetComponent<Land>().energyCounter++;

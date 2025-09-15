@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameData
 {
-    
+    //用于存储游戏中的全局数据 提供一些静态方法
+
     public static int extraDrawNum = 0; // 额外抓牌数
     public static string HanizeLandType(LandType landType) {
         //这里需要更新
@@ -17,8 +19,8 @@ public static class GameData
                 return "小镇";
             case LandType.MOUNTAIN:
                 return "山脉";
-            case LandType.FORTRESS:
-                return "要塞";
+            case LandType.JUNGLE:
+                return "密林";
             case LandType.THATCH:
                 return "茅屋";
             case LandType.CABIN:
@@ -27,6 +29,10 @@ public static class GameData
                 return "仓库";
             case LandType.TOWER:
                 return "塔";
+            case LandType.WHEATLAND:
+                return "麦田";
+            case LandType.WINDMILL:
+                return "风车";
             default:
                 return "未知";
         }
@@ -54,6 +60,8 @@ public static class GameData
                 return "木材";
             case MaterialType.STONE:
                 return "石头";
+            case MaterialType.MEAT:
+                return "肉";
             default:
                 return "未知";
         }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class TileController : MonoBehaviour
 {
     // 这里需要重写 改成3d 
+    // 控制游戏内的地块显示
     public TMP_Text tileName;
     public TMP_Text tileEnergy;
     public TMP_Text tileAtk;

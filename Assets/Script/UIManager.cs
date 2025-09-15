@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     // 这里也需要重写 改成3d
+    // 控制游戏内的UI显示
     public GameObject[] cards;
     public TMP_Text DeckCount;
     public TMP_Text HandCount;

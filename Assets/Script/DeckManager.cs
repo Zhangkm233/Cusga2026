@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DeckManager : MonoBehaviour
 {
+    //控制逻辑层的牌库和手牌
     public static DeckManager Instance { get; private set; }
 
     [SerializeField]

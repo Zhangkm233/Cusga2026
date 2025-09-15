@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
+    //控制游戏内的卡牌显示
     //这里需要重写
     public TMP_Text cardName;
     public TMP_Text cardDescription;
