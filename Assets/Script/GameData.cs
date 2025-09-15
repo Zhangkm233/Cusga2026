@@ -2,8 +2,10 @@ using UnityEngine;
 
 public static class GameData
 {
+    
     public static int extraDrawNum = 0; // 额外抓牌数
     public static string HanizeLandType(LandType landType) {
+        //这里需要更新
         switch (landType) {
             case LandType.HILL:
                 return "山地";
@@ -36,8 +38,8 @@ public static class GameData
                 return "材料卡";
             case CardType.SKILL:
                 return "技能卡";
-            case CardType.EQUIP:
-                return "装备卡";
+            case CardType.WEAPON:
+                return "武器卡";
             default:
                 return "未知";
         }

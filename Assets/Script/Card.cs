@@ -4,7 +4,7 @@ public enum CardType
 {
     MATERIAL = 0, //材料
     SKILL = 1, //技能
-    EQUIP = 2, //装备
+    WEAPON = 2, //武器
 }
 
 public enum MaterialType
@@ -13,6 +13,7 @@ public enum MaterialType
     HAY = 1, //干草
     WOOD = 2, //木材
     STONE = 3, //石头
+    MEAT = 4, //肉
 }
 
 public enum SkillType
@@ -28,7 +29,7 @@ public enum EquipType
     NULL = 0, //空
     ROLLROCK = 1, //滚石
     SPEAR = 2, //长矛
-    BOW = 3, //弓
+    BOW = 3, //短弓
 }
 public abstract class Card
 {
@@ -74,6 +75,7 @@ public class MaterialCard : Card
                 Name = "石头";
                 Description = "石头*1";
                 break;
+                //这里需要添加肉的描述
             default:
                 Name = "Unknown Material";
                 Description = "This material type is not recognized.";
@@ -88,23 +90,15 @@ public class MaterialCard : Card
 
 public class SkillCard : Card
 {
+    //这里还没改
     public SkillType skillType; //技能类型
     public SkillCard(SkillType skillType) {
         CardType = CardType.SKILL;
         this.skillType = skillType;
         switch (skillType) {
             case SkillType.HARVEST:
-                Name = "收割";
-                Description = "使一个地块充能+2";
-                break;
             case SkillType.REINFORCE:
-                Name = "加固";
-                Description = "加固一个地块，使其可以抵抗一次攻击";
-                break;
             case SkillType.POLISH:
-                Name = "打磨";
-                Description = "使一个地块ATK+2";
-                break;
             default:
                 Name = "Unknown Skill";
                 Description = "This skill type is not recognized.";
@@ -118,35 +112,32 @@ public class SkillCard : Card
                 targetLand.PassiveEffect();
                 break;
             case SkillType.REINFORCE:
-                targetLand.def += 1;
                 break;
             case SkillType.POLISH:
-                targetLand.atk += 2;
                 break;
         }
     }
 }
 
-public class EquipCard : Card
+public class WeaponCard : Card
 {
-    public int attackBonus; //攻击加成
     public EquipType equipType; //装备类型
 
-    public EquipCard(EquipType equipType) {
-        CardType = CardType.EQUIP;
+    public WeaponCard(EquipType equipType) {
+        CardType = CardType.WEAPON;
         this.equipType = equipType;
         switch (equipType) {
             case EquipType.ROLLROCK:
                 Name = "滚石";
-                Description = "+1ATK,每控制1个山脉额外+2";
+                Description = "打1-2，每个山脉额外+2最大值";
                 break;
             case EquipType.SPEAR:
                 Name = "长矛";
-                Description = "+5ATK";
+                Description = "打3-4";
                 break;
             case EquipType.BOW:
                 Name = "弓";
-                Description = "+7ATK";
+                Description = "打3-7";
                 break;
             default:
                 Name = "Unknown Equipment";
@@ -156,15 +147,13 @@ public class EquipCard : Card
     }
 
     public override void ApplyEffect(Land targetLand) {
+        //这里要写攻击的逻辑，还没写
         switch (equipType) {
             case EquipType.ROLLROCK:
-                targetLand.atk += 4;
                 break;
             case EquipType.SPEAR:
-                targetLand.atk += 5;
                 break;
             case EquipType.BOW:
-                targetLand.atk += 7;
                 break;
             default:
                 break;

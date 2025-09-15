@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
+    //这里需要重写
     public TMP_Text cardName;
     public TMP_Text cardDescription;
     public TMP_Text cardType;

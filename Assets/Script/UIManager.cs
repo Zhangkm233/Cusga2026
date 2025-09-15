@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    // 这里也需要重写 改成3d
     public GameObject[] cards;
     public TMP_Text DeckCount;
     public TMP_Text HandCount;

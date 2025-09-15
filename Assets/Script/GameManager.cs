@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //这里需要重写 要记得和逻辑层解耦合
     public GameObject selectCard;
     public static GameManager Instance { get; private set; }
     private void Awake() {
@@ -40,11 +41,6 @@ public class GameManager : MonoBehaviour
                     }
                     if (selectCard.GetComponent<CardController>().card.CardType == CardType.SKILL) {
                         ((SkillCard)selectCard.GetComponent<CardController>().card).ApplyEffect(clickedObject.GetComponent<TileController>().land);
-                        Costed = true;
-                    }
-                    if (selectCard.GetComponent<CardController>().card.CardType == CardType.EQUIP && clickedObject.GetComponent<TileController>().land.IsArmed == false) {
-                        ((EquipCard)selectCard.GetComponent<CardController>().card).ApplyEffect(clickedObject.GetComponent<TileController>().land);
-                        clickedObject.GetComponent<TileController>().land.IsArmed = true; // 设置地块为已装备状态
                         Costed = true;
                     }
                     if (Costed) {
@@ -91,6 +87,10 @@ public class GameManager : MonoBehaviour
         foreach (GameObject tile in tiles) {
             tile.GetComponent<Land>().energyCounter++;
             tile.GetComponent<Land>().PassiveEffect();
+        }
+        //额外效果触发
+        foreach (GameObject tile in tiles) {
+            //tile.GetComponent<Land>().ExtraEffect();
         }
         //UIManager.Instance.UpdateTiles();
         //UIManager.Instance.UpdateCards();
