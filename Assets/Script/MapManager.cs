@@ -59,9 +59,51 @@ public class MapManager : MonoBehaviour
             Debug.LogError("位置超出地图范围");
             return;
         }
+        if (IsPositionBeenOccupiedByAnimal(row,col)) {
+            Debug.LogError("位置已被占用");
+            return;
+        }
         AnimalMap[row][col] = animal;
         animal.MapRow = row;
         animal.MapCol = col;
         Debug.Log($"动物{animal.AnimalName}已添加到地图位置({row},{col})");
+    }
+
+    public bool IsPositionBeenOccupiedByAnimal(int row,int col) {
+        //检查位置是否被占用
+        if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
+            Debug.LogError("位置超出地图范围");
+            return true;
+        }
+        return AnimalMap[row][col] != null;
+    }
+
+    public void RemoveAnimalFromMap(int row,int col) {
+        //从地图移除动物
+        if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
+            Debug.LogError("位置超出地图范围");
+            return;
+        }
+        if (AnimalMap[row][col] == null) {
+            Debug.LogError("该位置没有动物");
+            return;
+        }
+        Animal removedAnimal = AnimalMap[row][col];
+        AnimalMap[row][col] = null;
+        Debug.Log($"动物{removedAnimal.AnimalName}已从地图位置({row},{col})移除");
+    }
+
+    public void MoveAnimalToMap(Animal animal,int row,int col) {
+        if(row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
+            Debug.LogError("位置超出地图范围");
+            return;
+        }
+        if (IsPositionBeenOccupied(row,col)) {
+            Debug.LogError("位置已被占用");
+            return;
+        }
+        RemoveAnimalFromMap(animal.MapRow,animal.MapCol);
+        AddAnimalToMap(animal,row,col);
+        Debug.Log($"动物{animal.AnimalName}已移动到地图位置({row},{col})");
     }
 }

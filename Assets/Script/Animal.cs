@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+
 public abstract class Animal : MonoBehaviour
 {
     private string animalName; //动物名称
@@ -39,10 +41,53 @@ public abstract class Animal : MonoBehaviour
         set { mapCol = value; }
     }
 
-    public void MoveMent() {
+    public void MoveToPreferLand() {
         //动物移动
         //移动到自身所在格与相邻四格内所有空旷的格子中，最接近自己偏好地势数值的地块
         Debug.Log("移动");
+        int bestRow = mapRow;
+        int bestCol = mapCol;
+        int bestPreferenceDiff = Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol].Preference - preferLand);
+        if (mapRow > 0) { //上
+            if (MapManager.Instance.LandMap[mapRow - 1][mapCol] != null && MapManager.Instance.AnimalMap[mapRow - 1][MapCol] == null ) {
+                if (Mathf.Abs(MapManager.Instance.LandMap[mapRow - 1][mapCol].Preference - preferLand) < bestPreferenceDiff) {
+                    bestRow = mapRow - 1;
+                    bestCol = mapCol;
+                    bestPreferenceDiff = Mathf.Abs(MapManager.Instance.LandMap[mapRow - 1][mapCol].Preference - preferLand);
+                }
+            }
+        }
+        if (mapRow < MapManager.Instance.LandMap.Count - 1) { //下
+            if (MapManager.Instance.LandMap[mapRow + 1][mapCol] != null && MapManager.Instance.AnimalMap[mapRow + 1][MapCol] == null) {
+                if (Mathf.Abs(MapManager.Instance.LandMap[mapRow + 1][mapCol].Preference - preferLand) < bestPreferenceDiff) {
+                    bestRow = mapRow + 1;
+                    bestCol = mapCol;
+                    bestPreferenceDiff = Mathf.Abs(MapManager.Instance.LandMap[mapRow + 1][mapCol].Preference - preferLand);
+                }
+            }
+        }
+        if (mapCol > 0) { //左
+            if (MapManager.Instance.LandMap[mapRow][mapCol - 1] != null && MapManager.Instance.AnimalMap[mapRow][MapCol - 1] == null) {
+                if (Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol - 1].Preference - preferLand) < bestPreferenceDiff) {
+                    bestRow = mapRow;
+                    bestCol = mapCol - 1;
+                    bestPreferenceDiff = Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol - 1].Preference - preferLand);
+                }
+            }
+        }
+        if (mapCol < MapManager.Instance.LandMap[0].Count - 1) { //右
+            if (MapManager.Instance.LandMap[mapRow][mapCol + 1] != null && MapManager.Instance.AnimalMap[mapRow][MapCol + 1] == null) {
+                if (Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol + 1].Preference - preferLand) < bestPreferenceDiff) {
+                    bestRow = mapRow;
+                    bestCol = mapCol + 1;
+                    bestPreferenceDiff = Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol + 1].Preference - preferLand);
+                }
+            }
+        }
 
+        //移动
+        if (bestRow != mapRow || bestCol != mapCol) {
+            MapManager.Instance.MoveAnimalToMap(this,bestRow,bestCol);
+        }
     }
 }
