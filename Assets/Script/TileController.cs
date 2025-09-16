@@ -64,9 +64,9 @@ public class TileController : MonoBehaviour
     public void UpdateTile() {
         land = this.GetComponent<Land>();
         tileName.text = GameData.HanizeLandType(land.LandType);
-        tileEnergy.text = "能量: " + land.energyCounter.ToString();
-        tileAtk.text = "攻击: " + land.atk.ToString();
-        tileDef.text = "护盾: " + land.def.ToString();
+        tileEnergy.text = "能量: " + land.EnergyCounter.ToString();
+        //tileAtk.text = "攻击: " + land.atk.ToString();
+        //tileDef.text = "护盾: " + land.def.ToString();
         if (land.storageCardType != MaterialType.NULL || land.storageCardNum == 0) {
             tileStorageCard.text = GameData.HanizeMaterial(land.storageCardType);
             tileStorageNum.text = land.storageCardNum.ToString();

@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    //用于管理逻辑层Land对象的生成和移动
+    //用于管理逻辑层Land和animal对象的生成和移动
 
     public List<List<Land>> LandMap = new List<List<Land>>();//储存所有land数据 
+    public List<List<Animal>> AnimalMap = new List<List<Animal>>();//储存所有animal数据
+
     public static MapManager Instance { get; private set; }
     private void Awake() {
         if (Instance == null) {
@@ -16,13 +18,13 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void InitializeMap(int rows,int cols) {
+    public void InitializeLandMap(int rows,int cols) {
         // 初始化地图
         LandMap.Clear();
         for (int i = 0;i < rows;i++) {
             List<Land> row = new List<Land>();
             for (int j = 0;j < cols;j++) {
-                Land newLand = new ForestLand();
+                Land newLand = new ForestLand(rows,cols);
                 row.Add(newLand);
             }
             LandMap.Add(row);
@@ -30,14 +32,36 @@ public class MapManager : MonoBehaviour
         Debug.Log("地图已初始化");
     }
 
-    public void InitiallizeMap() {
+    public void InitiallizeLandMap() {
         //一开始，玩家拥有一块3x4的地块，其中包含4块山丘，5块平原，3块森林
         LandMap.Clear();
         List<Land> row1 = new List<Land> { new HillLand(0,0),new HillLand(0,1),new HillLand(0,2),new HillLand(0,3) };
-        List<Land> row2 = new List<Land> { new PlainLand(),new PlainLand(),new PlainLand(),new PlainLand() };
-        List<Land> row3 = new List<Land> { new PlainLand(),new ForestLand(),new ForestLand(),new ForestLand() };
+        List<Land> row2 = new List<Land> { new PlainLand(1,0),new PlainLand(1,1),new PlainLand(1,2),new PlainLand(1,3) };
+        List<Land> row3 = new List<Land> { new PlainLand(2,0),new ForestLand(2,1),new ForestLand(2,2),new ForestLand(2,3) };
         LandMap.Add(row1);
         LandMap.Add(row2);
         LandMap.Add(row3);
+        Debug.Log("地图已初始化");
+    }
+
+    public void StateCheck() {
+        //检查每块地的状态
+        foreach (var row in LandMap) {
+            foreach (var land in row) {
+                land.PassiveEffect();
+            }
+        }
+    }
+
+    public void AddAnimalToMap(Animal animal,int row,int col) {
+        //添加动物到地图
+        if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
+            Debug.LogError("位置超出地图范围");
+            return;
+        }
+        AnimalMap[row][col] = animal;
+        animal.MapRow = row;
+        animal.MapCol = col;
+        Debug.Log($"动物{animal.AnimalName}已添加到地图位置({row},{col})");
     }
 }

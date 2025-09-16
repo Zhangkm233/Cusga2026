@@ -19,23 +19,35 @@ public enum LandType
 
 public abstract class Land : MonoBehaviour
 {
-    LandType landType; //地形类型
+    private LandType landType; //地形类型
+    private int energyCounter = 0; //计数器，表示该地形上有多少个充能
+    private int requiredEnergy; //触发被动效果需要的充能数量
+    public MaterialType storageCardType = MaterialType.NULL; //已存储的卡片类别
+    public int storageCardNum = 0; //存储的卡片数量
+    private int preference = 0; //偏好地形数值
+    private int soild = 0; //坚固值 可以抵挡一次攻击或者天灾效果
+    private int hunterarea = 0;//猎圈值 额外收益的概率增加一倍
+    private static int maxSoild = 1; //最大坚固值
+    private static int maxHunterarea = 2; //最大猎圈值
+    private int mapRow; //地形所在地图行
+    private int mapCol; //地形所在地图列
+
+    public int RequiredEnergy {
+        get { return requiredEnergy; }
+        set { requiredEnergy = value; }
+    }
     public LandType LandType {
         get { return landType; }
         set { landType = value; }
     }
-    public int energyCounter = 0; //计数器，表示该地形上有多少个充能
-    public int requiredEnergy; //触发被动效果需要的充能数量
-    public MaterialType storageCardType = MaterialType.NULL; //已存储的卡片类别
-    public int storageCardNum = 0; //存储的卡片数量
-    public int preference = 0; //偏好地形数值
-    public int soild = 0; //坚固值 可以抵挡一次攻击或者天灾效果
-    public int hunterarea = 0;//猎圈值 额外收益的概率增加一倍
-    public static int maxSoild = 1; //最大坚固值
-    public static int maxHunterarea = 2; //最大猎圈值
-    public int mapRow; //地形所在地图行
-    public int mapCol; //地形所在地图列
-
+    public int Soild {
+        get { return soild; }
+        set { soild = value; }
+    }
+    public int Hunterarea {
+        get { return hunterarea; }
+        set { hunterarea = value; }
+    }
     public int MapRow {
         get { return mapRow; }
         set { mapRow = value; }
@@ -128,7 +140,7 @@ public abstract class Land : MonoBehaviour
                 newLand = new WheatLand(mapRow,mapCol);
                 break;
         }
-        //继承所有特殊属性（坚固和猎圈之类的）
+        //继承所有特殊属性（坚固和猎圈之类的）（充能不继承）
         newLand.soild = this.soild;
         newLand.hunterarea = this.hunterarea;
         MapManager.Instance.LandMap[mapRow][mapCol] = newLand;
@@ -143,18 +155,18 @@ public class HillLand : Land
     // 山丘地形
     public HillLand(int row, int col) {
         LandType = LandType.HILL;
-        requiredEnergy = 4;
-        preference = 20;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 4;
+        Preference = 20;
+        MapRow = row;
+        MapCol = col;
     }
 
     public override void PassiveEffect() {
         // 山丘地形的被动效果 4时产1石
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("山丘地形被动效果触发");
             DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.STONE)); //添加一个石头材料卡到牌库
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -198,17 +210,17 @@ public class PlainLand : Land
     // 平原地形
     public PlainLand(int row,int col) {
         LandType = LandType.PLAIN;
-        requiredEnergy = 3;
-        preference = 30;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 3;
+        Preference = 30;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
         // 平原地形的被动效果 3时产1草
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("平原地形被动效果触发");
             DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.HAY)); //添加一个干草材料卡到牌库
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -250,20 +262,20 @@ public class PlainLand : Land
 public class ForestLand : Land
 {
     // 森林地形
-    public ForestLand(int col,int row) {
+    public ForestLand(int row, int col) {
         LandType = LandType.FOREST;
-        requiredEnergy = 2;
-        preference = 35;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 2;
+        Preference = 35;
+        MapRow = row;
+        MapCol = col;
     }
 
     public override void PassiveEffect() {
         // 森林地形的被动效果 2时产1木
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("森林地形被动效果触发");
             DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.WOOD)); //添加一个木材材料卡到牌库
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -297,16 +309,16 @@ public class MountainLand : Land
 {
     public MountainLand(int row,int col) {
         LandType = LandType.MOUNTAIN;
-        requiredEnergy = 4;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 4;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
         // 山脉地形的被动效果 4时产2石
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("山脉地形被动效果触发");
             DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.STONE),2);
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -334,12 +346,12 @@ public class JungleLand : Land
 {
     public JungleLand(int row,int col) {
         LandType = LandType.JUNGLE;
-        requiredEnergy = 0;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 0;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
         } else {
         }
     }
@@ -366,12 +378,12 @@ public class WheatLand : Land
 {
     public WheatLand(int row,int col) {
         LandType = LandType.WHEATLAND;
-        requiredEnergy = 0;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 0;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
         } else {
         }
     }
@@ -398,15 +410,15 @@ public class ThatchLand : Land
 {
     public ThatchLand(int row,int col) {
         LandType = LandType.THATCH;
-        requiredEnergy = 4;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 4;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
         // 茅屋地形的被动效果
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("茅屋地形被动效果触发");
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -433,16 +445,16 @@ public class CabinLand : Land
 {
     public CabinLand(int row,int col) {
         LandType = LandType.CABIN;
-        requiredEnergy = 3;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 3;
+        MapRow = row;
+        MapCol = col;
     }
     
     public override void PassiveEffect() {
         // 林屋地形的被动效果
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("林屋地形被动效果触发");
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -470,15 +482,15 @@ public class TownLand : Land
 {
     public TownLand(int row,int col) {
         LandType = LandType.TOWN;
-        requiredEnergy = 5;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 5;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
         // 城镇地形的被动效果
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("城镇地形被动效果触发");
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -505,9 +517,9 @@ public class TowerLand : Land
 {
     public TowerLand(int row,int col) {
         LandType = LandType.TOWER;
-        requiredEnergy = 10;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 10;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
         // 塔地形的被动效果
@@ -536,15 +548,15 @@ public class WarehouseLand : Land
 {
     public WarehouseLand(int row,int col) {
         LandType = LandType.WAREHOUSE;
-        requiredEnergy = 2;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 2;
+        MapRow = row;
+        MapCol = col;
     }
     public override void PassiveEffect() {
         // 仓库地形的被动效果
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("仓库地形被动效果触发");
-            energyCounter = 0; // 重置计数器
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
@@ -571,13 +583,13 @@ public class WindmillLand : Land
 {
     public WindmillLand(int row,int col) {
         LandType = LandType.WINDMILL;
-        requiredEnergy = 0;
-        mapRow = row;
-        mapCol = col;
+        RequiredEnergy = 0;
+        MapRow = row;
+        MapCol = col;
 
     }
     public override void PassiveEffect() {
-        if (energyCounter >= requiredEnergy) {
+        if (EnergyCounter >= RequiredEnergy) {
         } else {
         }
     }

@@ -19,9 +19,9 @@ public enum MaterialType
 public enum SkillType
 {
     NULL = 0, //空
-    HARVEST = 1, //收割
-    REINFORCE = 2, //加固
-    POLISH = 3, //打磨
+    STALK = 1, //追猎
+    HARVEST = 2, //收割
+    REINFORCE = 3, //加固
 }
 
 public enum EquipType
@@ -75,7 +75,10 @@ public class MaterialCard : Card
                 Name = "石头";
                 Description = "石头*1";
                 break;
-                //这里需要添加肉的描述
+            case MaterialType.MEAT:
+                Name = "肉";
+                Description = "肉*1";
+                break;
             default:
                 Name = "Unknown Material";
                 Description = "This material type is not recognized.";
@@ -85,20 +88,32 @@ public class MaterialCard : Card
     public override void ApplyEffect(Land targetLand) {
         // 应用材料效果到目标地形
         // 效果在地形上
+        targetLand.MaterialEffect(this);
     }
 }
 
 public class SkillCard : Card
 {
-    //这里还没改
     public SkillType skillType; //技能类型
     public SkillCard(SkillType skillType) {
         CardType = CardType.SKILL;
         this.skillType = skillType;
         switch (skillType) {
             case SkillType.HARVEST:
+                // 收割
+                Name = "收割";
+                Description = "该地块获得2充能";
+                break;
             case SkillType.REINFORCE:
-            case SkillType.POLISH:
+                // 加固
+                Name = "加固";
+                Description = "该地块获得1坚固";
+                break;
+            case SkillType.STALK:
+                // 追猎
+                Name = "追猎";
+                Description = "该地块获得1猎圈";
+                break;
             default:
                 Name = "Unknown Skill";
                 Description = "This skill type is not recognized.";
@@ -108,12 +123,14 @@ public class SkillCard : Card
     public override void ApplyEffect(Land targetLand) {
         switch (skillType) {
             case SkillType.HARVEST:
-                targetLand.energyCounter += 2;
+                targetLand.AddEnergy(2);
                 targetLand.PassiveEffect();
                 break;
             case SkillType.REINFORCE:
+                targetLand.AddSoild(1);
                 break;
-            case SkillType.POLISH:
+            case SkillType.STALK:
+                targetLand.AddHunterarea(1);
                 break;
         }
     }
