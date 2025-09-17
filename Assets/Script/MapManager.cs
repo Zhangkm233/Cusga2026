@@ -98,12 +98,25 @@ public class MapManager : MonoBehaviour
             Debug.LogError("位置超出地图范围");
             return;
         }
-        if (IsPositionBeenOccupied(row,col)) {
+        if (IsPositionBeenOccupiedByAnimal(row,col)) {
             Debug.LogError("位置已被占用");
             return;
         }
         RemoveAnimalFromMap(animal.MapRow,animal.MapCol);
         AddAnimalToMap(animal,row,col);
         Debug.Log($"动物{animal.AnimalName}已移动到地图位置({row},{col})");
+    }
+
+    public int GetAmountOfLandType(LandType landType) {
+        //获取某种地形的数量
+        int count = 0;
+        foreach (var row in LandMap) {
+            foreach (var land in row) {
+                if (land.LandType == landType) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }

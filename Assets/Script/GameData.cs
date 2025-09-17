@@ -66,4 +66,19 @@ public static class GameData
                 return "未知";
         }
     }
+
+    public static string HanizeSkill(SkillType skillType) {
+        switch (skillType) {
+            case SkillType.NULL:
+                return " ";
+            case SkillType.STALK:
+                return "追猎";
+            case SkillType.HARVEST:
+                return "收割";
+            case SkillType.REINFORCE:
+                return "加固";
+            default:
+                return "未知";
+        }
+    }
 }

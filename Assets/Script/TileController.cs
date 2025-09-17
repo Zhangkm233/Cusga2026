@@ -3,6 +3,8 @@ using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
+//已弃用
+[System.Obsolete("需要重写")]
 public class TileController : MonoBehaviour
 {
     // 这里需要重写 改成3d 

@@ -2,6 +2,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//已弃用
+[System.Obsolete("需要重写")]
 public class UIManager : MonoBehaviour
 {
     // 这里也需要重写 改成3d

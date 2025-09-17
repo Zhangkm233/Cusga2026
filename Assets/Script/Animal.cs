@@ -90,4 +90,25 @@ public abstract class Animal : MonoBehaviour
             MapManager.Instance.MoveAnimalToMap(this,bestRow,bestCol);
         }
     }
+
+    public void TakeDamage(int damage) {
+        //动物受伤
+        health -= damage;
+        Debug.Log($"动物{animalName}受到了{damage}点伤害，当前生命值为{health}");
+        if (health <= 0) {
+            Die();
+        }
+    }
+
+    public void Die() {
+        //动物死亡
+        Debug.Log($"动物{animalName}死亡");
+        //掉落卡片
+        for (int i = 0;i < dropNum;i++) {
+            DeckManager.Instance.AddCardToDeck(drop);
+        }
+        //从地图移除
+        MapManager.Instance.RemoveAnimalFromMap(mapRow,mapCol);
+        //销毁对应的GameObject
+    }
 }

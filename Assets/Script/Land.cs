@@ -144,9 +144,10 @@ public abstract class Land : MonoBehaviour
         newLand.soild = this.soild;
         newLand.hunterarea = this.hunterarea;
         MapManager.Instance.LandMap[mapRow][mapCol] = newLand;
-        this.gameObject.AddComponent(newLand.GetType()); // 添加新的地形组件
+        //this.gameObject.AddComponent(newLand.GetType());
         //这里我不知道写的对不对，尚待商榷
-        Destroy(this); // 销毁当前地形组件
+        //Destroy(this);
+        //这里需要更改游戏内对应的gameobject
     }
 }
 

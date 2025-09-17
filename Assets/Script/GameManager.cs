@@ -1,5 +1,7 @@
 using UnityEngine;
 
+//已弃用
+[System.Obsolete("需要重写")]
 public class GameManager : MonoBehaviour
 {
     //这里需要重写 要记得和逻辑层解耦合
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour
         // 这里需要重写
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("TileGameobject");
         foreach (GameObject tile in tiles) {
-            tile.GetComponent<Land>().energyCounter++;
+            tile.GetComponent<Land>().EnergyCounter++;
             tile.GetComponent<Land>().PassiveEffect();
         }
         //额外效果触发

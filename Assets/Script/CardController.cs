@@ -3,6 +3,8 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 
+//已弃用
+[System.Obsolete("需要重写")]
 public class CardController : MonoBehaviour
 {
     //控制游戏内的卡牌显示

@@ -57,14 +57,14 @@ public class DeckManager : MonoBehaviour
     public void AddCardToDeck(Card card) {
         // 实现将卡片添加到牌库的逻辑
         deck.Add(card);
-        Debug.Log($"卡牌 {card.name} 加入了牌库");
+        Debug.Log($"卡牌 {card.Name} 加入了牌库");
     }
 
     public void AddCardToDeck(Card card,int num) {
         for (int i = 0;i < num;i++) {
             deck.Add(card);
         }
-        Debug.Log($"卡牌 {card.name} 加入了牌库 {num} 张");
+        Debug.Log($"卡牌 {card.Name} 加入了牌库 {num} 张");
     }
 
     public void ClearDeck() {

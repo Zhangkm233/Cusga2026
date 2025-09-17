@@ -33,17 +33,17 @@ public enum EquipType
 }
 public abstract class Card
 {
-    CardType cardType; //¿¨Æ¬ÀàĞÍ
+    private CardType cardType; //¿¨Æ¬ÀàĞÍ
     public CardType CardType {
         get { return cardType; }
         set { cardType = value; }
     }
-    public string name; //¿¨Æ¬Ãû³Æ
+    private string name; //¿¨Æ¬Ãû³Æ
     public string Name {
         get { return name; }
         set { name = value; }
     }
-    public string description; //¿¨Æ¬ÃèÊö
+    private string description; //¿¨Æ¬ÃèÊö
     public string Description {
         get { return description; }
         set { description = value; }
@@ -167,10 +167,16 @@ public class WeaponCard : Card
         //ÕâÀïÒªĞ´¹¥»÷µÄÂß¼­£¬»¹Ã»Ğ´
         switch (equipType) {
             case EquipType.ROLLROCK:
+                MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol]
+                    .TakeDamage(Random.Range(1,3) + (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2));
                 break;
             case EquipType.SPEAR:
+                MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol]
+                    .TakeDamage(Random.Range(3,5));
                 break;
             case EquipType.BOW:
+                MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol]
+                    .TakeDamage(Random.Range(3,8));
                 break;
             default:
                 break;
