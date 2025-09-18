@@ -77,4 +77,10 @@ public class DeckManager : MonoBehaviour
         hand.Clear();
         Debug.Log("手牌已清空");
     }
+
+    public void AddCardToDeckFromLand(Card card,int num,Land land) {
+        //留给地块调用
+        //这里可以加一些动画之类的
+        AddCardToDeck(card,num);
+    }
 }

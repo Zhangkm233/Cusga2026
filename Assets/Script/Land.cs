@@ -17,7 +17,7 @@ public enum LandType
     WINDMILL //风车
 }
 
-public abstract class Land : MonoBehaviour
+public abstract class Land
 {
     private LandType landType; //地形类型
     private int energyCounter = 0; //计数器，表示该地形上有多少个充能
@@ -66,6 +66,11 @@ public abstract class Land : MonoBehaviour
         set { preference = value; }
     }
 
+    public bool IsRandomEventTriggered(int probability) {
+        int rand = Random.Range(1,101); // 生成1到100的随机数
+        return rand <= probability; // 如果随机数小于等于概率值，则事件触发
+    }
+
     public void AddEnergy(int energy) {
         energyCounter += energy; // 增加充能
         Debug.Log($"地形 {landType} 充能增加 {energy}，当前充能：{energyCounter}");
@@ -96,6 +101,11 @@ public abstract class Land : MonoBehaviour
             hunterarea = maxHunterarea; // 猎圈值不能超过最大值
         }
     }
+
+    public void AddCard(Card card,int num) {
+        DeckManager.Instance.AddCardToDeckFromLand(card,num,this);
+    }
+
     public void ChangeLandType(LandType landType) {
         //这里是转变地形的函数 如果想解耦合，还需要改一改到游戏里面的调用，应该UI层面需要全部重写
         //需要在逻辑层里面添加存储 然后再显示到游戏/UE层
@@ -166,7 +176,7 @@ public class HillLand : Land
         // 山丘地形的被动效果 4时产1石
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("山丘地形被动效果触发");
-            DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.STONE)); //添加一个石头材料卡到牌库
+            AddCard(new MaterialCard(MaterialType.STONE),1); //添加一个石头材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -184,7 +194,7 @@ public class HillLand : Land
                 break;
             case MaterialType.HAY:
                 //产2木材
-                DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.WOOD),2);
+                AddCard(new MaterialCard(MaterialType.WOOD),2);
                 break;
             case MaterialType.STONE:
                 //1升山脉
@@ -194,8 +204,9 @@ public class HillLand : Land
                 }
                 break;
             case MaterialType.MEAT:
-            //产1熊
-            //还没写
+                //产1熊
+                MapManager.Instance.AddAnimalToLand(AnimalType.BEAR,this);
+                break;
             default:
                 break;
         }
@@ -203,6 +214,10 @@ public class HillLand : Land
 
     public override void ExtraEffect() {
         //这里还没写 应该是20%产1石
+        if(IsRandomEventTriggered(20)) {
+            Debug.Log("山丘地形额外效果触发");
+            AddCard(new MaterialCard(MaterialType.STONE),1  ); //添加一个石头材料卡到牌库
+        }
     }
 }
 
@@ -220,7 +235,7 @@ public class PlainLand : Land
         // 平原地形的被动效果 3时产1草
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("平原地形被动效果触发");
-            DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.HAY)); //添加一个干草材料卡到牌库
+            AddCard(new MaterialCard(MaterialType.HAY),1); //添加一个干草材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -250,13 +265,25 @@ public class PlainLand : Land
                 break;
             case MaterialType.MEAT:
                 //2产1兔1追猎
-                //还没写
+                StorageIn(MaterialType.MEAT);
+                if (storageCardNum >= 2 && storageCardType == MaterialType.MEAT) {
+                    MapManager.Instance.AddAnimalToLand(AnimalType.RABBIT,this);
+                    DeckManager.Instance.AddCardToDeckFromLand(new SkillCard(SkillType.STALK),1,this);
+                    storageCardNum = 0;
+                    storageCardType = MaterialType.NULL;
+                }
+                break;
             default:
                 break;
         }
     }
 
     public override void ExtraEffect() {
+        //10%产1兔
+        if (IsRandomEventTriggered(10)) {
+            Debug.Log("平原地形额外效果触发");
+            MapManager.Instance.AddAnimalToLand(AnimalType.RABBIT,this);
+        }
     }
 }
 
@@ -275,7 +302,7 @@ public class ForestLand : Land
         // 森林地形的被动效果 2时产1木
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("森林地形被动效果触发");
-            DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.WOOD)); //添加一个木材材料卡到牌库
+            AddCard(new MaterialCard(MaterialType.WOOD),1); //添加一个木材材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -291,12 +318,16 @@ public class ForestLand : Land
                 break;
             case MaterialType.HAY:
                 //产1兔
+                MapManager.Instance.AddAnimalToLand(AnimalType.RABBIT,this);
                 break;
             case MaterialType.STONE:
                 //产1矛
+                DeckManager.Instance.AddCardToDeckFromLand(new WeaponCard(WeaponType.SPEAR),1,this);
                 break;
             case MaterialType.MEAT:
-                //还没写
+                //产1追猎
+                DeckManager.Instance.AddCardToDeckFromLand(new SkillCard(SkillType.STALK),1,this);
+                break;
             default:
                 break;
         }
@@ -318,7 +349,7 @@ public class MountainLand : Land
         // 山脉地形的被动效果 4时产2石
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("山脉地形被动效果触发");
-            DeckManager.Instance.AddCardToDeck(new MaterialCard(MaterialType.STONE),2);
+            AddCard(new MaterialCard(MaterialType.STONE),2);
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -326,19 +357,32 @@ public class MountainLand : Land
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
+                //得1坚固
+                AddSoild(1);
                 break;
             case MaterialType.HAY:
+                //2升山丘产3抽
+                StorageIn(MaterialType.HAY);
+                if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
+                    ChangeLandType(LandType.HILL);
+                    GameData.extraDrawNum += 3;
+                }
                 break;
             case MaterialType.STONE:
+                //产3滚石
+                AddCard(new WeaponCard(WeaponType.ROLLROCK),3);
                 break;
             case MaterialType.MEAT:
-            //还没写
+                //得1猎圈
+                AddHunterarea(1);
+                break;
             default:
                 break;
         }
     }
 
     public override void ExtraEffect() {
+        //每回合有“相邻四格内山丘数量”*10%的概率获得1充能
     }
 }
 

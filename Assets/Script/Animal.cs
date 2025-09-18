@@ -1,8 +1,13 @@
 using UnityEngine;
 
+public enum AnimalType
+{
+    RABBIT, //兔
+    BEAR, //熊
+    BOAR, //猪
+}
 
-
-public abstract class Animal : MonoBehaviour
+public class Animal
 {
     private string animalName; //动物名称
     private int health; //生命值
@@ -11,7 +16,12 @@ public abstract class Animal : MonoBehaviour
     private int preferLand; //偏好地形类型
     private int mapRow; //所在地图行
     private int mapCol; //所在地图列
+    private AnimalType animalType; //动物类型
 
+    public AnimalType AnimalType {
+        get { return animalType; }
+        set { animalType = value; }
+    }
     public int PreferLand {
         get { return preferLand; }
         set { preferLand = value; }
@@ -41,6 +51,35 @@ public abstract class Animal : MonoBehaviour
         set { mapCol = value; }
     }
 
+    public Animal(AnimalType animalType) {
+        this.animalType = animalType;
+        switch (animalType) {
+            case AnimalType.RABBIT:
+                animalName = "兔";
+                health = 2;
+                drop = new MaterialCard(MaterialType.MEAT);
+                dropNum = 1;
+                preferLand = 30;
+                break;
+            case AnimalType.BEAR:
+                animalName = "熊";
+                health = 5;
+                drop = new MaterialCard(MaterialType.MEAT);
+                dropNum = 3;
+                preferLand = 20;
+                break;
+            case AnimalType.BOAR:
+                animalName = "猪";
+                health = 3;
+                drop = new MaterialCard(MaterialType.MEAT);
+                dropNum = 4;
+                preferLand = 15; //偏好丘陵
+                break;
+            default:
+                Debug.LogError("未知动物类型");
+                break;
+        }
+    }
     public void MoveToPreferLand() {
         //动物移动
         //移动到自身所在格与相邻四格内所有空旷的格子中，最接近自己偏好地势数值的地块

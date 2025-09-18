@@ -119,4 +119,21 @@ public class MapManager : MonoBehaviour
         }
         return count;
     }
+
+    public void DealDamageTo(Animal animal,int damage) {
+        animal.TakeDamage(damage);
+    }
+
+    public void DealDamageTo(Land land,int damage) {
+        if(AnimalMap[land.MapRow][land.MapCol] != null) {
+            DealDamageTo(AnimalMap[land.MapRow][land.MapCol],(damage));
+        } else {
+            Debug.LogError("该地块上没有动物，无法造成伤害");
+        }
+    }
+
+    public void AddAnimalToLand(AnimalType animalType,Land land) {
+        //留给地块调用
+        AddAnimalToMap(new Animal(animalType),land.MapRow,land.MapCol);
+    }
 }

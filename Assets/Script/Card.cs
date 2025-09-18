@@ -24,7 +24,7 @@ public enum SkillType
     REINFORCE = 3, //加固
 }
 
-public enum EquipType
+public enum WeaponType
 {
     NULL = 0, //空
     ROLLROCK = 1, //滚石
@@ -80,8 +80,8 @@ public class MaterialCard : Card
                 Description = "肉*1";
                 break;
             default:
-                Name = "Unknown Material";
-                Description = "This material type is not recognized.";
+                Name = "——";
+                Description = "未知材料类型.";
                 break;
         }
     }
@@ -138,21 +138,21 @@ public class SkillCard : Card
 
 public class WeaponCard : Card
 {
-    public EquipType equipType; //装备类型
+    public WeaponType weaponType; //装备类型
 
-    public WeaponCard(EquipType equipType) {
+    public WeaponCard(WeaponType weaponType) {
         CardType = CardType.WEAPON;
-        this.equipType = equipType;
-        switch (equipType) {
-            case EquipType.ROLLROCK:
+        this.weaponType = weaponType;
+        switch (weaponType) {
+            case WeaponType.ROLLROCK:
                 Name = "滚石";
                 Description = "打1-2，每个山脉额外+2最大值";
                 break;
-            case EquipType.SPEAR:
+            case WeaponType.SPEAR:
                 Name = "长矛";
                 Description = "打3-4";
                 break;
-            case EquipType.BOW:
+            case WeaponType.BOW:
                 Name = "弓";
                 Description = "打3-7";
                 break;
@@ -165,18 +165,15 @@ public class WeaponCard : Card
 
     public override void ApplyEffect(Land targetLand) {
         //这里要写攻击的逻辑，还没写
-        switch (equipType) {
-            case EquipType.ROLLROCK:
-                MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol]
-                    .TakeDamage(Random.Range(1,3) + (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2));
+        switch (weaponType) {
+            case WeaponType.ROLLROCK:
+                MapManager.Instance.DealDamageTo(targetLand,Random.Range(1,3) + (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2));
                 break;
-            case EquipType.SPEAR:
-                MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol]
-                    .TakeDamage(Random.Range(3,5));
+            case WeaponType.SPEAR:
+                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,5));
                 break;
-            case EquipType.BOW:
-                MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol]
-                    .TakeDamage(Random.Range(3,8));
+            case WeaponType.BOW:
+                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,8));
                 break;
             default:
                 break;
