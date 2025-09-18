@@ -136,4 +136,29 @@ public class MapManager : MonoBehaviour
         //留给地块调用
         AddAnimalToMap(new Animal(animalType),land.MapRow,land.MapCol);
     }
+
+    public int CountAdjacentLandType(int row,int col,LandType landType) {
+        if(row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
+            Debug.LogError("位置超出地图范围");
+            return 0;
+        }
+        int count = 0;
+        //检查上方
+        if (row > 0 && LandMap[row - 1][col] != null && LandMap[row - 1][col].LandType == landType) {
+            count++;
+        }
+        //检查下方
+        if (row < LandMap.Count - 1 && LandMap[row + 1][col] != null && LandMap[row + 1][col].LandType == landType) {
+            count++;
+        }
+        //检查左方
+        if (col > 0 && LandMap[row][col - 1] != null && LandMap[row][col - 1].LandType == landType) {
+            count++;
+        }
+        //检查右方
+        if (col < LandMap[0].Count - 1 && LandMap[row][col + 1] != null && LandMap[row][col + 1].LandType == landType) {
+            count++;
+        }
+        return count;
+    }
 }

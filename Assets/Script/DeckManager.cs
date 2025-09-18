@@ -13,6 +13,14 @@ public class DeckManager : MonoBehaviour
     [SerializeField]
     public List<Card> hand = new List<Card>();
 
+    public List<int> extraCertainCardId = null;
+    public List<CardType> extraCertainCardType = null;
+    private int extraDrawNum = 0;
+    public int ExtraDrawNum {
+        get { return extraDrawNum; }
+        set { extraDrawNum = value; }
+    }
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -52,6 +60,36 @@ public class DeckManager : MonoBehaviour
         deck.RemoveAt(0); // 从牌库中移除抽取的卡片
         hand.Add(drawnCard); // 将抽取的卡片添加到手牌中
         Debug.Log("抓了一张牌");
+    }
+
+    public void DrawCertainCardByType(CardType cardType) {
+        //抽取特定种类的牌
+        for (int i = 0;i < deck.Count;i++) {
+            if (deck[i].CardType == cardType) {
+                Card drawnCard = deck[i];
+                deck.RemoveAt(i);
+                hand.Add(drawnCard);
+                Debug.Log($"抓了一张{cardType}牌：{drawnCard.Name}");
+                ShuffleDeck();
+                return;
+            }
+        }
+        Debug.LogWarning($"牌库中没有{cardType}牌，无法抓牌");
+    }
+
+    public void DrawCertainCardById(int id) {
+        //抽取特定id的牌
+        for (int i = 0;i < deck.Count;i++) {
+            if (deck[i].Id == id) {
+                Card drawnCard = deck[i];
+                deck.RemoveAt(i);
+                hand.Add(drawnCard);
+                Debug.Log($"抓了一张id为{id}的牌：{drawnCard.Name}");
+                ShuffleDeck();
+                return;
+            }
+        }
+        Debug.LogWarning($"牌库中没有id为{id}的牌，无法抓牌");
     }
 
     public void AddCardToDeck(Card card) {

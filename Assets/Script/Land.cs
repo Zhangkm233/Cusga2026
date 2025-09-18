@@ -76,6 +76,10 @@ public abstract class Land
         Debug.Log($"地形 {landType} 充能增加 {energy}，当前充能：{energyCounter}");
     }
 
+    public void SpawnAnimal(AnimalType animalType) {
+        MapManager.Instance.AddAnimalToLand(animalType,this);
+    }
+
     public abstract void PassiveEffect(); //被动效果
     public abstract void MaterialEffect(MaterialCard materialCard);
     public abstract void ExtraEffect(); //额外效果
@@ -178,7 +182,6 @@ public class HillLand : Land
             Debug.Log("山丘地形被动效果触发");
             AddCard(new MaterialCard(MaterialType.STONE),1); //添加一个石头材料卡到牌库
             EnergyCounter = 0; // 重置计数器
-        } else {
         }
     }
 
@@ -205,7 +208,7 @@ public class HillLand : Land
                 break;
             case MaterialType.MEAT:
                 //产1熊
-                MapManager.Instance.AddAnimalToLand(AnimalType.BEAR,this);
+                SpawnAnimal(AnimalType.BEAR);
                 break;
             default:
                 break;
@@ -237,7 +240,6 @@ public class PlainLand : Land
             Debug.Log("平原地形被动效果触发");
             AddCard(new MaterialCard(MaterialType.HAY),1); //添加一个干草材料卡到牌库
             EnergyCounter = 0; // 重置计数器
-        } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
@@ -267,8 +269,8 @@ public class PlainLand : Land
                 //2产1兔1追猎
                 StorageIn(MaterialType.MEAT);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.MEAT) {
-                    MapManager.Instance.AddAnimalToLand(AnimalType.RABBIT,this);
-                    DeckManager.Instance.AddCardToDeckFromLand(new SkillCard(SkillType.STALK),1,this);
+                    SpawnAnimal(AnimalType.RABBIT);
+                    AddCard(new SkillCard(SkillType.STALK),1);
                     storageCardNum = 0;
                     storageCardType = MaterialType.NULL;
                 }
@@ -282,7 +284,7 @@ public class PlainLand : Land
         //10%产1兔
         if (IsRandomEventTriggered(10)) {
             Debug.Log("平原地形额外效果触发");
-            MapManager.Instance.AddAnimalToLand(AnimalType.RABBIT,this);
+            SpawnAnimal(AnimalType.RABBIT);
         }
     }
 }
@@ -304,7 +306,6 @@ public class ForestLand : Land
             Debug.Log("森林地形被动效果触发");
             AddCard(new MaterialCard(MaterialType.WOOD),1); //添加一个木材材料卡到牌库
             EnergyCounter = 0; // 重置计数器
-        } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
@@ -318,15 +319,15 @@ public class ForestLand : Land
                 break;
             case MaterialType.HAY:
                 //产1兔
-                MapManager.Instance.AddAnimalToLand(AnimalType.RABBIT,this);
+                SpawnAnimal(AnimalType.RABBIT);
                 break;
             case MaterialType.STONE:
                 //产1矛
-                DeckManager.Instance.AddCardToDeckFromLand(new WeaponCard(WeaponType.SPEAR),1,this);
+                AddCard(new WeaponCard(WeaponType.SPEAR),1);
                 break;
             case MaterialType.MEAT:
                 //产1追猎
-                DeckManager.Instance.AddCardToDeckFromLand(new SkillCard(SkillType.STALK),1,this);
+                AddCard(new SkillCard(SkillType.STALK),1);
                 break;
             default:
                 break;
@@ -351,7 +352,6 @@ public class MountainLand : Land
             Debug.Log("山脉地形被动效果触发");
             AddCard(new MaterialCard(MaterialType.STONE),2);
             EnergyCounter = 0; // 重置计数器
-        } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
@@ -365,7 +365,7 @@ public class MountainLand : Land
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
                     ChangeLandType(LandType.HILL);
-                    GameData.extraDrawNum += 3;
+                    DeckManager.Instance.ExtraDrawNum += 3;
                 }
                 break;
             case MaterialType.STONE:
@@ -382,7 +382,11 @@ public class MountainLand : Land
     }
 
     public override void ExtraEffect() {
-        //每回合有“相邻四格内山丘数量”*10%的概率获得1充能
+        //每回合有“相邻四格内山脉数量”*10%的概率获得1充能
+        if(IsRandomEventTriggered(10 * MapManager.Instance.CountAdjacentLandType(MapRow,MapCol,LandType.MOUNTAIN))) {
+            Debug.Log("山脉地形额外效果触发");
+            AddEnergy(1);
+        }
     }
 }
 
@@ -396,17 +400,38 @@ public class JungleLand : Land
         MapCol = col;
     }
     public override void PassiveEffect() {
+        //1时产1木
         if (EnergyCounter >= RequiredEnergy) {
-        } else {
+            Debug.Log("密林地形被动效果触发");
+            AddCard(new MaterialCard(MaterialType.WOOD),1); //添加一个木材材料卡到牌库
+            EnergyCounter = 0; // 重置计数器
         }
     }
+
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
+                //2升木屋
+                StorageIn(MaterialType.WOOD);
+                if (storageCardNum >= 2 && storageCardType == MaterialType.WOOD) {
+                    ChangeLandType(LandType.CABIN);
+                }
                 break;
             case MaterialType.HAY:
+                //2产1熊
+                StorageIn(MaterialType.HAY);
+                if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
+                    SpawnAnimal(AnimalType.BEAR);
+                    storageCardNum = 0;
+                    storageCardType = MaterialType.NULL;
+                }
                 break;
             case MaterialType.STONE:
+                //3升小镇
+                StorageIn(MaterialType.STONE);
+                if (storageCardNum >= 3 && storageCardType == MaterialType.STONE) {
+                    ChangeLandType(LandType.TOWN);
+                }
                 break;
             case MaterialType.MEAT:
             //还没写
