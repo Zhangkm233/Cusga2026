@@ -73,6 +73,7 @@ public abstract class Land
 
     public void AddEnergy(int energy) {
         energyCounter += energy; // 增加充能
+        PassiveEffect();
         Debug.Log($"地形 {landType} 充能增加 {energy}，当前充能：{energyCounter}");
     }
 
@@ -109,6 +110,26 @@ public abstract class Land
     public void AddCard(Card card,int num) {
         DeckManager.Instance.AddCardToDeckFromLand(card,num,this);
     }
+    public void AddExtraDraw(CardType cardType,int num) {
+        for (int i = 0;i < num;i++) {
+            DeckManager.Instance.extraCertainCardType.Add(cardType);
+        }
+    }
+
+    public void AddExtraDraw(CardType cardType) {
+        DeckManager.Instance.extraCertainCardType.Add(cardType);
+    }
+
+    public void AddExtraDraw(int cardId,int num) {
+        for (int i = 0;i < num;i++) {
+            DeckManager.Instance.extraCertainCardId.Add(cardId);
+        }
+    }
+
+    public void AddExtraDraw(int cardId) {
+        DeckManager.Instance.extraCertainCardId.Add(cardId);
+    }
+
 
     public void ChangeLandType(LandType landType) {
         //这里是转变地形的函数 如果想解耦合，还需要改一改到游戏里面的调用，应该UI层面需要全部重写
@@ -343,6 +364,7 @@ public class MountainLand : Land
     public MountainLand(int row,int col) {
         LandType = LandType.MOUNTAIN;
         RequiredEnergy = 4;
+        Preference = 21;
         MapRow = row;
         MapCol = col;
     }
@@ -395,7 +417,8 @@ public class JungleLand : Land
 {
     public JungleLand(int row,int col) {
         LandType = LandType.JUNGLE;
-        RequiredEnergy = 0;
+        RequiredEnergy = 1;
+        Preference = 36;
         MapRow = row;
         MapCol = col;
     }
@@ -434,7 +457,9 @@ public class JungleLand : Land
                 }
                 break;
             case MaterialType.MEAT:
-            //还没写
+                //产抽2肉
+                AddExtraDraw((int)MaterialType.MEAT,2);
+                break;
             default:
                 break;
         }
@@ -448,66 +473,54 @@ public class WheatLand : Land
 {
     public WheatLand(int row,int col) {
         LandType = LandType.WHEATLAND;
-        RequiredEnergy = 0;
-        MapRow = row;
-        MapCol = col;
-    }
-    public override void PassiveEffect() {
-        if (EnergyCounter >= RequiredEnergy) {
-        } else {
-        }
-    }
-    public override void MaterialEffect(MaterialCard materialCard) {
-        switch (materialCard.materialType) {
-            case MaterialType.WOOD:
-                break;
-            case MaterialType.HAY:
-                break;
-            case MaterialType.STONE:
-                break;
-            case MaterialType.MEAT:
-            //还没写
-            default:
-                break;
-        }
-    }
-
-    public override void ExtraEffect() {
-    }
-}
-
-public class ThatchLand : Land
-{
-    public ThatchLand(int row,int col) {
-        LandType = LandType.THATCH;
         RequiredEnergy = 4;
+        Preference = 15;
         MapRow = row;
         MapCol = col;
     }
     public override void PassiveEffect() {
-        // 茅屋地形的被动效果
+        //4时产2草
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("茅屋地形被动效果触发");
+            Debug.Log("麦田地形被动效果触发");
+            AddCard(new MaterialCard(MaterialType.HAY),2); //添加2个干草材料卡到牌库
             EnergyCounter = 0; // 重置计数器
-        } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
+                //产1收割
+                AddCard(new SkillCard(SkillType.HARVEST),1);
                 break;
             case MaterialType.HAY:
+                //2产抽3草
+                StorageIn(MaterialType.HAY);
+                if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
+                    AddExtraDraw((int)MaterialType.HAY,3);
+                    storageCardNum = 0;
+                    storageCardType = MaterialType.NULL;
+                }
                 break;
             case MaterialType.STONE:
+                //得1坚固2充能
+                AddSoild(1);
+                AddEnergy(2);
                 break;
             case MaterialType.MEAT:
-            //还没写
+                //得3充能
+                AddEnergy(3);
+                break;
             default:
                 break;
         }
     }
 
     public override void ExtraEffect() {
+        //30%产1草
+        if (IsRandomEventTriggered(30)) {
+            Debug.Log("麦田地形额外效果触发");
+            AddCard(new MaterialCard(MaterialType.HAY),1); //添加一个干草材料卡到牌库
+        }
     }
 }
 
@@ -515,15 +528,18 @@ public class CabinLand : Land
 {
     public CabinLand(int row,int col) {
         LandType = LandType.CABIN;
-        RequiredEnergy = 3;
+        RequiredEnergy = 4;
+        Preference = 10;
         MapRow = row;
         MapCol = col;
     }
-    
+
     public override void PassiveEffect() {
-        // 林屋地形的被动效果
+        // 木屋地形的被动效果
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("林屋地形被动效果触发");
+            //4时产1抽
+            Debug.Log("木屋地形被动效果触发");
+            AddExtraDraw(1);
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -531,35 +547,112 @@ public class CabinLand : Land
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
+                //产1猎圈
+                AddHunterarea(1);
                 break;
             case MaterialType.HAY:
+                //产1收割
+                AddCard(new SkillCard(SkillType.HARVEST),1);
                 break;
             case MaterialType.STONE:
+                //产3滚石
+                AddCard(new WeaponCard(WeaponType.ROLLROCK),3);
                 break;
             case MaterialType.MEAT:
-            //还没写
+                //4升小镇
+                StorageIn(MaterialType.MEAT);
+                if (storageCardNum >= 4 && storageCardType == MaterialType.MEAT) {
+                    ChangeLandType(LandType.TOWN);
+                }
+                break;
             default:
                 break;
         }
     }
 
     public override void ExtraEffect() {
+        //5%产1抽
+        if (IsRandomEventTriggered(5)) {
+            Debug.Log("木屋地形额外效果触发");
+            AddExtraDraw(1);
+        }
     }
 }
+
+public class ThatchLand : Land
+{
+    public ThatchLand(int row,int col) {
+        LandType = LandType.THATCH;
+        RequiredEnergy = 5;
+        Preference = 11;
+        MapRow = row;
+        MapCol = col;
+    }
+    public override void PassiveEffect() {
+        // 茅屋地形的被动效果
+        if (EnergyCounter >= RequiredEnergy) {
+            //5时产2木1石
+            Debug.Log("茅屋地形被动效果触发");
+            AddCard(new MaterialCard(MaterialType.WOOD),2);
+            AddCard(new MaterialCard(MaterialType.STONE),1);
+        } else {
+        }
+    }
+    public override void MaterialEffect(MaterialCard materialCard) {
+        switch (materialCard.materialType) {
+            case MaterialType.WOOD:
+                //产2矛
+                AddCard(new WeaponCard(WeaponType.SPEAR),2);
+                break;
+            case MaterialType.HAY:
+                //产1猪
+                SpawnAnimal(AnimalType.BOAR);
+                break;
+            case MaterialType.STONE:
+                //产1加固抽1技
+                AddSoild(1);
+                AddExtraDraw(CardType.SKILL);
+                break;
+            case MaterialType.MEAT:
+                //产2追猎
+                AddCard(new SkillCard(SkillType.STALK),2);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void ExtraEffect() {
+        //15%得1充
+        if (IsRandomEventTriggered(15)) {
+            Debug.Log("茅屋地形额外效果触发");
+            AddEnergy(1);
+        }
+    }
+}
+
+
 
 
 public class TownLand : Land
 {
+
+    bool IsExtraEffectTriggered = false;
+
     public TownLand(int row,int col) {
         LandType = LandType.TOWN;
-        RequiredEnergy = 5;
+        RequiredEnergy = 6;
+        Preference = 9;
         MapRow = row;
         MapCol = col;
+        IsExtraEffectTriggered = false;
     }
     public override void PassiveEffect() {
         // 城镇地形的被动效果
         if (EnergyCounter >= RequiredEnergy) {
+            //6时产3肉
             Debug.Log("城镇地形被动效果触发");
+            AddCard(new MaterialCard(MaterialType.MEAT),3); //添加3个肉材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -567,49 +660,41 @@ public class TownLand : Land
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
+                //5升仓库
+                StorageIn(MaterialType.WOOD);
+                if (storageCardNum >= 5 && storageCardType == MaterialType.WOOD) {
+                    ChangeLandType(LandType.WAREHOUSE);
+                }
                 break;
             case MaterialType.HAY:
+                //4升风车
+                StorageIn(MaterialType.HAY);
+                if (storageCardNum >= 4 && storageCardType == MaterialType.HAY) {
+                    ChangeLandType(LandType.WINDMILL);
+                }
                 break;
             case MaterialType.STONE:
+                //1升塔
+                StorageIn(MaterialType.STONE);
+                if (storageCardNum >= 1 && storageCardType == MaterialType.STONE) {
+                    ChangeLandType(LandType.TOWER);
+                }
                 break;
             case MaterialType.MEAT:
-            //还没写
+                //得2矛
+                AddCard(new WeaponCard(WeaponType.SPEAR),2);
+                break;
             default:
                 break;
         }
     }
 
     public override void ExtraEffect() {
-    }
-}
-
-public class TowerLand : Land
-{
-    public TowerLand(int row,int col) {
-        LandType = LandType.TOWER;
-        RequiredEnergy = 10;
-        MapRow = row;
-        MapCol = col;
-    }
-    public override void PassiveEffect() {
-        // 塔地形的被动效果
-    }
-    public override void MaterialEffect(MaterialCard materialCard) {
-        switch (materialCard.materialType) {
-            case MaterialType.WOOD:
-                break;
-            case MaterialType.HAY:
-                break;
-            case MaterialType.STONE:
-                break;
-            case MaterialType.MEAT:
-            //还没写
-            default:
-                break;
+        //额外抽2技一次
+        if (!IsExtraEffectTriggered) {
+            AddExtraDraw(CardType.SKILL,2);
+            IsExtraEffectTriggered = true;
         }
-    }
-
-    public override void ExtraEffect() {
     }
 }
 
@@ -619,13 +704,16 @@ public class WarehouseLand : Land
     public WarehouseLand(int row,int col) {
         LandType = LandType.WAREHOUSE;
         RequiredEnergy = 2;
+        Preference = 0;
         MapRow = row;
         MapCol = col;
     }
     public override void PassiveEffect() {
         // 仓库地形的被动效果
         if (EnergyCounter >= RequiredEnergy) {
+            //2时产1抽
             Debug.Log("仓库地形被动效果触发");
+            AddExtraDraw(1);
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -633,50 +721,133 @@ public class WarehouseLand : Land
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
+                //产1抽干草
+                AddExtraDraw((int)MaterialType.HAY,1);
                 break;
             case MaterialType.HAY:
+                //产1抽木头
+                AddExtraDraw((int)MaterialType.WOOD,1);
                 break;
             case MaterialType.STONE:
+                //产1抽,得坚固
+                AddExtraDraw(1);
+                AddSoild(1);
                 break;
             case MaterialType.MEAT:
-            //还没写
+                //产1抽石头
+                AddExtraDraw((int)MaterialType.STONE,1);
+                break;
             default:
                 break;
         }
     }
 
     public override void ExtraEffect() {
+        //8%产1抽
+        if (IsRandomEventTriggered(8)) {
+            Debug.Log("仓库地形额外效果触发");
+            AddExtraDraw(1);
+        }
     }
 }
 
-public class WindmillLand : Land
+public class TowerLand : Land
 {
-    public WindmillLand(int row,int col) {
-        LandType = LandType.WINDMILL;
-        RequiredEnergy = 0;
+    public TowerLand(int row,int col) {
+        LandType = LandType.TOWER;
+        RequiredEnergy = 3;
+        Preference = -1;
         MapRow = row;
         MapCol = col;
-
     }
     public override void PassiveEffect() {
+        // 塔地形的被动效果
         if (EnergyCounter >= RequiredEnergy) {
+            //3时产短弓
+            Debug.Log("塔地形被动效果触发");
+            AddCard(new WeaponCard(WeaponType.BOW),1);
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
+                //得短弓
+                AddCard(new WeaponCard(WeaponType.BOW),1);
                 break;
             case MaterialType.HAY:
+                //得2加固
+                AddSoild(2);
                 break;
             case MaterialType.STONE:
+                //得2短弓2矛
+                AddCard(new WeaponCard(WeaponType.BOW),2);
+                AddCard(new WeaponCard(WeaponType.SPEAR),2);
                 break;
             case MaterialType.MEAT:
-            //还没写
+                //得抽2技
+                AddExtraDraw(CardType.SKILL,2);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void ExtraEffect() {
+        //造伤最小值+1 (这个效果在战斗系统里实现)
+        //这个还没写！
+    }
+}
+
+
+
+public class WindmillLand : Land
+{
+    public WindmillLand(int row,int col) {
+        LandType = LandType.WINDMILL;
+        RequiredEnergy = 4;
+        Preference = 24;
+        MapRow = row;
+        MapCol = col;
+
+    }
+    public override void PassiveEffect() {
+        if (EnergyCounter >= RequiredEnergy) {
+            //4时产1收割
+            Debug.Log("风车地形被动效果触发");
+            AddCard(new SkillCard(SkillType.HARVEST),1);
+            EnergyCounter = 0;
+        }
+    }
+    public override void MaterialEffect(MaterialCard materialCard) {
+        switch (materialCard.materialType) {
+            case MaterialType.WOOD:
+                //产3干草
+                AddCard(new MaterialCard(MaterialType.HAY),3);
+                break;
+            case MaterialType.HAY:
+                //2得3抽收割
+                StorageIn(MaterialType.HAY);
+                if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
+                    AddExtraDraw((int)SkillType.HARVEST,3);
+                    storageCardNum = 0;
+                    storageCardType = MaterialType.NULL;
+                }
+                break;
+            case MaterialType.STONE:
+                //产2收割
+                AddCard(new SkillCard(SkillType.HARVEST),2);
+                break;
+            case MaterialType.MEAT:
+                //产1兔
+                SpawnAnimal(AnimalType.RABBIT);
+                break;
             default:
                 break;
         }
     }
     public override void ExtraEffect() {
+        //收割额外+1充 (这个效果在收割技能里实现)
     }
 }

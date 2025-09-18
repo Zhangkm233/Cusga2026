@@ -10,26 +10,26 @@ public enum CardType
 public enum MaterialType
 {
     NULL = 0, //¿Õ
-    HAY = 1, //¸É²Ý
-    WOOD = 2, //Ä¾²Ä
-    STONE = 3, //Ê¯Í·
-    MEAT = 4, //Èâ
+    HAY = 0001, //¸É²Ý
+    WOOD = 0002, //Ä¾²Ä
+    STONE = 0003, //Ê¯Í·
+    MEAT = 0004, //Èâ
 }
 
 public enum SkillType
 {
-    NULL = 0, //¿Õ
-    STALK = 1, //×·ÁÔ
-    HARVEST = 2, //ÊÕ¸î
-    REINFORCE = 3, //¼Ó¹Ì
+    NULL = 1000, //¿Õ
+    HARVEST = 1001, //ÊÕ¸î
+    REINFORCE = 1002, //¼Ó¹Ì
+    STALK = 1003, //×·ÁÔ
 }
 
 public enum WeaponType
 {
-    NULL = 0, //¿Õ
-    ROLLROCK = 1, //¹öÊ¯
-    SPEAR = 2, //³¤Ã¬
-    BOW = 3, //¶Ì¹­
+    NULL = 2000, //¿Õ
+    ROLLROCK = 2001, //¹öÊ¯
+    SPEAR = 2002, //³¤Ã¬
+    BOW = 2003, //¶Ì¹­
 }
 public abstract class Card
 {
@@ -139,8 +139,7 @@ public class SkillCard : Card
     public override void ApplyEffect(Land targetLand) {
         switch (skillType) {
             case SkillType.HARVEST:
-                targetLand.AddEnergy(2);
-                targetLand.PassiveEffect();
+                targetLand.AddEnergy(2 + MapManager.Instance.GetAmountOfLandType(LandType.WINDMILL));
                 break;
             case SkillType.REINFORCE:
                 targetLand.AddSoild(1);
