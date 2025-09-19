@@ -183,16 +183,18 @@ public class WeaponCard : Card
     }
 
     public override void ApplyEffect(Land targetLand) {
-        //这里要写攻击的逻辑，还没写
         switch (weaponType) {
             case WeaponType.ROLLROCK:
-                MapManager.Instance.DealDamageTo(targetLand,Random.Range(1,3) + (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2));
+                MapManager.Instance.DealDamageTo(targetLand,Random.Range(1,3) + (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2) 
+                    + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
                 break;
             case WeaponType.SPEAR:
-                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,5));
+                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,5)
+                    + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
                 break;
             case WeaponType.BOW:
-                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,8));
+                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,8)
+                    + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
                 break;
             default:
                 break;
