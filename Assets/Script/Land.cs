@@ -32,6 +32,9 @@ public abstract class Land
     private int mapRow; //地形所在地图行
     private int mapCol; //地形所在地图列
 
+    public delegate void LandChangeEventHandler(Land oldLand,Land newLand);
+    public event LandChangeEventHandler OnLandChanged; //地形变化事件
+    
     public int RequiredEnergy {
         get { return requiredEnergy; }
         set { requiredEnergy = value; }
@@ -183,6 +186,8 @@ public abstract class Land
         //这里我不知道写的对不对，尚待商榷
         //Destroy(this);
         //这里需要更改游戏内对应的gameobject
+
+        OnLandChanged.Invoke(this,newLand);
     }
 }
 

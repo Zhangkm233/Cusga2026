@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text HandCount;
     public TMP_Text ExtraDrawCount;
     public static UIManager Instance { get; private set; }
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -26,13 +27,7 @@ public class UIManager : MonoBehaviour
             card.GetComponent<CardController>().UpdateSortingOrder();
         }
     }
-    public void Update() {
-        if (Instance != null) {
-            UpdateUI();
-            UpdateCards();
-            UpdateTiles();
-        }
-    }
+
     public void UpdateCards() {
         //GameObject[] cards = GameObject.FindGameObjectsWithTag("CardGameobject");
         for (int i = 0;i < DeckManager.Instance.hand.Count;i++) {
@@ -41,6 +36,8 @@ public class UIManager : MonoBehaviour
             cardController.UpdateCard();
         }
     }
+
+    /*
     public void UpdateTiles() {
         // 获取所有TileGameobject对象并更新它们的状态
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("TileGameobject");
@@ -54,6 +51,7 @@ public class UIManager : MonoBehaviour
         HandCount.text = "手牌: " + DeckManager.Instance.hand.Count;
         ExtraDrawCount.text = "额外抽牌: " + GameData.extraDrawNum;
     }
+    */
 
     public void CancelAllSelect() {
         foreach (GameObject card in cards) {

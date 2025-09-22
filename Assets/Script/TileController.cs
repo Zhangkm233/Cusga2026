@@ -17,6 +17,8 @@ public class TileController : MonoBehaviour
     public TMP_Text tileStorageCard;
     public Land land;
     public GameObject tileCanvas;
+
+    /*
     void Awake(){
         //随机添加山丘 平原 森林三种地形之一
         int randomTerrain = Random.Range(0,3);
@@ -77,4 +79,6 @@ public class TileController : MonoBehaviour
             tileStorageNum.text = " ";
         }
     }
+    
+    */
 }

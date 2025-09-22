@@ -5,6 +5,7 @@ public enum CardType
     MATERIAL = 0, //材料
     SKILL = 1, //技能
     WEAPON = 2, //武器
+    DISASTER = 3, //天灾
 }
 
 public enum MaterialType
@@ -197,6 +198,65 @@ public class WeaponCard : Card
                     + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
                 break;
             default:
+                break;
+        }
+    }
+}
+
+public class DisasterCard : Card
+{
+    private int TypeOfDisaster = 0;
+    public DisasterCard() {
+        CardType = CardType.DISASTER;
+        TypeOfDisaster = Random.Range(1,4);
+        switch (TypeOfDisaster) {
+            case 1:
+                Name = "天灾1";
+                Description = "从你的背包中清除3张木头以抵抗本次天灾，抵抗失败：随机地块降级为平原";
+                Id = 3001;
+                break;
+            case 2:
+                Name = "天灾2";
+                Description = "从你的背包中清除3张干草以抵抗本次天灾，抵抗失败：随机摧毁你技能牌库中3张技能牌";
+                Id = 3002;
+                break;
+            case 3:
+                Name = "天灾3";
+                Description = "从你的背包中清除2张石头以抵抗本次天灾，抵抗失败：随机地块降级为山丘，下回合少抽1张技能牌";
+                Id = 3003;
+                break;
+            default:
+                Name = "未知天灾";
+                Description = "未知天灾效果.";
+                Id = 3000;
+                break;
+        }
+    }
+    public override void ApplyEffect(Land targetLand) {
+        switch (TypeOfDisaster) {
+            case 1:
+                if (DeckManager.Instance.TryToRemoveRemoveCertainCardByIdMultipleTime((int)MaterialType.WOOD,3)) {
+                    Debug.Log("成功抵抗天灾");
+                } else {
+                    // 抵抗失败，随机地块降级为平原
+                    Debug.Log("抵抗天灾失败，随机地块降级为平原");
+                }
+                break;
+            case 2:
+                if (DeckManager.Instance.TryToRemoveRemoveCertainCardByIdMultipleTime((int)MaterialType.HAY,3)) {
+                    Debug.Log("成功抵抗天灾");
+                } else {
+                    // 抵抗失败，随机摧毁你技能牌库中3张技能牌
+                    Debug.Log("抵抗天灾失败，随机摧毁你技能牌库中3张技能牌");
+                }
+                break;
+            case 3:
+                if (DeckManager.Instance.TryToRemoveRemoveCertainCardByIdMultipleTime((int)MaterialType.STONE,2)) {
+                    Debug.Log("成功抵抗天灾");
+                } else {
+                    // 抵抗失败，随机地块降级为山丘，下回合少抽1张技能牌
+                    Debug.Log("抵抗天灾失败，随机地块降级为山丘，下回合少抽1张技能牌");
+                }
                 break;
         }
     }

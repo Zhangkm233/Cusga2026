@@ -94,7 +94,7 @@ public class MapManager : MonoBehaviour
     }
 
     public void MoveAnimalToMap(Animal animal,int row,int col) {
-        if(row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
+        if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
             Debug.LogError("位置超出地图范围");
             return;
         }
@@ -125,7 +125,7 @@ public class MapManager : MonoBehaviour
     }
 
     public void DealDamageTo(Land land,int damage) {
-        if(AnimalMap[land.MapRow][land.MapCol] != null) {
+        if (AnimalMap[land.MapRow][land.MapCol] != null) {
             DealDamageTo(AnimalMap[land.MapRow][land.MapCol],(damage));
         } else {
             Debug.LogError("该地块上没有动物，无法造成伤害");
@@ -138,7 +138,7 @@ public class MapManager : MonoBehaviour
     }
 
     public int CountAdjacentLandType(int row,int col,LandType landType) {
-        if(row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
+        if (row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
             Debug.LogError("位置超出地图范围");
             return 0;
         }
@@ -160,5 +160,31 @@ public class MapManager : MonoBehaviour
             count++;
         }
         return count;
+    }
+
+    public void EnergyPhase() {
+        //充能阶段
+        foreach (var row in LandMap) {
+            foreach (var land in row) {
+                land.AddEnergy(1);
+                land.PassiveEffect();
+            }
+        }
+    }
+
+    public void AnimalPhase() {
+        foreach (var row in AnimalMap) {
+            foreach (var animal in row) {
+                animal.MoveToPreferLand();
+            }
+        }
+    }
+
+    public void ExtraEffectPhase() {
+        foreach (var row in LandMap) {
+            foreach (var land in row) {
+                land.ExtraEffect();
+            }
+        }
     }
 }

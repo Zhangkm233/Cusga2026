@@ -4,6 +4,7 @@ using UnityEngine;
 public static class GameData
 {
     //用于存储游戏中的全局数据 提供一些静态方法
+    public static int turnCount = 0;
     public static string HanizeLandType(LandType landType) {
         //这里需要更新
         switch (landType) {
