@@ -1,10 +1,14 @@
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public static class GameData
 {
     //用于存储游戏中的全局数据 提供一些静态方法
     public static int turnCount = 0;
+    public static int bossSpawnTurn = 16;
+    public static int disasterPercent = 35;
+    public static bool IsBossSpawned = false;
     public static string HanizeLandType(LandType landType) {
         //这里需要更新
         switch (landType) {
@@ -79,5 +83,10 @@ public static class GameData
             default:
                 return "未知";
         }
+    }
+
+    public static bool IsRandomEventTriggered(int probability) {
+        int rand = Random.Range(1,101); // 生成1到100的随机数
+        return rand <= probability; // 如果随机数小于等于概率值，则事件触发
     }
 }

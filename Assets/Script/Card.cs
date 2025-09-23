@@ -235,27 +235,32 @@ public class DisasterCard : Card
     public override void ApplyEffect(Land targetLand) {
         switch (TypeOfDisaster) {
             case 1:
-                if (DeckManager.Instance.TryToRemoveRemoveCertainCardByIdMultipleTime((int)MaterialType.WOOD,3)) {
+                if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.WOOD,3)) {
                     Debug.Log("成功抵抗天灾");
                 } else {
                     // 抵抗失败，随机地块降级为平原
                     Debug.Log("抵抗天灾失败，随机地块降级为平原");
+                    MapManager.Instance.TransformRandomLand(LandType.PLAIN);
                 }
                 break;
             case 2:
-                if (DeckManager.Instance.TryToRemoveRemoveCertainCardByIdMultipleTime((int)MaterialType.HAY,3)) {
+                if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.HAY,3)) {
                     Debug.Log("成功抵抗天灾");
                 } else {
                     // 抵抗失败，随机摧毁你技能牌库中3张技能牌
                     Debug.Log("抵抗天灾失败，随机摧毁你技能牌库中3张技能牌");
+                    DeckManager.Instance.ShuffleDeck();
+                    DeckManager.Instance.TryToRemoveCertainCardByTypeMultipleTime(CardType.SKILL,3);
                 }
                 break;
             case 3:
-                if (DeckManager.Instance.TryToRemoveRemoveCertainCardByIdMultipleTime((int)MaterialType.STONE,2)) {
+                if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.STONE,2)) {
                     Debug.Log("成功抵抗天灾");
                 } else {
                     // 抵抗失败，随机地块降级为山丘，下回合少抽1张技能牌
                     Debug.Log("抵抗天灾失败，随机地块降级为山丘，下回合少抽1张技能牌");
+                    MapManager.Instance.TransformRandomLand(LandType.MOUNTAIN);
+                    DeckManager.Instance.reduceCertainCardType.Add(CardType.SKILL);
                 }
                 break;
         }

@@ -65,6 +65,23 @@ public class DeckManager : MonoBehaviour
         Debug.Log("抓了一张牌");
     }
 
+    public void DrawCertainCardByTypes(params CardType[] cardTypes) {
+        //抽取特定种类们的牌
+        for (int i = 0;i < deck.Count;i++) {
+            if (cardTypes.Contains<CardType>(deck[i].CardType)) {
+                Card drawnCard = deck[i];
+                deck.RemoveAt(i);
+                hand.Add(drawnCard);
+                Debug.Log($"抓了一张{drawnCard.CardType}牌：{drawnCard.Name}");
+                ShuffleDeck();
+                return;
+            }
+        }
+        foreach (CardType type in cardTypes) {
+            Debug.LogWarning($"牌库中没有{type}牌，无法抓牌");
+        }
+    }
+
     public void DrawCertainCardByType(CardType cardType) {
         //抽取特定种类的牌
         for (int i = 0;i < deck.Count;i++) {
@@ -130,8 +147,17 @@ public class DeckManager : MonoBehaviour
         }
         return count;
     }
+    public int CountCertainCardByType(CardType cardType) {
+        int count = 0;
+        for (int i = 0;i < deck.Count;i++) {
+            if (deck[i].CardType == cardType) {
+                count++;
+            }
+        }
+        return count;
+    }
 
-    public bool TryToRemoveRemoveCertainCardByIdMultipleTime(int id,int num) {
+    public bool TryToRemoveCertainCardByIdMultipleTime(int id,int num) {
         int count = CountCertainCardById(id);
         if (count >= num) {
             for (int i = 0;i < num;i++) {
@@ -143,6 +169,19 @@ public class DeckManager : MonoBehaviour
             return false;
         }
     }
+    public bool TryToRemoveCertainCardByTypeMultipleTime(CardType cardType,int num) {
+        int count = CountCertainCardByType(cardType);
+        if (count >= num) {
+            for (int i = 0;i < num;i++) {
+                RemoveCertainCardByType(cardType);
+            }
+            return true;
+        } else {
+            Debug.LogWarning($"牌库中没有足够的{cardType}的牌，无法移除");
+            return false;
+        }
+    }
+
 
     public void AddCardToDeck(Card card) {
         // 实现将卡片添加到牌库的逻辑
@@ -180,11 +219,12 @@ public class DeckManager : MonoBehaviour
         // 抽卡阶段逻辑
         Debug.Log("抽卡阶段");
         // 这里可以添加更多的逻辑，比如更新UI，处理状态等
+        //抽卡阶段-抽取4张资源卡，3张技能卡
         ShuffleDeck();
         if (reduceCertainCardType != null) {
             if (reduceCertainCardType.Contains(CardType.MATERIAL)) {
                 for (int i = 0;i < 4 - reduceCertainCardType.Count(x => x == CardType.MATERIAL); i++) {
-                    DrawCertainCardByType(CardType.MATERIAL);
+                    DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
                 }
             } else if (reduceCertainCardType.Contains(CardType.SKILL)) {
                 for (int i = 0;i < 3 - reduceCertainCardType.Count(x => x == CardType.SKILL);i++) {
@@ -195,7 +235,7 @@ public class DeckManager : MonoBehaviour
             return;
         } else {
             for (int i = 0;i < 4;i++) {
-                DrawCertainCardByType(CardType.MATERIAL);
+                DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
             }
             for (int i = 0;i < 3;i++) {
                 DrawCertainCardByType(CardType.SKILL);
@@ -205,19 +245,25 @@ public class DeckManager : MonoBehaviour
 
     public void ExtraDrawPhase() {
         //先抽特定ID的
+        Debug.Log($"额外抽取{extraCertainCardId.Count}张特定ID的牌");
         for (int i = 0;i < extraCertainCardId.Count;i++) {
+            Debug.Log($"额外抽取特定ID的牌：{extraCertainCardId[i]}");
             DrawCertainCardById(extraCertainCardId[i]);
         }
         extraCertainCardId.Clear();
         //再抽特定种类的
+        Debug.Log($"额外抽取{extraCertainCardType.Count}张特定种类的牌");
         for (int i = 0;i < extraCertainCardType.Count;i++) {
+            Debug.Log($"额外抽取特定种类的牌：{extraCertainCardType[i]}");
             DrawCertainCardByType(extraCertainCardType[i]);
         }
         extraCertainCardType.Clear();
-        //再抽额外的
+        //再抽额外的 这里一般不会额外抽
+        Debug.Log($"额外抽取{ExtraDrawNum}张牌");
         for (int i = 0;i < ExtraDrawNum;i++) {
             DrawCard();
         }
+        ExtraDrawNum = 0;
     }
 
 
@@ -231,5 +277,15 @@ public class DeckManager : MonoBehaviour
                 card.ApplyEffect(null); // 这里传入null，表示没有特定的地块
             }
         }
+        ClearHand();
+    }
+
+    public void BossAttack() {
+        //Boss的攻击会将三张天灾置入你的牌库，且你下回合会额外抽到一张天灾
+        for (int i = 0;i < 3;i++) {
+            DisasterCard disasterCard = new DisasterCard();
+            AddCardToDeck(disasterCard);
+        }
+        extraCertainCardType.Add(CardType.DISASTER);
     }
 }

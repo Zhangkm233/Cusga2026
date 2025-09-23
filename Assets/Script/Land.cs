@@ -544,7 +544,7 @@ public class CabinLand : Land
         if (EnergyCounter >= RequiredEnergy) {
             //4时产1抽
             Debug.Log("木屋地形被动效果触发");
-            AddExtraDraw(1);
+            AddExtraDraw(CardType.MATERIAL);
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -576,10 +576,10 @@ public class CabinLand : Land
     }
 
     public override void ExtraEffect() {
-        //5%产1抽
+        //5%产1抽资源
         if (IsRandomEventTriggered(5)) {
             Debug.Log("木屋地形额外效果触发");
-            AddExtraDraw(1);
+            AddExtraDraw(CardType.MATERIAL);
         }
     }
 }
@@ -716,9 +716,9 @@ public class WarehouseLand : Land
     public override void PassiveEffect() {
         // 仓库地形的被动效果
         if (EnergyCounter >= RequiredEnergy) {
-            //2时产1抽
+            //2时产1抽资源
             Debug.Log("仓库地形被动效果触发");
-            AddExtraDraw(1);
+            AddExtraDraw(CardType.MATERIAL);
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -734,8 +734,8 @@ public class WarehouseLand : Land
                 AddExtraDraw((int)MaterialType.WOOD,1);
                 break;
             case MaterialType.STONE:
-                //产1抽,得坚固
-                AddExtraDraw(1);
+                //产1抽资源,得坚固
+                AddExtraDraw(CardType.MATERIAL);
                 AddSoild(1);
                 break;
             case MaterialType.MEAT:
@@ -748,10 +748,10 @@ public class WarehouseLand : Land
     }
 
     public override void ExtraEffect() {
-        //8%产1抽
+        //8%产1抽资源
         if (IsRandomEventTriggered(8)) {
             Debug.Log("仓库地形额外效果触发");
-            AddExtraDraw(1);
+            AddExtraDraw(CardType.MATERIAL);
         }
     }
 }

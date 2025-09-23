@@ -8,7 +8,7 @@ public class GameStartState : GameState
         Console.WriteLine("进入游戏开始阶段");
         // 初始化游戏数据
         DeckManager.Instance.ShuffleDeck();
-        DeckManager.Instance.DrawCard();
+        //DeckManager.Instance.DrawCard();
         GameManager.Instance.StartTurn();
     }
     public override void Update() {

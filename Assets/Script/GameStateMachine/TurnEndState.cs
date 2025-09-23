@@ -16,8 +16,21 @@ public class TurnEndState : GameState
         MapManager.Instance.ExtraEffectPhase();
         //Boss攻击阶段 - 仅当boss战触发时执行，boss进行攻击
         //回合结束阶段 - 执行回合结束扳机，最后回合数 + 1，如果回合已满则出现boss 还有随机添加天灾的效果
+        //随机添加天灾 从第三回合开始，每回合有35%概率获得一张天灾（进入资源牌库）如果没有获得，则下次获得概率+20%
+        if (GameData.turnCount >= 3) {
+            if (GameData.IsRandomEventTriggered(GameData.disasterPercent)) {
+                Debug.Log("获得一张天灾卡");
+                DeckManager.Instance.AddCardToDeck(new DisasterCard());
+            } else {
+                GameData.disasterPercent += 20;
+                Debug.Log($"概率上升到{GameData.disasterPercent}");
+            }
+        }
         GameData.turnCount++;
-        //随机添加天灾
+        if(GameData.turnCount > GameData.bossSpawnTurn) {
+            GameManager.Instance.stateMachine.ChangePhase(GamePhase.BossTurn);
+            return;
+        }
         GameManager.Instance.StartTurn();
     }
     public override void Update() {

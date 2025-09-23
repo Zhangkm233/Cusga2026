@@ -29,10 +29,6 @@ public class GameManager : MonoBehaviour
         stateMachine.Update();
     }
 
-    public void DetectMouse() {
-
-    }
-
     public void StartGame() {
         // 游戏开始逻辑
         stateMachine.ChangePhase(GamePhase.GameStart);
@@ -68,7 +64,6 @@ public class GameManager : MonoBehaviour
     public void StartTurn() {
         // 开始回合逻辑
         Debug.Log("开始回合");
-        //抽卡阶段-抽取4张资源卡，3张技能卡
         stateMachine.ChangePhase(GamePhase.TurnStart);
     }
 }

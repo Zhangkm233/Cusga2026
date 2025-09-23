@@ -11,7 +11,7 @@ public enum GamePhase
     PlayerTurn,   // 玩家回合 玩家在这个阶段才可以进行操作
     TurnEnd,     // 回合结束 执行一些回合结束的逻辑
     GamePaused,   // 游戏暂停 玩家无法对游戏内进行操作
-    //BossRound,   // Boss回合 Boss进行攻击（考虑到动画演出，所以预留一个）
+    BossTurn,   // Boss回合 Boss进行攻击（考虑到动画演出，所以预留一个）
 }
 
 // 基础游戏状态
@@ -42,7 +42,8 @@ public class GameStateMachine
             { GamePhase.PlayerTurn, new PlayerTurnState(this) },
             { GamePhase.TurnStart, new TurnStartState(this) },
             { GamePhase.TurnEnd, new TurnEndState(this) },
-            { GamePhase.GamePaused, new GamePausedState(this) }
+            { GamePhase.GamePaused, new GamePausedState(this) },
+            { GamePhase.BossTurn, new BossTurnState(this)   }
         };
     }
 

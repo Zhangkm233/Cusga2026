@@ -187,4 +187,23 @@ public class MapManager : MonoBehaviour
             }
         }
     }
+
+    public void TransformRandomLand(LandType landType) {
+        //随机将一块地转化为指定地形 先排除已经是该地形的地块
+        List<Land> candidateLands = new List<Land>();
+        foreach (var row in LandMap) {
+            foreach (var land in row) {
+                if (land.LandType != landType) {
+                    candidateLands.Add(land);
+                }
+            }
+        }
+        if (candidateLands.Count == 0) {
+            Debug.LogWarning("没有可转化的地块");
+            return;
+        }
+        int randomIndex = Random.Range(0,candidateLands.Count);
+        Land landToTransform = candidateLands[randomIndex];
+        landToTransform.ChangeLandType(landType);
+    }
 }
