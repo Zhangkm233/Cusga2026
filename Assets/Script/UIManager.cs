@@ -2,11 +2,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-//已弃用
-[System.Obsolete("需要重写")]
 public class UIManager : MonoBehaviour
 {
-    // 这里也需要重写 改成3d
     // 控制游戏内的UI显示
     public GameObject[] cards;
     public TMP_Text DeckCount;
@@ -22,21 +19,30 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private void Start() {
-        foreach (var card in cards) {
-            card.GetComponent<CardController>().UpdateSortingOrder();
-        }
+    void Start() {
+        UpdateCardsSortingOrder();
     }
 
+    [ContextMenu("UpdateCards")]
     public void UpdateCards() {
-        //GameObject[] cards = GameObject.FindGameObjectsWithTag("CardGameobject");
-        for (int i = 0;i < DeckManager.Instance.hand.Count;i++) {
+        GameObject[] cards = GameObject.FindGameObjectsWithTag("CardGameobject");
+        for (int i = 0;i < Mathf.Min(DeckManager.Instance.hand.Count,cards.Length);i++) {
             CardController cardController = cards[i].GetComponent<CardController>();
             cardController.card = DeckManager.Instance.hand[i];
             cardController.UpdateCard();
         }
+        UpdateCardsSortingOrder();
     }
 
+    public void UpdateCardsSortingOrder() {
+        if (cards == null) {
+            return;
+        }
+        foreach (var card in cards) {
+            card.GetComponent<CardController>().UpdateSortingOrder();
+        }
+    }
+    
     /*
     public void UpdateTiles() {
         // 获取所有TileGameobject对象并更新它们的状态
@@ -45,7 +51,9 @@ public class UIManager : MonoBehaviour
             tile.GetComponent<TileController>().UpdateTile();
         }
     }
+    */
 
+    /*
     public void UpdateUI() {
         DeckCount.text = "牌库: " + DeckManager.Instance.deck.Count;
         HandCount.text = "手牌: " + DeckManager.Instance.hand.Count;

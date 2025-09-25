@@ -3,8 +3,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-//已弃用
-[System.Obsolete("需要重写")]
+
 public class CardController : MonoBehaviour
 {
     //控制游戏内的卡牌显示
@@ -12,6 +11,7 @@ public class CardController : MonoBehaviour
     public TMP_Text cardName;
     public TMP_Text cardDescription;
     public TMP_Text cardType;
+
     public Card card;
     public GameObject cardCanvas;
     public int indexOfCards;
@@ -32,7 +32,10 @@ public class CardController : MonoBehaviour
         if (cardType == null) {
             cardType = cardCanvas.transform.Find("CardType").GetComponent<TMP_Text>();
         }
-        UpdateCard();
+        if (cardCanvas == null) {
+            cardCanvas = transform.GetComponentInChildren<Canvas>().gameObject;
+        }
+        //UpdateCard();
     }
 
     public void UpdateCard() {
@@ -45,7 +48,7 @@ public class CardController : MonoBehaviour
 
         if (card != null) {
             this.gameObject.SetActive(true);
-            cardName.text = card.Name;
+            cardName.text = card.CardName;
             cardDescription.text = card.Description;
             cardType.text = GameData.HanizeCardType(card.CardType);
         } else {
@@ -67,9 +70,9 @@ public class CardController : MonoBehaviour
 
     public void UpdateSortingOrder() {
         // 更新卡片的渲染顺序
-        this.GetComponent<SpriteRenderer>().sortingOrder = indexOfCards;
-        cardCanvas.GetComponent<Canvas>().sortingOrder = indexOfCards;
-        this.GetComponent<BoxCollider>().layerOverridePriority = indexOfCards;
+        this.GetComponent<SpriteRenderer>().sortingOrder = indexOfCards * 2 + 1;
+        cardCanvas.GetComponent<Canvas>().sortingOrder = indexOfCards * 2 + 2;
+        this.GetComponent<BoxCollider>().layerOverridePriority = indexOfCards * 2 + 2;
     }
 
     public void UpdateSortingOrder(int order) {

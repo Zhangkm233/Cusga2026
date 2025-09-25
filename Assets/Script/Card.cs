@@ -32,6 +32,8 @@ public enum WeaponType
     SPEAR = 2002, //长矛
     BOW = 2003, //短弓
 }
+
+[System.Serializable]
 public abstract class Card
 {
     private CardType cardType; //卡片类型
@@ -39,11 +41,11 @@ public abstract class Card
         get { return cardType; }
         set { cardType = value; }
     }
-    private string name; //卡片名称
+    private string cardName; //卡片名称
 
-    public string Name {
-        get { return name; }
-        set { name = value; }
+    public string CardName {
+        get { return cardName; }
+        set { cardName = value; }
     }
     private string description; //卡片描述
     public string Description {
@@ -72,27 +74,27 @@ public class MaterialCard : Card
         MaterialType = type;
         switch (type) {
             case MaterialType.HAY:
-                Name = "干草";
+                CardName = "干草";
                 Description = "干草*1";
                 Id = 0001;
                 break;
             case MaterialType.WOOD:
-                Name = "木材";
+                CardName = "木材";
                 Description = "木材*1";
                 Id = 0002;
                 break;
             case MaterialType.STONE:
-                Name = "石头";
+                CardName = "石头";
                 Description = "石头*1";
                 Id = 0003;
                 break;
             case MaterialType.MEAT:
-                Name = "肉";
+                CardName = "肉";
                 Description = "肉*1";
                 Id = 0004;
                 break;
             default:
-                Name = "——";
+                CardName = "——";
                 Description = "未知材料类型.";
                 Id = 0000;
                 break;
@@ -114,24 +116,24 @@ public class SkillCard : Card
         switch (skillType) {
             case SkillType.HARVEST:
                 // 收割
-                Name = "收割";
+                CardName = "收割";
                 Description = "该地块获得2充能";
                 Id = 1001;
                 break;
             case SkillType.REINFORCE:
                 // 加固
-                Name = "加固";
+                CardName = "加固";
                 Description = "该地块获得1坚固";
                 Id = 1002;
                 break;
             case SkillType.STALK:
                 // 追猎
-                Name = "追猎";
+                CardName = "追猎";
                 Description = "该地块获得1猎圈";
                 Id = 1003;
                 break;
             default:
-                Name = "Unknown Skill";
+                CardName = "Unknown Skill";
                 Description = "This skill type is not recognized.";
                 Id = 0000;
                 break;
@@ -161,22 +163,22 @@ public class WeaponCard : Card
         this.weaponType = weaponType;
         switch (weaponType) {
             case WeaponType.ROLLROCK:
-                Name = "滚石";
+                CardName = "滚石";
                 Description = "打1-2，每个山脉额外+2最大值";
                 Id = 2001;
                 break;
             case WeaponType.SPEAR:
-                Name = "长矛";
+                CardName = "长矛";
                 Description = "打3-4";
                 Id = 2002;
                 break;
             case WeaponType.BOW:
-                Name = "弓";
+                CardName = "弓";
                 Description = "打3-7";
                 Id = 2003;
                 break;
             default:
-                Name = "Unknown Equipment";
+                CardName = "Unknown Equipment";
                 Description = "This equipment type is not recognized.";
                 Id = 0000;
                 break;
@@ -211,22 +213,22 @@ public class DisasterCard : Card
         TypeOfDisaster = Random.Range(1,4);
         switch (TypeOfDisaster) {
             case 1:
-                Name = "天灾1";
+                CardName = "天灾1";
                 Description = "从你的背包中清除3张木头以抵抗本次天灾，抵抗失败：随机地块降级为平原";
                 Id = 3001;
                 break;
             case 2:
-                Name = "天灾2";
+                CardName = "天灾2";
                 Description = "从你的背包中清除3张干草以抵抗本次天灾，抵抗失败：随机摧毁你技能牌库中3张技能牌";
                 Id = 3002;
                 break;
             case 3:
-                Name = "天灾3";
+                CardName = "天灾3";
                 Description = "从你的背包中清除2张石头以抵抗本次天灾，抵抗失败：随机地块降级为山丘，下回合少抽1张技能牌";
                 Id = 3003;
                 break;
             default:
-                Name = "未知天灾";
+                CardName = "未知天灾";
                 Description = "未知天灾效果.";
                 Id = 3000;
                 break;

@@ -10,6 +10,7 @@ public class GameStartState : GameState
         DeckManager.Instance.ShuffleDeck();
         //DeckManager.Instance.DrawCard();
         GameManager.Instance.StartTurn();
+
     }
     public override void Update() {
     }

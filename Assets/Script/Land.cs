@@ -801,7 +801,6 @@ public class TowerLand : Land
 
     public override void ExtraEffect() {
         //造伤最小值+1 (这个效果在战斗系统里实现)
-        //这个还没写！
     }
 }
 

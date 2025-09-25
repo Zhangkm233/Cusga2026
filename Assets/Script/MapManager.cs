@@ -206,4 +206,12 @@ public class MapManager : MonoBehaviour
         Land landToTransform = candidateLands[randomIndex];
         landToTransform.ChangeLandType(landType);
     }
+
+    public Land GetLandAt(int row,int col) {
+        if (row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
+            Debug.LogError("Î»ÖÃ³¬³öµØÍ¼·¶Î§");
+            return null;
+        }
+        return LandMap[row][col];
+    }
 }

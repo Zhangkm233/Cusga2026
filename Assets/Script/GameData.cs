@@ -49,6 +49,8 @@ public static class GameData
                 return "技能卡";
             case CardType.WEAPON:
                 return "武器卡";
+            case CardType.DISASTER:
+                return "天灾卡";
             default:
                 return "未知";
         }

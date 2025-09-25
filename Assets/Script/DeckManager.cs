@@ -39,6 +39,14 @@ public class DeckManager : MonoBehaviour
         hand.Clear();
     }
 
+    public void TestAddCard() {
+        AddCardToDeck(new MaterialCard(MaterialType.WOOD),10);
+        AddCardToDeck(new MaterialCard(MaterialType.HAY),10);
+        AddCardToDeck(new MaterialCard(MaterialType.STONE),10);
+        AddCardToDeck(new SkillCard(SkillType.HARVEST),5);
+        AddCardToDeck(new SkillCard(SkillType.STALK),5);
+    }
+
     public void ShuffleDeck() {
         // 实现洗牌逻辑
         List<Card> shuffledDeck = new List<Card>(deck);
@@ -72,7 +80,7 @@ public class DeckManager : MonoBehaviour
                 Card drawnCard = deck[i];
                 deck.RemoveAt(i);
                 hand.Add(drawnCard);
-                Debug.Log($"抓了一张{drawnCard.CardType}牌：{drawnCard.Name}");
+                Debug.Log($"抓了一张{drawnCard.CardType}牌：{drawnCard.CardName}");
                 ShuffleDeck();
                 return;
             }
@@ -89,7 +97,7 @@ public class DeckManager : MonoBehaviour
                 Card drawnCard = deck[i];
                 deck.RemoveAt(i);
                 hand.Add(drawnCard);
-                Debug.Log($"抓了一张{cardType}牌：{drawnCard.Name}");
+                Debug.Log($"抓了一张{cardType}牌：{drawnCard.CardName}");
                 ShuffleDeck();
                 return;
             }
@@ -104,7 +112,7 @@ public class DeckManager : MonoBehaviour
                 Card drawnCard = deck[i];
                 deck.RemoveAt(i);
                 hand.Add(drawnCard);
-                Debug.Log($"抓了一张id为{id}的牌：{drawnCard.Name}");
+                Debug.Log($"抓了一张id为{id}的牌：{drawnCard.CardName}");
                 ShuffleDeck();
                 return;
             }
@@ -117,7 +125,7 @@ public class DeckManager : MonoBehaviour
             if (deck[i].CardType == cardType) {
                 Card removedCard = deck[i];
                 deck.RemoveAt(i);
-                Debug.Log($"移除了牌库中的一张{cardType}牌：{removedCard.Name}");
+                Debug.Log($"移除了牌库中的一张{cardType}牌：{removedCard.CardName}");
                 return true;
             }
         }
@@ -130,7 +138,7 @@ public class DeckManager : MonoBehaviour
             if (deck[i].Id == id) {
                 Card removedCard = deck[i];
                 deck.RemoveAt(i);
-                Debug.Log($"移除了牌库中的一张id为{id}的牌：{removedCard.Name}");
+                Debug.Log($"移除了牌库中的一张id为{id}的牌：{removedCard.CardName}");
                 return true;
             }
         }
@@ -186,14 +194,14 @@ public class DeckManager : MonoBehaviour
     public void AddCardToDeck(Card card) {
         // 实现将卡片添加到牌库的逻辑
         deck.Add(card);
-        Debug.Log($"卡牌 {card.Name} 加入了牌库");
+        Debug.Log($"卡牌 {card.CardName} 加入了牌库");
     }
 
     public void AddCardToDeck(Card card,int num) {
         for (int i = 0;i < num;i++) {
             deck.Add(card);
         }
-        Debug.Log($"卡牌 {card.Name} 加入了牌库 {num} 张");
+        Debug.Log($"卡牌 {card.CardName} 加入了牌库 {num} 张");
     }
 
     public void ClearDeck() {
@@ -222,18 +230,29 @@ public class DeckManager : MonoBehaviour
         //抽卡阶段-抽取4张资源卡，3张技能卡
         ShuffleDeck();
         if (reduceCertainCardType != null) {
+            Debug.Log($"减少抽取{reduceCertainCardType.Count}张特定种类的牌");
             if (reduceCertainCardType.Contains(CardType.MATERIAL)) {
-                for (int i = 0;i < 4 - reduceCertainCardType.Count(x => x == CardType.MATERIAL); i++) {
+                for (int i = 0;i < 4 - reduceCertainCardType.Count(x => x == CardType.MATERIAL);i++) {
                     DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
                 }
-            } else if (reduceCertainCardType.Contains(CardType.SKILL)) {
+            } else {
+                for (int i = 0;i < 4;i++) {
+                    DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
+                }
+            }
+            if (reduceCertainCardType.Contains(CardType.SKILL)) {
                 for (int i = 0;i < 3 - reduceCertainCardType.Count(x => x == CardType.SKILL);i++) {
+                    DrawCertainCardByType(CardType.SKILL);
+                }
+            } else {
+                for (int i = 0;i < 3;i++) {
                     DrawCertainCardByType(CardType.SKILL);
                 }
             }
             reduceCertainCardType.Clear();
             return;
         } else {
+            Debug.Log("正常抽卡");
             for (int i = 0;i < 4;i++) {
                 DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
             }
@@ -241,6 +260,7 @@ public class DeckManager : MonoBehaviour
                 DrawCertainCardByType(CardType.SKILL);
             }
         }
+        Debug.Log($"手牌数量：{hand.Count}张");
     }
 
     public void ExtraDrawPhase() {
@@ -273,7 +293,7 @@ public class DeckManager : MonoBehaviour
         foreach (Card card in hand) {
             if (card.CardType == CardType.DISASTER) {
                 //触发天灾效果
-                Debug.Log($"触发了天灾卡：{card.Name}");
+                Debug.Log($"触发了天灾卡：{card.CardName}");
                 card.ApplyEffect(null); // 这里传入null，表示没有特定的地块
             }
         }
