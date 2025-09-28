@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    //ÓÃÓÚ¹ÜÀíÂß¼­²ãLandºÍanimal¶ÔÏóµÄÉú³ÉºÍÒÆ¶¯
+    //ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½Landï¿½ï¿½animalï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½Æ¶ï¿½
 
-    public List<List<Land>> LandMap = new List<List<Land>>();//´¢´æËùÓĞlandÊı¾İ 
-    public List<List<Animal>> AnimalMap = new List<List<Animal>>();//´¢´æËùÓĞanimalÊı¾İ
+    public List<List<Land>> LandMap = new List<List<Land>>();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½landï¿½ï¿½ï¿½ï¿½ 
+    public List<List<Animal>> AnimalMap = new List<List<Animal>>();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½animalï¿½ï¿½ï¿½ï¿½
 
     public static MapManager Instance { get; private set; }
     private void Awake() {
@@ -19,7 +19,7 @@ public class MapManager : MonoBehaviour
     }
 
     public void InitializeLandMap(int rows,int cols) {
-        // ³õÊ¼»¯µØÍ¼
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Í¼
         LandMap.Clear();
         for (int i = 0;i < rows;i++) {
             List<Land> row = new List<Land>();
@@ -29,23 +29,32 @@ public class MapManager : MonoBehaviour
             }
             LandMap.Add(row);
         }
-        Debug.Log("µØÍ¼ÒÑ³õÊ¼»¯");
+        Debug.Log("ï¿½ï¿½Í¼ï¿½Ñ³ï¿½Ê¼ï¿½ï¿½");
     }
 
     public void InitiallizeLandMap() {
-        //Ò»¿ªÊ¼£¬Íæ¼ÒÓµÓĞÒ»¿é3x4µÄµØ¿é£¬ÆäÖĞ°üº¬4¿éÉ½Çğ£¬5¿éÆ½Ô­£¬3¿éÉ­ÁÖ
+        //Ò»ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½Ò»ï¿½ï¿½3x4ï¿½ÄµØ¿é£¬ï¿½ï¿½ï¿½Ğ°ï¿½ï¿½ï¿½4ï¿½ï¿½É½ï¿½ï¿½5ï¿½ï¿½Æ½Ô­ï¿½ï¿½3ï¿½ï¿½É­ï¿½ï¿½
         LandMap.Clear();
+        AnimalMap.Clear();
+        
         List<Land> row1 = new List<Land> { new HillLand(0,0),new HillLand(0,1),new HillLand(0,2),new HillLand(0,3) };
         List<Land> row2 = new List<Land> { new PlainLand(1,0),new PlainLand(1,1),new PlainLand(1,2),new PlainLand(1,3) };
         List<Land> row3 = new List<Land> { new PlainLand(2,0),new ForestLand(2,1),new ForestLand(2,2),new ForestLand(2,3) };
         LandMap.Add(row1);
         LandMap.Add(row2);
         LandMap.Add(row3);
-        Debug.Log("µØÍ¼ÒÑ³õÊ¼»¯");
+        
+        // åˆå§‹åŒ–åŠ¨ç‰©åœ°å›¾
+        for (int i = 0; i < 3; i++) {
+            List<Animal> animalRow = new List<Animal> { null, null, null, null };
+            AnimalMap.Add(animalRow);
+        }
+        
+        Debug.Log("ï¿½ï¿½Í¼ï¿½Ñ³ï¿½Ê¼ï¿½ï¿½");
     }
 
     public void StateCheck() {
-        //¼ì²éÃ¿¿éµØµÄ×´Ì¬
+        //ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½Øµï¿½×´Ì¬
         foreach (var row in LandMap) {
             foreach (var land in row) {
                 land.PassiveEffect();
@@ -54,61 +63,61 @@ public class MapManager : MonoBehaviour
     }
 
     public void AddAnimalToMap(Animal animal,int row,int col) {
-        //Ìí¼Ó¶¯Îïµ½µØÍ¼
+        //ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ïµ½ï¿½ï¿½Í¼
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("Î»ÖÃ³¬³öµØÍ¼·¶Î§");
+            Debug.LogError("Î»ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Î§");
             return;
         }
         if (IsPositionBeenOccupiedByAnimal(row,col)) {
-            Debug.LogError("Î»ÖÃÒÑ±»Õ¼ÓÃ");
+            Debug.LogError("Î»ï¿½ï¿½ï¿½Ñ±ï¿½Õ¼ï¿½ï¿½");
             return;
         }
         AnimalMap[row][col] = animal;
         animal.MapRow = row;
         animal.MapCol = col;
-        Debug.Log($"¶¯Îï{animal.AnimalName}ÒÑÌí¼Óµ½µØÍ¼Î»ÖÃ({row},{col})");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½{animal.AnimalName}ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½Í¼Î»ï¿½ï¿½({row},{col})");
     }
 
     public bool IsPositionBeenOccupiedByAnimal(int row,int col) {
-        //¼ì²éÎ»ÖÃÊÇ·ñ±»Õ¼ÓÃ
+        //ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ç·ï¿½Õ¼ï¿½ï¿½
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("Î»ÖÃ³¬³öµØÍ¼·¶Î§");
+            Debug.LogError("Î»ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Î§");
             return true;
         }
         return AnimalMap[row][col] != null;
     }
 
     public void RemoveAnimalFromMap(int row,int col) {
-        //´ÓµØÍ¼ÒÆ³ı¶¯Îï
+        //ï¿½Óµï¿½Í¼ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("Î»ÖÃ³¬³öµØÍ¼·¶Î§");
+            Debug.LogError("Î»ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Î§");
             return;
         }
         if (AnimalMap[row][col] == null) {
-            Debug.LogError("¸ÃÎ»ÖÃÃ»ÓĞ¶¯Îï");
+            Debug.LogError("ï¿½ï¿½Î»ï¿½ï¿½Ã»ï¿½Ğ¶ï¿½ï¿½ï¿½");
             return;
         }
         Animal removedAnimal = AnimalMap[row][col];
         AnimalMap[row][col] = null;
-        Debug.Log($"¶¯Îï{removedAnimal.AnimalName}ÒÑ´ÓµØÍ¼Î»ÖÃ({row},{col})ÒÆ³ı");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½{removedAnimal.AnimalName}ï¿½Ñ´Óµï¿½Í¼Î»ï¿½ï¿½({row},{col})ï¿½Æ³ï¿½");
     }
 
     public void MoveAnimalToMap(Animal animal,int row,int col) {
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("Î»ÖÃ³¬³öµØÍ¼·¶Î§");
+            Debug.LogError("Î»ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Î§");
             return;
         }
         if (IsPositionBeenOccupiedByAnimal(row,col)) {
-            Debug.LogError("Î»ÖÃÒÑ±»Õ¼ÓÃ");
+            Debug.LogError("Î»ï¿½ï¿½ï¿½Ñ±ï¿½Õ¼ï¿½ï¿½");
             return;
         }
         RemoveAnimalFromMap(animal.MapRow,animal.MapCol);
         AddAnimalToMap(animal,row,col);
-        Debug.Log($"¶¯Îï{animal.AnimalName}ÒÑÒÆ¶¯µ½µØÍ¼Î»ÖÃ({row},{col})");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½{animal.AnimalName}ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Î»ï¿½ï¿½({row},{col})");
     }
 
     public int GetAmountOfLandType(LandType landType) {
-        //»ñÈ¡Ä³ÖÖµØĞÎµÄÊıÁ¿
+        //ï¿½ï¿½È¡Ä³ï¿½Öµï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½
         int count = 0;
         foreach (var row in LandMap) {
             foreach (var land in row) {
@@ -128,34 +137,34 @@ public class MapManager : MonoBehaviour
         if (AnimalMap[land.MapRow][land.MapCol] != null) {
             DealDamageTo(AnimalMap[land.MapRow][land.MapCol],(damage));
         } else {
-            Debug.LogError("¸ÃµØ¿éÉÏÃ»ÓĞ¶¯Îï£¬ÎŞ·¨Ôì³ÉÉËº¦");
+            Debug.LogError("ï¿½ÃµØ¿ï¿½ï¿½ï¿½Ã»ï¿½Ğ¶ï¿½ï¿½ï£¬ï¿½Ş·ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½");
         }
     }
 
     public void AddAnimalToLand(AnimalType animalType,Land land) {
-        //Áô¸øµØ¿éµ÷ÓÃ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½
         AddAnimalToMap(new Animal(animalType),land.MapRow,land.MapCol);
     }
 
     public int CountAdjacentLandType(int row,int col,LandType landType) {
         if (row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
-            Debug.LogError("Î»ÖÃ³¬³öµØÍ¼·¶Î§");
+            Debug.LogError("Î»ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Î§");
             return 0;
         }
         int count = 0;
-        //¼ì²éÉÏ·½
+        //ï¿½ï¿½ï¿½ï¿½Ï·ï¿½
         if (row > 0 && LandMap[row - 1][col] != null && LandMap[row - 1][col].LandType == landType) {
             count++;
         }
-        //¼ì²éÏÂ·½
+        //ï¿½ï¿½ï¿½ï¿½Â·ï¿½
         if (row < LandMap.Count - 1 && LandMap[row + 1][col] != null && LandMap[row + 1][col].LandType == landType) {
             count++;
         }
-        //¼ì²é×ó·½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½
         if (col > 0 && LandMap[row][col - 1] != null && LandMap[row][col - 1].LandType == landType) {
             count++;
         }
-        //¼ì²éÓÒ·½
+        //ï¿½ï¿½ï¿½ï¿½Ò·ï¿½
         if (col < LandMap[0].Count - 1 && LandMap[row][col + 1] != null && LandMap[row][col + 1].LandType == landType) {
             count++;
         }
@@ -163,7 +172,7 @@ public class MapManager : MonoBehaviour
     }
 
     public void EnergyPhase() {
-        //³äÄÜ½×¶Î
+        //ï¿½ï¿½ï¿½Ü½×¶ï¿½
         foreach (var row in LandMap) {
             foreach (var land in row) {
                 land.AddEnergy(1);
@@ -189,7 +198,7 @@ public class MapManager : MonoBehaviour
     }
 
     public void TransformRandomLand(LandType landType) {
-        //Ëæ»ú½«Ò»¿éµØ×ª»¯ÎªÖ¸¶¨µØĞÎ ÏÈÅÅ³ıÒÑ¾­ÊÇ¸ÃµØĞÎµÄµØ¿é
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½×ªï¿½ï¿½ÎªÖ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Å³ï¿½ï¿½Ñ¾ï¿½ï¿½Ç¸Ãµï¿½ï¿½ÎµÄµØ¿ï¿½
         List<Land> candidateLands = new List<Land>();
         foreach (var row in LandMap) {
             foreach (var land in row) {
@@ -199,7 +208,7 @@ public class MapManager : MonoBehaviour
             }
         }
         if (candidateLands.Count == 0) {
-            Debug.LogWarning("Ã»ÓĞ¿É×ª»¯µÄµØ¿é");
+            Debug.LogWarning("Ã»ï¿½Ğ¿ï¿½×ªï¿½ï¿½ï¿½ÄµØ¿ï¿½");
             return;
         }
         int randomIndex = Random.Range(0,candidateLands.Count);
@@ -209,7 +218,7 @@ public class MapManager : MonoBehaviour
 
     public Land GetLandAt(int row,int col) {
         if (row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
-            Debug.LogError("Î»ÖÃ³¬³öµØÍ¼·¶Î§");
+            Debug.LogError("Î»ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Î§");
             return null;
         }
         return LandMap[row][col];

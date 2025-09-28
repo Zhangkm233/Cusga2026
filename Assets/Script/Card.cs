@@ -2,58 +2,58 @@ using UnityEngine;
 
 public enum CardType
 {
-    MATERIAL = 0, //²ÄÁÏ
-    SKILL = 1, //¼¼ÄÜ
-    WEAPON = 2, //ÎäÆ÷
-    DISASTER = 3, //ÌìÔÖ
+    MATERIAL = 0, //ææ–™
+    SKILL = 1, //æŠ€èƒ½
+    WEAPON = 2, //æ­¦å™¨
+    DISASTER = 3, //ç¾éš¾
 }
 
 public enum MaterialType
 {
-    NULL = 0, //¿Õ
-    HAY = 0001, //¸É²İ
-    WOOD = 0002, //Ä¾²Ä
-    STONE = 0003, //Ê¯Í·
-    MEAT = 0004, //Èâ
+    NULL = 0, //æ— 
+    HAY = 0001, //ç¨»è‰
+    WOOD = 0002, //æœ¨å¤´
+    STONE = 0003, //çŸ³å¤´
+    MEAT = 0004, //è‚‰
 }
 
 public enum SkillType
 {
-    NULL = 1000, //¿Õ
-    HARVEST = 1001, //ÊÕ¸î
-    REINFORCE = 1002, //¼Ó¹Ì
-    STALK = 1003, //×·ÁÔ
+    NULL = 1000, //æ— 
+    HARVEST = 1001, //æ”¶å‰²
+    REINFORCE = 1002, //åŠ å›º
+    STALK = 1003, //è¿½è¸ª
 }
 
 public enum WeaponType
 {
-    NULL = 2000, //¿Õ
-    ROLLROCK = 2001, //¹öÊ¯
-    SPEAR = 2002, //³¤Ã¬
-    BOW = 2003, //¶Ì¹­
+    NULL = 2000, //æ— 
+    ROLLROCK = 2001, //æ»šçŸ³
+    SPEAR = 2002, //é•¿çŸ›
+    BOW = 2003, //å¼“
 }
 
 [System.Serializable]
 public abstract class Card
 {
-    private CardType cardType; //¿¨Æ¬ÀàĞÍ
+    private CardType cardType; //å¡ç‰‡ç±»å‹
     public CardType CardType {
         get { return cardType; }
         set { cardType = value; }
     }
-    private string cardName; //¿¨Æ¬Ãû³Æ
+    private string cardName; //å¡ç‰‡åç§°
 
     public string CardName {
         get { return cardName; }
         set { cardName = value; }
     }
-    private string description; //¿¨Æ¬ÃèÊö
+    private string description; //å¡ç‰‡æè¿°
     public string Description {
         get { return description; }
         set { description = value; }
     }
 
-    private int id; //¿¨Æ¬id
+    private int id; //å¡ç‰‡id
     public int Id {
         get { return id; }
         set { id = value; }
@@ -64,7 +64,7 @@ public abstract class Card
 
 public class MaterialCard : Card
 {
-    public MaterialType materialType; //²ÄÁÏÀàĞÍ
+    public MaterialType materialType; //ææ–™ç±»å‹
     public MaterialType MaterialType {
         get { return materialType; }
         set { materialType = value; }
@@ -74,62 +74,63 @@ public class MaterialCard : Card
         MaterialType = type;
         switch (type) {
             case MaterialType.HAY:
-                CardName = "¸É²İ";
-                Description = "¸É²İ*1";
+                CardName = "ç¨»è‰";
+                Description = "ç¨»è‰*1";
                 Id = 0001;
                 break;
             case MaterialType.WOOD:
-                CardName = "Ä¾²Ä";
-                Description = "Ä¾²Ä*1";
+                CardName = "æœ¨å¤´";
+                Description = "æœ¨å¤´*1";
                 Id = 0002;
                 break;
             case MaterialType.STONE:
-                CardName = "Ê¯Í·";
-                Description = "Ê¯Í·*1";
+                CardName = "çŸ³å¤´";
+                Description = "çŸ³å¤´*1";
                 Id = 0003;
                 break;
             case MaterialType.MEAT:
-                CardName = "Èâ";
-                Description = "Èâ*1";
+                CardName = "è‚‰";
+                Description = "è‚‰*1";
                 Id = 0004;
                 break;
             default:
-                CardName = "¡ª¡ª";
-                Description = "Î´Öª²ÄÁÏÀàĞÍ.";
+                CardName = "ææ–™";
+                Description = "æœªçŸ¥ææ–™ç±»å‹.";
                 Id = 0000;
                 break;
         }
     }
     public override void ApplyEffect(Land targetLand) {
-        // Ó¦ÓÃ²ÄÁÏĞ§¹ûµ½Ä¿±êµØĞÎ
-        // Ğ§¹ûÔÚµØĞÎÉÏ
+        // åº”ç”¨ææ–™æ•ˆæœåˆ°ç›®æ ‡åœŸåœ°
+        // æ•ˆæœåœ¨åœ°å—é‡Œ
         targetLand.MaterialEffect(this);
     }
 }
 
 public class SkillCard : Card
 {
-    public SkillType skillType; //¼¼ÄÜÀàĞÍ
+    public SkillType skillType; //æŠ€èƒ½ç±»å‹
+    
     public SkillCard(SkillType skillType) {
         CardType = CardType.SKILL;
         this.skillType = skillType;
         switch (skillType) {
             case SkillType.HARVEST:
-                // ÊÕ¸î
-                CardName = "ÊÕ¸î";
-                Description = "¸ÃµØ¿é»ñµÃ2³äÄÜ";
+                // æ”¶å‰²
+                CardName = "æ”¶å‰²";
+                Description = "è¯¥åœ°å—è·å¾—2èƒ½é‡";
                 Id = 1001;
                 break;
             case SkillType.REINFORCE:
-                // ¼Ó¹Ì
-                CardName = "¼Ó¹Ì";
-                Description = "¸ÃµØ¿é»ñµÃ1¼á¹Ì";
+                // åŠ å›º
+                CardName = "åŠ å›º";
+                Description = "è¯¥åœ°å—è·å¾—1åœŸå£¤";
                 Id = 1002;
                 break;
             case SkillType.STALK:
-                // ×·ÁÔ
-                CardName = "×·ÁÔ";
-                Description = "¸ÃµØ¿é»ñµÃ1ÁÔÈ¦";
+                // è¿½è¸ª
+                CardName = "è¿½è¸ª";
+                Description = "è¯¥åœ°å—è·å¾—1çŒåœˆ";
                 Id = 1003;
                 break;
             default:
@@ -156,25 +157,25 @@ public class SkillCard : Card
 
 public class WeaponCard : Card
 {
-    public WeaponType weaponType; //×°±¸ÀàĞÍ
+    public WeaponType weaponType; //æ­¦å™¨ç±»å‹
 
     public WeaponCard(WeaponType weaponType) {
         CardType = CardType.WEAPON;
         this.weaponType = weaponType;
         switch (weaponType) {
             case WeaponType.ROLLROCK:
-                CardName = "¹öÊ¯";
-                Description = "´ò1-2£¬Ã¿¸öÉ½Âö¶îÍâ+2×î´óÖµ";
+                CardName = "æ»šçŸ³";
+                Description = "é€ æˆ1-2ä¼¤å®³ï¼Œæ¯åº§å±±ä¸˜é¢å¤–+2ä¼¤å®³å€¼";
                 Id = 2001;
                 break;
             case WeaponType.SPEAR:
-                CardName = "³¤Ã¬";
-                Description = "´ò3-4";
+                CardName = "é•¿çŸ›";
+                Description = "é€ æˆ3-4ä¼¤å®³";
                 Id = 2002;
                 break;
             case WeaponType.BOW:
-                CardName = "¹­";
-                Description = "´ò3-7";
+                CardName = "å¼“";
+                Description = "é€ æˆ3-7ä¼¤å®³";
                 Id = 2003;
                 break;
             default:
@@ -213,23 +214,23 @@ public class DisasterCard : Card
         TypeOfDisaster = Random.Range(1,4);
         switch (TypeOfDisaster) {
             case 1:
-                CardName = "ÌìÔÖ1";
-                Description = "´ÓÄãµÄ±³°üÖĞÇå³ı3ÕÅÄ¾Í·ÒÔµÖ¿¹±¾´ÎÌìÔÖ£¬µÖ¿¹Ê§°Ü£ºËæ»úµØ¿é½µ¼¶ÎªÆ½Ô­";
+                CardName = "ç¾éš¾1";
+                Description = "ç¾éš¾çš„æ•ˆæœï¼šéœ€è¦3å¼ æœ¨å¤´æ¥æŠµæŠ—è¿™ä¸ªç¾éš¾ï¼ŒæŠµæŠ—å¤±è´¥ï¼Œéšæœºåœ°å—é™çº§ä¸ºå¹³åŸ";
                 Id = 3001;
                 break;
             case 2:
-                CardName = "ÌìÔÖ2";
-                Description = "´ÓÄãµÄ±³°üÖĞÇå³ı3ÕÅ¸É²İÒÔµÖ¿¹±¾´ÎÌìÔÖ£¬µÖ¿¹Ê§°Ü£ºËæ»ú´İ»ÙÄã¼¼ÄÜÅÆ¿âÖĞ3ÕÅ¼¼ÄÜÅÆ";
+                CardName = "ç¾éš¾2";
+                Description = "ç¾éš¾çš„æ•ˆæœï¼šéœ€è¦3å¼ ç¨»è‰æ¥æŠµæŠ—è¿™ä¸ªç¾éš¾ï¼ŒæŠµæŠ—å¤±è´¥ï¼Œéšæœºç ´åæŠ€èƒ½ç‰Œåº“ï¼Œå¤±å»3å¼ æŠ€èƒ½ç‰Œ";
                 Id = 3002;
                 break;
             case 3:
-                CardName = "ÌìÔÖ3";
-                Description = "´ÓÄãµÄ±³°üÖĞÇå³ı2ÕÅÊ¯Í·ÒÔµÖ¿¹±¾´ÎÌìÔÖ£¬µÖ¿¹Ê§°Ü£ºËæ»úµØ¿é½µ¼¶ÎªÉ½Çğ£¬ÏÂ»ØºÏÉÙ³é1ÕÅ¼¼ÄÜÅÆ";
+                CardName = "ç¾éš¾3";
+                Description = "ç¾éš¾çš„æ•ˆæœï¼šéœ€è¦2å¼ çŸ³å¤´æ¥æŠµæŠ—è¿™ä¸ªç¾éš¾ï¼ŒæŠµæŠ—å¤±è´¥ï¼Œéšæœºåœ°å—é™çº§ä¸ºå±±ä¸˜ï¼Œä¸‹å›åˆå†æŠ½1å¼ æŠ€èƒ½ç‰Œ";
                 Id = 3003;
                 break;
             default:
-                CardName = "Î´ÖªÌìÔÖ";
-                Description = "Î´ÖªÌìÔÖĞ§¹û.";
+                CardName = "æœªçŸ¥ç¾éš¾";
+                Description = "æœªçŸ¥ç¾éš¾æ•ˆæœ.";
                 Id = 3000;
                 break;
         }
@@ -238,32 +239,34 @@ public class DisasterCard : Card
         switch (TypeOfDisaster) {
             case 1:
                 if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.WOOD,3)) {
-                    Debug.Log("³É¹¦µÖ¿¹ÌìÔÖ");
+                    Debug.Log("æˆåŠŸæŠµæŠ—ç¾éš¾");
                 } else {
-                    // µÖ¿¹Ê§°Ü£¬Ëæ»úµØ¿é½µ¼¶ÎªÆ½Ô­
-                    Debug.Log("µÖ¿¹ÌìÔÖÊ§°Ü£¬Ëæ»úµØ¿é½µ¼¶ÎªÆ½Ô­");
+                    // æŠµæŠ—å¤±è´¥ï¼Œéšæœºåœ°å—é™çº§ä¸ºå¹³åŸ
+                    Debug.Log("æŠµæŠ—ç¾éš¾å¤±è´¥ï¼Œéšæœºåœ°å—é™çº§ä¸ºå¹³åŸ");
                     MapManager.Instance.TransformRandomLand(LandType.PLAIN);
                 }
                 break;
             case 2:
                 if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.HAY,3)) {
-                    Debug.Log("³É¹¦µÖ¿¹ÌìÔÖ");
+                    Debug.Log("æˆåŠŸæŠµæŠ—ç¾éš¾");
                 } else {
-                    // µÖ¿¹Ê§°Ü£¬Ëæ»ú´İ»ÙÄã¼¼ÄÜÅÆ¿âÖĞ3ÕÅ¼¼ÄÜÅÆ
-                    Debug.Log("µÖ¿¹ÌìÔÖÊ§°Ü£¬Ëæ»ú´İ»ÙÄã¼¼ÄÜÅÆ¿âÖĞ3ÕÅ¼¼ÄÜÅÆ");
+                    // æŠµæŠ—å¤±è´¥ï¼Œéšæœºç ´åæŠ€èƒ½ç‰Œåº“ï¼Œå¤±å»3å¼ æŠ€èƒ½ç‰Œ
+                    Debug.Log("æŠµæŠ—ç¾éš¾å¤±è´¥ï¼Œéšæœºç ´åæŠ€èƒ½ç‰Œåº“ï¼Œå¤±å»3å¼ æŠ€èƒ½ç‰Œ");
                     DeckManager.Instance.ShuffleDeck();
                     DeckManager.Instance.TryToRemoveCertainCardByTypeMultipleTime(CardType.SKILL,3);
                 }
                 break;
             case 3:
                 if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.STONE,2)) {
-                    Debug.Log("³É¹¦µÖ¿¹ÌìÔÖ");
+                    Debug.Log("æˆåŠŸæŠµæŠ—ç¾éš¾");
                 } else {
-                    // µÖ¿¹Ê§°Ü£¬Ëæ»úµØ¿é½µ¼¶ÎªÉ½Çğ£¬ÏÂ»ØºÏÉÙ³é1ÕÅ¼¼ÄÜÅÆ
-                    Debug.Log("µÖ¿¹ÌìÔÖÊ§°Ü£¬Ëæ»úµØ¿é½µ¼¶ÎªÉ½Çğ£¬ÏÂ»ØºÏÉÙ³é1ÕÅ¼¼ÄÜÅÆ");
-                    MapManager.Instance.TransformRandomLand(LandType.MOUNTAIN);
-                    DeckManager.Instance.reduceCertainCardType.Add(CardType.SKILL);
+                    // æŠµæŠ—å¤±è´¥ï¼Œéšæœºåœ°å—é™çº§ä¸ºå±±ä¸˜ï¼Œä¸‹å›åˆå†æŠ½1å¼ æŠ€èƒ½ç‰Œ
+                    Debug.Log("æŠµæŠ—ç¾éš¾å¤±è´¥ï¼Œéšæœºåœ°å—é™çº§ä¸ºå±±ä¸˜ï¼Œä¸‹å›åˆå†æŠ½1å¼ æŠ€èƒ½ç‰Œ");
+                    MapManager.Instance.TransformRandomLand(LandType.HILL);
+                    DeckManager.Instance.ExtraDrawNum += 1;
                 }
+                break;
+            default:
                 break;
         }
     }

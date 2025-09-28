@@ -4,55 +4,55 @@ using UnityEngine;
 
 public static class GameData
 {
-    //ÓÃÓÚ´æ´¢ÓÎÏ·ÖĞµÄÈ«¾ÖÊı¾İ Ìá¹©Ò»Ğ©¾²Ì¬·½·¨
+    //ç”¨äºå­˜å‚¨æ¸¸æˆä¸­çš„å…¨å±€æ•°æ® æä¾›ä¸€äº›é™æ€æ–¹æ³•
     public static int turnCount = 0;
     public static int bossSpawnTurn = 16;
     public static int disasterPercent = 35;
     public static bool IsBossSpawned = false;
     public static string HanizeLandType(LandType landType) {
-        //ÕâÀïĞèÒª¸üĞÂ
+        //è¿™é‡Œéœ€è¦é‡å†™
         switch (landType) {
             case LandType.HILL:
-                return "É½µØ";
+                return "å±±ä¸˜";
             case LandType.PLAIN:
-                return "Æ½Ô­";
+                return "å¹³åŸ";
             case LandType.FOREST:
-                return "É­ÁÖ";
+                return "æ£®æ—";
             case LandType.TOWN:
-                return "Ğ¡Õò";
+                return "å°é•‡";
             case LandType.MOUNTAIN:
-                return "É½Âö";
+                return "å±±è„‰";
             case LandType.JUNGLE:
-                return "ÃÜÁÖ";
+                return "ä¸›æ—";
             case LandType.THATCH:
-                return "Ã©Îİ";
+                return "èŒ…å±‹";
             case LandType.CABIN:
-                return "ÁÖÎİ";
+                return "æœ¨å±‹";
             case LandType.WAREHOUSE:
-                return "²Ö¿â";
+                return "ä»“åº“";
             case LandType.TOWER:
-                return "Ëş";
+                return "å¡”";
             case LandType.WHEATLAND:
-                return "ÂóÌï";
+                return "éº¦ç”°";
             case LandType.WINDMILL:
-                return "·ç³µ";
+                return "é£è½¦";
             default:
-                return "Î´Öª";
+                return "æœªçŸ¥";
         }
     }
 
     public static string HanizeCardType(CardType cardType) {
         switch (cardType) {
             case CardType.MATERIAL:
-                return "²ÄÁÏ¿¨";
+                return "ææ–™å¡";
             case CardType.SKILL:
-                return "¼¼ÄÜ¿¨";
+                return "æŠ€èƒ½å¡";
             case CardType.WEAPON:
-                return "ÎäÆ÷¿¨";
+                return "æ­¦å™¨å¡";
             case CardType.DISASTER:
-                return "ÌìÔÖ¿¨";
+                return "ç¾éš¾å¡";
             default:
-                return "Î´Öª";
+                return "æœªçŸ¥";
         }
     }
 
@@ -60,15 +60,15 @@ public static class GameData
             case MaterialType.NULL:
                 return " ";
             case MaterialType.HAY:
-                return "¸É²İ";
+                return "ç¨»è‰";
             case MaterialType.WOOD:
-                return "Ä¾²Ä";
+                return "æœ¨å¤´";
             case MaterialType.STONE:
-                return "Ê¯Í·";
+                return "çŸ³å¤´";
             case MaterialType.MEAT:
-                return "Èâ";
+                return "è‚‰";
             default:
-                return "Î´Öª";
+                return "æœªçŸ¥";
         }
     }
 
@@ -77,18 +77,18 @@ public static class GameData
             case SkillType.NULL:
                 return " ";
             case SkillType.STALK:
-                return "×·ÁÔ";
+                return "è¿½è¸ª";
             case SkillType.HARVEST:
-                return "ÊÕ¸î";
+                return "æ”¶å‰²";
             case SkillType.REINFORCE:
-                return "¼Ó¹Ì";
+                return "åŠ å›º";
             default:
-                return "Î´Öª";
+                return "æœªçŸ¥";
         }
     }
 
     public static bool IsRandomEventTriggered(int probability) {
-        int rand = Random.Range(1,101); // Éú³É1µ½100µÄËæ»úÊı
-        return rand <= probability; // Èç¹ûËæ»úÊıĞ¡ÓÚµÈÓÚ¸ÅÂÊÖµ£¬ÔòÊÂ¼ş´¥·¢
+        int rand = Random.Range(1,101); // ç”Ÿæˆ1åˆ°100çš„éšæœºæ•°
+        return rand <= probability; // å¦‚æœéšæœºæ•°å°äºç­‰äºæ¦‚ç‡å€¼ï¼Œäº‹ä»¶è§¦å‘
     }
 }

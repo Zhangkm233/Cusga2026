@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // ¿ØÖÆÓÎÏ·ÄÚµÄUIÏÔÊ¾
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½Úµï¿½UIï¿½ï¿½Ê¾
     public GameObject[] cards;
     public TMP_Text DeckCount;
     public TMP_Text HandCount;
@@ -26,11 +26,32 @@ public class UIManager : MonoBehaviour
     [ContextMenu("UpdateCards")]
     public void UpdateCards() {
         GameObject[] cards = GameObject.FindGameObjectsWithTag("CardGameobject");
+        
         for (int i = 0;i < Mathf.Min(DeckManager.Instance.hand.Count,cards.Length);i++) {
             CardController cardController = cards[i].GetComponent<CardController>();
+            
+            // è®¾ç½®æ­£ç¡®çš„ç´¢å¼•
+            cardController.indexOfCards = i;
+            
+            // æ€»æ˜¯è®¾ç½®cardæ•°æ®ï¼Œä½†åªåœ¨éæ‹–æ‹½æ—¶æ›´æ–°ä½ç½®
             cardController.card = DeckManager.Instance.hand[i];
-            cardController.UpdateCard();
+            if (!cardController.isDragging) {
+                cardController.UpdateCard();
+            } else {
+                // æ‹–æ‹½æ—¶åªæ›´æ–°æ–‡æœ¬ä¿¡æ¯ï¼Œä¸æ›´æ–°ä½ç½®
+                if (cardController.card != null) {
+                    cardController.cardName.text = cardController.card.CardName;
+                    cardController.cardDescription.text = cardController.card.Description;
+                    cardController.cardType.text = GameData.HanizeCardType(cardController.card.CardType);
+                }
+            }
         }
+        
+        // éšè—å¤šä½™çš„å¡ç‰‡
+        for (int i = DeckManager.Instance.hand.Count; i < cards.Length; i++) {
+            cards[i].SetActive(false);
+        }
+        
         UpdateCardsSortingOrder();
     }
 
@@ -45,7 +66,7 @@ public class UIManager : MonoBehaviour
     
     /*
     public void UpdateTiles() {
-        // »ñÈ¡ËùÓĞTileGameobject¶ÔÏó²¢¸üĞÂËüÃÇµÄ×´Ì¬
+        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½TileGameobjectï¿½ï¿½ï¿½ó²¢¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½×´Ì¬
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("TileGameobject");
         foreach (GameObject tile in tiles) {
             tile.GetComponent<TileController>().UpdateTile();
@@ -55,9 +76,9 @@ public class UIManager : MonoBehaviour
 
     /*
     public void UpdateUI() {
-        DeckCount.text = "ÅÆ¿â: " + DeckManager.Instance.deck.Count;
-        HandCount.text = "ÊÖÅÆ: " + DeckManager.Instance.hand.Count;
-        ExtraDrawCount.text = "¶îÍâ³éÅÆ: " + GameData.extraDrawNum;
+        DeckCount.text = "ï¿½Æ¿ï¿½: " + DeckManager.Instance.deck.Count;
+        HandCount.text = "ï¿½ï¿½ï¿½ï¿½: " + DeckManager.Instance.hand.Count;
+        ExtraDrawCount.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + GameData.extraDrawNum;
     }
     */
 
@@ -71,3 +92,6 @@ public class UIManager : MonoBehaviour
         }
     }
 }
+
+
+
