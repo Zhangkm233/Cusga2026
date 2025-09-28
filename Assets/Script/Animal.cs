@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum AnimalType
 {
-    RABBIT, //Õ√
+    GOBLIN, //∏Á≤º¡÷
     BEAR, //–‹
     BOAR, //÷Ì
 }
@@ -54,7 +54,7 @@ public class Animal
     public Animal(AnimalType animalType) {
         this.animalType = animalType;
         switch (animalType) {
-            case AnimalType.RABBIT:
+            case AnimalType.GOBLIN:
                 animalName = "Õ√";
                 health = 2;
                 drop = new MaterialCard(MaterialType.MEAT);

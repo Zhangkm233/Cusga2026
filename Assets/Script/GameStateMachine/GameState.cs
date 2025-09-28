@@ -2,6 +2,7 @@ using UnityEngine;
 
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 // 游戏阶段枚举
 public enum GamePhase
@@ -19,6 +20,8 @@ public abstract class GameState : IState
 {
     protected GameStateMachine stateMachine;
 
+    protected Coroutine currentCoroutine;
+
     public GameState(GameStateMachine stateMachine) {
         this.stateMachine = stateMachine;
     }
@@ -26,6 +29,20 @@ public abstract class GameState : IState
     public abstract void Enter();
     public abstract void Update();
     public abstract void Exit();
+
+
+
+    // 启动协程的方法
+    protected Coroutine StartCoroutine(IEnumerator coroutine) {
+        return CoroutineHandler.Instance.StartCoroutine(coroutine);
+    }
+
+    // 停止协程的方法
+    protected void StopCoroutine(Coroutine coroutine) {
+        if (coroutine != null) {
+            CoroutineHandler.Instance.StopCoroutine(coroutine);
+        }
+    }
 }
 
 // 游戏状态机

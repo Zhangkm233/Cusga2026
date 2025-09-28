@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TileController : MonoBehaviour
 {
-    //��Ϸ�����Tile�ϵĽű� ����ͬ��Land ������ֵ��ʾ
     public Land land;
     public int tileRow;
     public int tileCol;
