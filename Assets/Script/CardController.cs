@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
-    //������Ϸ�ڵĿ�����ʾ
-    //������Ҫ��д
     public TMP_Text cardName;
     public TMP_Text cardDescription;
     public TMP_Text cardType;

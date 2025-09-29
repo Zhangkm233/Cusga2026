@@ -33,13 +33,13 @@ public class MapManager : MonoBehaviour
     }
 
     public void InitiallizeLandMap() {
-        //һ��ʼ�����ӵ��һ��3x4�ĵؿ飬���а���4��ɽ��5��ƽԭ��3��ɭ��
+        //3山4平2森3废墟
         LandMap.Clear();
         AnimalMap.Clear();
         
-        List<Land> row1 = new List<Land> { new HillLand(0,0),new HillLand(0,1),new HillLand(0,2),new HillLand(0,3) };
+        List<Land> row1 = new List<Land> { new HillLand(0,0),new HillLand(0,1),new HillLand(0,2),new RuinLand(0,3) };
         List<Land> row2 = new List<Land> { new PlainLand(1,0),new PlainLand(1,1),new PlainLand(1,2),new PlainLand(1,3) };
-        List<Land> row3 = new List<Land> { new PlainLand(2,0),new ForestLand(2,1),new ForestLand(2,2),new ForestLand(2,3) };
+        List<Land> row3 = new List<Land> { new RuinLand(2,0),new ForestLand(2,1),new ForestLand(2,2),new RuinLand(2,3) };
         LandMap.Add(row1);
         LandMap.Add(row2);
         LandMap.Add(row3);
@@ -50,11 +50,11 @@ public class MapManager : MonoBehaviour
             AnimalMap.Add(animalRow);
         }
         
-        Debug.Log("��ͼ�ѳ�ʼ��");
+        Debug.Log("地图初始化完成");
     }
 
     public void StateCheck() {
-        //���ÿ��ص�״̬
+        //检查所有地形是否触发被动效果
         foreach (var row in LandMap) {
             foreach (var land in row) {
                 land.PassiveEffect();
@@ -65,59 +65,59 @@ public class MapManager : MonoBehaviour
     public void AddAnimalToMap(Animal animal,int row,int col) {
         //���Ӷ��ﵽ��ͼ
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("λ�ó�����ͼ��Χ");
+            Debug.LogError("超出地图范围");
             return;
         }
         if (IsPositionBeenOccupiedByAnimal(row,col)) {
-            Debug.LogError("λ���ѱ�ռ��");
+            Debug.LogError("已有动物");
             return;
         }
         AnimalMap[row][col] = animal;
         animal.MapRow = row;
         animal.MapCol = col;
-        Debug.Log($"����{animal.AnimalName}�����ӵ���ͼλ��({row},{col})");
+        Debug.Log($"生物{animal.AnimalName}生成在({row},{col})");
     }
 
     public bool IsPositionBeenOccupiedByAnimal(int row,int col) {
-        //���λ���Ƿ�ռ��
+        //检查目标位置是否已有动物
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("λ�ó�����ͼ��Χ");
+            Debug.LogError("超出地图范围");
             return true;
         }
         return AnimalMap[row][col] != null;
     }
 
     public void RemoveAnimalFromMap(int row,int col) {
-        //�ӵ�ͼ�Ƴ�����
+        //从地图上移除动物
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("λ�ó�����ͼ��Χ");
+            Debug.LogError("超出地图范围");
             return;
         }
         if (AnimalMap[row][col] == null) {
-            Debug.LogError("��λ��û�ж���");
+            Debug.LogError("该位置没有动物");
             return;
         }
         Animal removedAnimal = AnimalMap[row][col];
         AnimalMap[row][col] = null;
-        Debug.Log($"����{removedAnimal.AnimalName}�Ѵӵ�ͼλ��({row},{col})�Ƴ�");
+        Debug.Log($"生物{removedAnimal.AnimalName}已从({row},{col})上移除");
     }
 
     public void MoveAnimalToMap(Animal animal,int row,int col) {
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
-            Debug.LogError("λ�ó�����ͼ��Χ");
+            Debug.LogError("超出地图范围");
             return;
         }
         if (IsPositionBeenOccupiedByAnimal(row,col)) {
-            Debug.LogError("λ���ѱ�ռ��");
+            Debug.LogError("已有生物");
             return;
         }
         RemoveAnimalFromMap(animal.MapRow,animal.MapCol);
         AddAnimalToMap(animal,row,col);
-        Debug.Log($"����{animal.AnimalName}���ƶ�����ͼλ��({row},{col})");
+        Debug.Log($"生物{animal.AnimalName}已移动至({row},{col})");
     }
 
     public int GetAmountOfLandType(LandType landType) {
-        //��ȡĳ�ֵ��ε�����
+        //获得给定地形类型的数量
         int count = 0;
         foreach (var row in LandMap) {
             foreach (var land in row) {
@@ -142,29 +142,25 @@ public class MapManager : MonoBehaviour
     }
 
     public void AddAnimalToLand(AnimalType animalType,Land land) {
-        //�����ؿ����
+        //添加动物到地块
         AddAnimalToMap(new Animal(animalType),land.MapRow,land.MapCol);
     }
 
     public int CountAdjacentLandType(int row,int col,LandType landType) {
         if (row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
-            Debug.LogError("λ�ó�����ͼ��Χ");
+            Debug.LogError("超出地图范围");
             return 0;
         }
         int count = 0;
-        //����Ϸ�
         if (row > 0 && LandMap[row - 1][col] != null && LandMap[row - 1][col].LandType == landType) {
             count++;
         }
-        //����·�
         if (row < LandMap.Count - 1 && LandMap[row + 1][col] != null && LandMap[row + 1][col].LandType == landType) {
             count++;
         }
-        //�����
         if (col > 0 && LandMap[row][col - 1] != null && LandMap[row][col - 1].LandType == landType) {
             count++;
         }
-        //����ҷ�
         if (col < LandMap[0].Count - 1 && LandMap[row][col + 1] != null && LandMap[row][col + 1].LandType == landType) {
             count++;
         }
@@ -172,7 +168,6 @@ public class MapManager : MonoBehaviour
     }
 
     public void EnergyPhase() {
-        //���ܽ׶�
         foreach (var row in LandMap) {
             foreach (var land in row) {
                 land.AddEnergy(1);
@@ -198,7 +193,7 @@ public class MapManager : MonoBehaviour
     }
 
     public void TransformRandomLand(LandType landType) {
-        //�����һ���ת��Ϊָ������ ���ų��Ѿ��Ǹõ��εĵؿ�
+        //随机将一个非该类型的地块转变为该类型
         List<Land> candidateLands = new List<Land>();
         foreach (var row in LandMap) {
             foreach (var land in row) {
@@ -208,7 +203,7 @@ public class MapManager : MonoBehaviour
             }
         }
         if (candidateLands.Count == 0) {
-            Debug.LogWarning("û�п�ת���ĵؿ�");
+            Debug.LogWarning("没有合法地形");
             return;
         }
         int randomIndex = Random.Range(0,candidateLands.Count);
@@ -218,7 +213,7 @@ public class MapManager : MonoBehaviour
 
     public Land GetLandAt(int row,int col) {
         if (row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
-            Debug.LogError("λ�ó�����ͼ��Χ");
+            Debug.LogError("超出地图范围");
             return null;
         }
         return LandMap[row][col];
