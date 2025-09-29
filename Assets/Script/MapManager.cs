@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    //���ڹ����߼���Land��animal��������ɺ��ƶ�
 
-    public List<List<Land>> LandMap = new List<List<Land>>();//��������land���� 
-    public List<List<Animal>> AnimalMap = new List<List<Animal>>();//��������animal����
+    public List<List<Land>> LandMap = new List<List<Land>>();
+    public List<List<Animal>> AnimalMap = new List<List<Animal>>();
 
     public static MapManager Instance { get; private set; }
     private void Awake() {
@@ -29,7 +28,7 @@ public class MapManager : MonoBehaviour
             }
             LandMap.Add(row);
         }
-        Debug.Log("��ͼ�ѳ�ʼ��");
+        Debug.Log("地图已初始化");
     }
 
     public void InitiallizeLandMap() {
@@ -63,7 +62,6 @@ public class MapManager : MonoBehaviour
     }
 
     public void AddAnimalToMap(Animal animal,int row,int col) {
-        //���Ӷ��ﵽ��ͼ
         if (row < 0 || row >= AnimalMap.Count || col < 0 || col >= AnimalMap[0].Count) {
             Debug.LogError("超出地图范围");
             return;

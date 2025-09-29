@@ -55,7 +55,7 @@ public class Animal
         this.animalType = animalType;
         switch (animalType) {
             case AnimalType.GOBLIN:
-                animalName = "Õ√";
+                animalName = "∏Á≤º¡÷";
                 health = 2;
                 drop = new MaterialCard(MaterialType.MEAT);
                 dropNum = 1;

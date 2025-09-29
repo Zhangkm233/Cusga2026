@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // ������Ϸ�ڵ�UI��ʾ
     public GameObject[] cards;
     public TMP_Text DeckCount;
     public TMP_Text HandCount;
@@ -26,13 +25,15 @@ public class UIManager : MonoBehaviour
     [ContextMenu("UpdateCards")]
     public void UpdateCards() {
         GameObject[] cards = GameObject.FindGameObjectsWithTag("CardGameobject");
-        
         for (int i = 0;i < Mathf.Min(DeckManager.Instance.hand.Count,cards.Length);i++) {
+            if (cards[i] == null) {
+                Debug.LogWarning($"cards[{i}] is null, skipping update.");
+                continue;
+            }
             CardController cardController = cards[i].GetComponent<CardController>();
             
             // 设置正确的索引
-            cardController.indexOfCards = i;
-            
+            cardController.indexOfCards = i;            
             // 总是设置card数据，但只在非拖拽时更新位置
             cardController.card = DeckManager.Instance.hand[i];
             if (!cardController.isDragging) {

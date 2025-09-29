@@ -68,8 +68,8 @@ public class CardController : MonoBehaviour
             cardType.text = GameData.HanizeCardType(card.CardType);
         } else {
             // 不要禁用GameObject，只是清空文本
-            cardName.text = "��";
-            cardDescription.text = "������";
+            cardName.text = "  ";
+            cardDescription.text = "   ";
             cardType.text = " ";
         }
         this.GetComponent<SpriteRenderer>().sortingOrder = indexOfCards;
@@ -84,17 +84,15 @@ public class CardController : MonoBehaviour
     }
 
     public void UpdateSortingOrder() {
-        // ���¿�Ƭ����Ⱦ˳��
         this.GetComponent<SpriteRenderer>().sortingOrder = indexOfCards * 2 + 1;
         cardCanvas.GetComponent<Canvas>().sortingOrder = indexOfCards * 2 + 2;
         this.GetComponent<BoxCollider>().layerOverridePriority = indexOfCards * 2 + 2;
     }
 
     public void UpdateSortingOrder(int order) {
-        // ���¿�Ƭ����Ⱦ˳��
-        this.GetComponent<SpriteRenderer>().sortingOrder = order;
-        cardCanvas.GetComponent<Canvas>().sortingOrder = order;
-        this.GetComponent<BoxCollider>().layerOverridePriority = order;
+        this.GetComponent<SpriteRenderer>().sortingOrder = order + 1;
+        cardCanvas.GetComponent<Canvas>().sortingOrder = order + 2;
+        this.GetComponent<BoxCollider>().layerOverridePriority = order +2;
     }
     
     // 鼠标按下开始拖拽
@@ -127,8 +125,8 @@ public class CardController : MonoBehaviour
             mouseWorldPos.z = transform.position.z; // 保持卡片的Z轴位置
             
             Vector3 newPosition = mouseWorldPos + offset;
-            transform.position = newPosition;
-            
+            transform.position = new Vector3(newPosition.x,newPosition.y,originalPosition.z); // 保持Z轴位置不变
+
             // 检查当前悬停的格子
             CheckHoveredTile();
         }

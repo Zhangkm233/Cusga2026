@@ -33,6 +33,14 @@ public enum WeaponType
     BOW = 2003, //弓
 }
 
+public enum DisasterType
+{
+    NULL = 3000, //无
+    STORM = 3001, //风暴
+    FLOOD = 3002, //泛滥
+    BLAZE = 3003, //焚林
+}
+
 [System.Serializable]
 public abstract class Card
 {
@@ -124,7 +132,7 @@ public class SkillCard : Card
             case SkillType.REINFORCE:
                 // 加固
                 CardName = "加固";
-                Description = "该地块获得1土壤";
+                Description = "该地块获得1坚固";
                 Id = 1002;
                 break;
             case SkillType.STALK:
@@ -165,7 +173,7 @@ public class WeaponCard : Card
         switch (weaponType) {
             case WeaponType.ROLLROCK:
                 CardName = "滚石";
-                Description = "造成1-2伤害，每座山丘额外+2伤害值";
+                Description = "造成1-2伤害，每座山脉额外+2伤害值";
                 Id = 2001;
                 break;
             case WeaponType.SPEAR:
@@ -214,18 +222,18 @@ public class DisasterCard : Card
         TypeOfDisaster = Random.Range(1,4);
         switch (TypeOfDisaster) {
             case 1:
-                CardName = "灾难1";
-                Description = "灾难的效果：需要3张木头来抵抗这个灾难，抵抗失败，随机地块降级为平原";
+                CardName = "风暴";
+                Description = "需要耗3木来抵抗这个灾难，抵抗失败，随机地块变为废墟";
                 Id = 3001;
                 break;
             case 2:
-                CardName = "灾难2";
-                Description = "灾难的效果：需要3张稻草来抵抗这个灾难，抵抗失败，随机破坏技能牌库，失去3张技能牌";
+                CardName = "泛滥";
+                Description = "需要耗3草来抵抗这个灾难，抵抗失败，摧毁随机3张牌库中的技能卡";
                 Id = 3002;
                 break;
             case 3:
-                CardName = "灾难3";
-                Description = "灾难的效果：需要2张石头来抵抗这个灾难，抵抗失败，随机地块降级为山丘，下回合再抽1张技能牌";
+                CardName = "焚林";
+                Description = "需要耗1石来抵抗这个灾难，抵抗失败，随机地块变为废墟，摧毁随机2张牌库中的技能卡";
                 Id = 3003;
                 break;
             default:
@@ -242,8 +250,8 @@ public class DisasterCard : Card
                     Debug.Log("成功抵抗灾难");
                 } else {
                     // 抵抗失败，随机地块降级为平原
-                    Debug.Log("抵抗灾难失败，随机地块降级为平原");
-                    MapManager.Instance.TransformRandomLand(LandType.PLAIN);
+                    Debug.Log("抵抗灾难失败，随机地块变为废墟");
+                    MapManager.Instance.TransformRandomLand(LandType.RUIN);
                 }
                 break;
             case 2:
@@ -251,19 +259,19 @@ public class DisasterCard : Card
                     Debug.Log("成功抵抗灾难");
                 } else {
                     // 抵抗失败，随机破坏技能牌库，失去3张技能牌
-                    Debug.Log("抵抗灾难失败，随机破坏技能牌库，失去3张技能牌");
+                    Debug.Log("抵抗灾难失败，摧毁随机3张牌库中的技能卡");
                     DeckManager.Instance.ShuffleDeck();
                     DeckManager.Instance.TryToRemoveCertainCardByTypeMultipleTime(CardType.SKILL,3);
                 }
                 break;
             case 3:
-                if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.STONE,2)) {
+                if (DeckManager.Instance.TryToRemoveCertainCardByIdMultipleTime((int)MaterialType.STONE,1)) {
                     Debug.Log("成功抵抗灾难");
                 } else {
                     // 抵抗失败，随机地块降级为山丘，下回合再抽1张技能牌
-                    Debug.Log("抵抗灾难失败，随机地块降级为山丘，下回合再抽1张技能牌");
-                    MapManager.Instance.TransformRandomLand(LandType.HILL);
-                    DeckManager.Instance.ExtraDrawNum += 1;
+                    Debug.Log("抵抗灾难失败，随机地块变为废墟，摧毁随机2张牌库中的技能卡");
+                    MapManager.Instance.TransformRandomLand(LandType.RUIN);
+                    DeckManager.Instance.TryToRemoveCertainCardByTypeMultipleTime(CardType.SKILL,2);
                 }
                 break;
             default:
