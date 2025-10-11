@@ -138,7 +138,7 @@ Material:
     m_Colors:
     - _AmbientColor: {r: 0.72, g: 0.78, b: 0.82, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0.36858004}
-    - _Color: {r: 1, g: 1, b: 1, a: 0.36858004}
+    - _Color: {r: 0.26744485, g: 0.4528302, b: 0.21217515, a: 0.38039216}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _LightColor: {r: 1, g: 0.96, b: 0.88, a: 1}
     - _LightDir: {r: 0.25, g: 0.9, b: 0.15, a: 0}
