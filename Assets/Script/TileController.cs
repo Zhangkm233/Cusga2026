@@ -55,4 +55,8 @@ public class TileController : MonoBehaviour
             }
         }
     }
+
+    public bool IsThisPlaceExist() {
+        return MapManager.Instance.IsPlaceLegal(tileRow,tileCol);
+    }
 }

@@ -32,6 +32,7 @@ public abstract class Land
     private static int maxHunterarea = 2; //最大猎圈值
     private int mapRow; //地形所在地图行
     private int mapCol; //地形所在地图列
+    private int level;
 
     //public delegate void LandChangeEventHandler(Land oldLand,Land newLand);
     //public event LandChangeEventHandler OnLandChanged; //地形变化事件
@@ -68,6 +69,11 @@ public abstract class Land
     public int Preference {
         get { return preference; }
         set { preference = value; }
+    }
+
+    public int Level {
+        get { return level; }
+        set { level = value; }
     }
 
     public bool IsRandomEventTriggered(int probability) {
@@ -198,6 +204,7 @@ public class HillLand : Land
         LandType = LandType.HILL;
         RequiredEnergy = 4;
         Preference = 20;
+        Level = 0;
         MapRow = row;
         MapCol = col;
     }
@@ -257,6 +264,7 @@ public class PlainLand : Land
         LandType = LandType.PLAIN;
         RequiredEnergy = 3;
         Preference = 30;
+        Level = 0;
         MapRow = row;
         MapCol = col;
     }
@@ -322,6 +330,7 @@ public class ForestLand : Land
         LandType = LandType.FOREST;
         RequiredEnergy = 2;
         Preference = 35;
+        Level = 0;
         MapRow = row;
         MapCol = col;
     }
@@ -370,6 +379,7 @@ public class MountainLand : Land
         LandType = LandType.MOUNTAIN;
         RequiredEnergy = 4;
         Preference = 21;
+        Level = 1;
         MapRow = row;
         MapCol = col;
     }
@@ -424,6 +434,7 @@ public class JungleLand : Land
         LandType = LandType.JUNGLE;
         RequiredEnergy = 1;
         Preference = 36;
+        Level = 1;
         MapRow = row;
         MapCol = col;
     }
@@ -480,6 +491,7 @@ public class WheatLand : Land
         LandType = LandType.WHEATLAND;
         RequiredEnergy = 4;
         Preference = 15;
+        Level = 1;
         MapRow = row;
         MapCol = col;
     }
@@ -535,6 +547,7 @@ public class CabinLand : Land
         LandType = LandType.CABIN;
         RequiredEnergy = 4;
         Preference = 10;
+        Level = 1;
         MapRow = row;
         MapCol = col;
     }
@@ -590,6 +603,7 @@ public class ThatchLand : Land
         LandType = LandType.THATCH;
         RequiredEnergy = 5;
         Preference = 11;
+        Level = 1;
         MapRow = row;
         MapCol = col;
     }
@@ -648,6 +662,7 @@ public class TownLand : Land
         LandType = LandType.TOWN;
         RequiredEnergy = 6;
         Preference = 9;
+        Level = 2;
         MapRow = row;
         MapCol = col;
         IsExtraEffectTriggered = false;
@@ -710,6 +725,7 @@ public class WarehouseLand : Land
         LandType = LandType.WAREHOUSE;
         RequiredEnergy = 2;
         Preference = 0;
+        Level = 3;
         MapRow = row;
         MapCol = col;
     }
@@ -762,6 +778,7 @@ public class TowerLand : Land
         LandType = LandType.TOWER;
         RequiredEnergy = 3;
         Preference = -1;
+        Level = 3;
         MapRow = row;
         MapCol = col;
     }
@@ -812,6 +829,7 @@ public class WindmillLand : Land
         LandType = LandType.WINDMILL;
         RequiredEnergy = 4;
         Preference = 24;
+        Level = 3;
         MapRow = row;
         MapCol = col;
 
@@ -862,6 +880,7 @@ public class RuinLand : Land
         LandType = LandType.RUIN;
         RequiredEnergy = 10;
         Preference = -20;
+        Level = 0;
         MapRow = row;
         MapCol = col;
 
