@@ -3,39 +3,39 @@ using UnityEngine;
 
 public enum LandType
 {
-    HILL, //É½Çð
+    HILL, //É½ï¿½ï¿½
     PLAIN, //Æ½Ô­
-    FOREST, //É­ÁÖ
-    MOUNTAIN, //É½Âö
-    JUNGLE, //ÃÜÁÖ
-    WHEATLAND, //ÂóÌï
-    CABIN, //Ä¾ÎÝ
-    THATCH, //Ã©ÎÝ
-    TOWN, //Ð¡Õò
-    WAREHOUSE, //²Ö¿â
-    TOWER, //Ëþ
-    WINDMILL, //·ç³µ
-    RUIN //·ÏÐæ
+    FOREST, //É­ï¿½ï¿½
+    MOUNTAIN, //É½ï¿½ï¿½
+    JUNGLE, //ï¿½ï¿½ï¿½ï¿½
+    WHEATLAND, //ï¿½ï¿½ï¿½ï¿½
+    CABIN, //Ä¾ï¿½ï¿½
+    THATCH, //Ã©ï¿½ï¿½
+    TOWN, //Ð¡ï¿½ï¿½
+    WAREHOUSE, //ï¿½Ö¿ï¿½
+    TOWER, //ï¿½ï¿½
+    WINDMILL, //ï¿½ç³µ
+    RUIN //ï¿½ï¿½ï¿½ï¿½
 }
 
 public abstract class Land
 {
-    private LandType landType; //µØÐÎÀàÐÍ
-    private int energyCounter = 0; //¼ÆÊýÆ÷£¬±íÊ¾¸ÃµØÐÎÉÏÓÐ¶àÉÙ¸ö³äÄÜ
-    private int requiredEnergy; //´¥·¢±»¶¯Ð§¹ûÐèÒªµÄ³äÄÜÊýÁ¿
-    public MaterialType storageCardType = MaterialType.NULL; //ÒÑ´æ´¢µÄ¿¨Æ¬Àà±ð
-    public int storageCardNum = 0; //´æ´¢µÄ¿¨Æ¬ÊýÁ¿
-    private int preference = 0; //Æ«ºÃµØÐÎÊýÖµ
-    private int soild = 0; //¼á¹ÌÖµ ¿ÉÒÔµÖµ²Ò»´Î¹¥»÷»òÕßÌìÔÖÐ§¹û
-    private int hunterarea = 0;//ÁÔÈ¦Öµ ¶îÍâÊÕÒæµÄ¸ÅÂÊÔö¼ÓÒ»±¶
-    private static int maxSoild = 1; //×î´ó¼á¹ÌÖµ
-    private static int maxHunterarea = 2; //×î´óÁÔÈ¦Öµ
-    private int mapRow; //µØÐÎËùÔÚµØÍ¼ÐÐ
-    private int mapCol; //µØÐÎËùÔÚµØÍ¼ÁÐ
+    private LandType landType; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private int energyCounter = 0; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½
+    private int requiredEnergy; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½Òªï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public MaterialType storageCardType = MaterialType.NULL; //ï¿½Ñ´æ´¢ï¿½Ä¿ï¿½Æ¬ï¿½ï¿½ï¿½
+    public int storageCardNum = 0; //ï¿½æ´¢ï¿½Ä¿ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½
+    private int preference = 0; //Æ«ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+    private int soild = 0; //ï¿½ï¿½ï¿½Öµ ï¿½ï¿½ï¿½ÔµÖµï¿½Ò»ï¿½Î¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
+    private int hunterarea = 0;//ï¿½ï¿½È¦Öµ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+    private static int maxSoild = 1; //ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+    private static int maxHunterarea = 2; //ï¿½ï¿½ï¿½ï¿½ï¿½È¦Öµ
+    private int mapRow; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Í¼ï¿½ï¿½
+    private int mapCol; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Í¼ï¿½ï¿½
     private int level;
 
     //public delegate void LandChangeEventHandler(Land oldLand,Land newLand);
-    //public event LandChangeEventHandler OnLandChanged; //µØÐÎ±ä»¯ÊÂ¼þ
+    //public event LandChangeEventHandler OnLandChanged; //ï¿½ï¿½ï¿½Î±ä»¯ï¿½Â¼ï¿½
     
     public int RequiredEnergy {
         get { return requiredEnergy; }
@@ -77,43 +77,43 @@ public abstract class Land
     }
 
     public bool IsRandomEventTriggered(int probability) {
-        int rand = Random.Range(1,101); // Éú³É1µ½100µÄËæ»úÊý
-        return rand <= probability; // Èç¹ûËæ»úÊýÐ¡ÓÚµÈÓÚ¸ÅÂÊÖµ£¬ÔòÊÂ¼þ´¥·¢
+        int rand = Random.Range(1,101); // ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½100ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        return rand <= probability; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½Úµï¿½ï¿½Ú¸ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
     public void AddEnergy(int energy) {
-        energyCounter += energy; // Ôö¼Ó³äÄÜ
+        energyCounter += energy; // ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½
         PassiveEffect();
-        Debug.Log($"µØÐÎ {landType} ³äÄÜÔö¼Ó {energy}£¬µ±Ç°³äÄÜ£º{energyCounter}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ {landType} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {energy}ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ü£ï¿½{energyCounter}");
     }
 
     public void SpawnAnimal(AnimalType animalType) {
         MapManager.Instance.AddAnimalToLand(animalType,this);
     }
 
-    public abstract void PassiveEffect(); //±»¶¯Ð§¹û
+    public abstract void PassiveEffect(); //ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
     public abstract void MaterialEffect(MaterialCard materialCard);
-    public abstract void ExtraEffect(); //¶îÍâÐ§¹û
+    public abstract void ExtraEffect(); //ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
 
     public void StorageIn(MaterialType materialType) {
         if (storageCardType == materialType) {
-            storageCardNum += 1; // ´æ´¢µÄ¿¨Æ¬ÊýÁ¿Ôö¼Ó1
+            storageCardNum += 1; // ï¿½æ´¢ï¿½Ä¿ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1
         } else {
-            storageCardType = materialType; // ´æ´¢µÄ¿¨Æ¬ÀàÐÍÎª²ÄÁÏ
-            storageCardNum = 1; // ´æ´¢µÄ¿¨Æ¬ÊýÁ¿ÉèÖÃÎª1
+            storageCardType = materialType; // ï¿½æ´¢ï¿½Ä¿ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½
+            storageCardNum = 1; // ï¿½æ´¢ï¿½Ä¿ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª1
         }
     }
 
     public void AddSoild(int value) {
         soild += value;
         if (soild > maxSoild) {
-            soild = maxSoild; // ¼á¹ÌÖµ²»ÄÜ³¬¹ý×î´óÖµ
+            soild = maxSoild; // ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ü³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
         }
     }
     public void AddHunterarea(int value) {
         hunterarea += value;
         if (hunterarea > maxHunterarea) {
-            hunterarea = maxHunterarea; // ÁÔÈ¦Öµ²»ÄÜ³¬¹ý×î´óÖµ
+            hunterarea = maxHunterarea; // ï¿½ï¿½È¦Öµï¿½ï¿½ï¿½Ü³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
         }
     }
 
@@ -142,8 +142,8 @@ public abstract class Land
 
 
     public void ChangeLandType(LandType landType) {
-        //ÕâÀïÊÇ×ª±äµØÐÎµÄº¯Êý Èç¹ûÏë½âñîºÏ£¬»¹ÐèÒª¸ÄÒ»¸Äµ½ÓÎÏ·ÀïÃæµÄµ÷ÓÃ£¬Ó¦¸ÃUI²ãÃæÐèÒªÈ«²¿ÖØÐ´
-        //ÐèÒªÔÚÂß¼­²ãÀïÃæÌí¼Ó´æ´¢ È»ºóÔÙÏÔÊ¾µ½ÓÎÏ·/UE²ã
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ÎµÄºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ò»ï¿½Äµï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½Ã£ï¿½Ó¦ï¿½ï¿½UIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÈ«ï¿½ï¿½ï¿½ï¿½Ð´
+        //ï¿½ï¿½Òªï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó´æ´¢ È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ï·/UEï¿½ï¿½
 
         MapManager.Instance.LandMap[mapRow][mapCol] = null;
         Land newLand = null;
@@ -185,21 +185,21 @@ public abstract class Land
                 newLand = new WheatLand(mapRow,mapCol);
                 break;
         }
-        //¼Ì³ÐËùÓÐÌØÊâÊôÐÔ£¨¼á¹ÌºÍÁÔÈ¦Ö®ÀàµÄ£©£¨³äÄÜ²»¼Ì³Ð£©
+        //ï¿½Ì³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½È¦Ö®ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½ï¿½Ì³Ð£ï¿½
         newLand.soild = this.soild;
         newLand.hunterarea = this.hunterarea;
         MapManager.Instance.LandMap[mapRow][mapCol] = newLand;
         //this.gameObject.AddComponent(newLand.GetType());
-        //ÕâÀïÎÒ²»ÖªµÀÐ´µÄ¶Ô²»¶Ô£¬ÉÐ´ýÉÌÈ¶
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½Öªï¿½ï¿½Ð´ï¿½Ä¶Ô²ï¿½ï¿½Ô£ï¿½ï¿½Ð´ï¿½ï¿½ï¿½È¶
         //Destroy(this);
-        //ÕâÀïÐèÒª¸ü¸ÄÓÎÏ·ÄÚ¶ÔÓ¦µÄgameobject
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½Ú¶ï¿½Ó¦ï¿½ï¿½gameobject
         //OnLandChanged.Invoke(this,newLand);
     }
 }
 
 public class HillLand : Land 
 {
-    // É½ÇðµØÐÎ
+    // É½ï¿½ï¿½ï¿½ï¿½ï¿½
     public HillLand(int row, int col) {
         LandType = LandType.HILL;
         RequiredEnergy = 4;
@@ -210,18 +210,18 @@ public class HillLand : Land
     }
 
     public override void PassiveEffect() {
-        // É½ÇðµØÐÎµÄ±»¶¯Ð§¹û 4Ê±²ú1Ê¯
+        // É½ï¿½ï¿½ï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ 4Ê±ï¿½ï¿½1Ê¯
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("É½ÇðµØÐÎ±»¶¯Ð§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.STONE),1); //Ìí¼ÓÒ»¸öÊ¯Í·²ÄÁÏ¿¨µ½ÅÆ¿â
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            Debug.Log("É½ï¿½ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.STONE),1); //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê¯Í·ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
 
     public override void MaterialEffect(MaterialCard materialCard) {
         switch(materialCard.materialType) {
             case MaterialType.WOOD:
-                //4ÉýÄ¾ÎÝ¼á¹Ì
+                //4ï¿½ï¿½Ä¾ï¿½Ý¼ï¿½ï¿½
                 StorageIn(MaterialType.WOOD);
                 if (storageCardNum >= 4 && storageCardType == MaterialType.WOOD) {
                     AddSoild(1);
@@ -229,18 +229,18 @@ public class HillLand : Land
                 }
                 break;
             case MaterialType.HAY:
-                //²ú2Ä¾²Ä
+                //ï¿½ï¿½2Ä¾ï¿½ï¿½
                 AddCard(new MaterialCard(MaterialType.WOOD),2);
                 break;
             case MaterialType.STONE:
-                //1ÉýÉ½Âö
+                //1ï¿½ï¿½É½ï¿½ï¿½
                 StorageIn(MaterialType.STONE);
                 if (storageCardNum >= 1 && storageCardType == MaterialType.STONE) {
                     ChangeLandType(LandType.MOUNTAIN);
                 }
                 break;
             case MaterialType.MEAT:
-                //²ú1ÐÜ
+                //ï¿½ï¿½1ï¿½ï¿½
                 SpawnAnimal(AnimalType.BEAR);
                 break;
             default:
@@ -249,17 +249,17 @@ public class HillLand : Land
     }
 
     public override void ExtraEffect() {
-        //ÕâÀï»¹Ã»Ð´ Ó¦¸ÃÊÇ20%²ú1Ê¯
+        //ï¿½ï¿½ï¿½ï»¹Ã»Ð´ Ó¦ï¿½ï¿½ï¿½ï¿½20%ï¿½ï¿½1Ê¯
         if(IsRandomEventTriggered(20)) {
-            Debug.Log("É½ÇðµØÐÎ¶îÍâÐ§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.STONE),1  ); //Ìí¼ÓÒ»¸öÊ¯Í·²ÄÁÏ¿¨µ½ÅÆ¿â
+            Debug.Log("É½ï¿½ï¿½ï¿½ï¿½Î¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.STONE),1  ); //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê¯Í·ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
         }
     }
 }
 
 public class PlainLand : Land
 {
-    // Æ½Ô­µØÐÎ
+    // Æ½Ô­ï¿½ï¿½ï¿½ï¿½
     public PlainLand(int row,int col) {
         LandType = LandType.PLAIN;
         RequiredEnergy = 3;
@@ -269,38 +269,38 @@ public class PlainLand : Land
         MapCol = col;
     }
     public override void PassiveEffect() {
-        // Æ½Ô­µØÐÎµÄ±»¶¯Ð§¹û 3Ê±²ú1²Ý
+        // Æ½Ô­ï¿½ï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ 3Ê±ï¿½ï¿½1ï¿½ï¿½
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("Æ½Ô­µØÐÎ±»¶¯Ð§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.HAY),1); //Ìí¼ÓÒ»¸ö¸É²Ý²ÄÁÏ¿¨µ½ÅÆ¿â
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            Debug.Log("Æ½Ô­ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.HAY),1); //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½É²Ý²ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //3ÉýÄ¾ÎÝ
+                //3ï¿½ï¿½Ä¾ï¿½ï¿½
                 StorageIn(MaterialType.WOOD);
                 if (storageCardNum >= 3 && storageCardType == MaterialType.WOOD) {
                     ChangeLandType(LandType.CABIN);
                 }
                 break;
             case MaterialType.HAY:
-                //4ÉýÃ©ÎÝ
+                //4ï¿½ï¿½Ã©ï¿½ï¿½
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 4 && storageCardType == MaterialType.HAY) {
                     ChangeLandType(LandType.THATCH);
                 }
                 break;
             case MaterialType.STONE:
-                //2ÉýÂóÌï
+                //2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 StorageIn(MaterialType.STONE);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.STONE) {
                     ChangeLandType(LandType.WHEATLAND);
                 }
                 break;
             case MaterialType.MEAT:
-                //2²ú1ÍÃ1×·ÁÔ
+                //2ï¿½ï¿½1ï¿½ï¿½1×·ï¿½ï¿½
                 StorageIn(MaterialType.MEAT);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.MEAT) {
                     SpawnAnimal(AnimalType.GOBLIN);
@@ -315,9 +315,9 @@ public class PlainLand : Land
     }
 
     public override void ExtraEffect() {
-        //10%²ú1ÍÃ
+        //10%ï¿½ï¿½1ï¿½ï¿½
         if (IsRandomEventTriggered(10)) {
-            Debug.Log("Æ½Ô­µØÐÎ¶îÍâÐ§¹û´¥·¢");
+            Debug.Log("Æ½Ô­ï¿½ï¿½ï¿½Î¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             SpawnAnimal(AnimalType.GOBLIN);
         }
     }
@@ -325,7 +325,7 @@ public class PlainLand : Land
 
 public class ForestLand : Land
 {
-    // É­ÁÖµØÐÎ
+    // É­ï¿½Öµï¿½ï¿½ï¿½
     public ForestLand(int row, int col) {
         LandType = LandType.FOREST;
         RequiredEnergy = 2;
@@ -336,32 +336,32 @@ public class ForestLand : Land
     }
 
     public override void PassiveEffect() {
-        // É­ÁÖµØÐÎµÄ±»¶¯Ð§¹û 2Ê±²ú1Ä¾
+        // É­ï¿½Öµï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ 2Ê±ï¿½ï¿½1Ä¾
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("É­ÁÖµØÐÎ±»¶¯Ð§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.WOOD),1); //Ìí¼ÓÒ»¸öÄ¾²Ä²ÄÁÏ¿¨µ½ÅÆ¿â
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            Debug.Log("É­ï¿½Öµï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.WOOD),1); //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ä¾ï¿½Ä²ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //2ÉýÃÜÁÖ
+                //2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 StorageIn(MaterialType.WOOD);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.WOOD) {
                     ChangeLandType(LandType.JUNGLE);
                 }
                 break;
             case MaterialType.HAY:
-                //²ú1¸ç²¼ÁÖ
+                //ï¿½ï¿½1ï¿½ç²¼ï¿½ï¿½
                 SpawnAnimal(AnimalType.GOBLIN);
                 break;
             case MaterialType.STONE:
-                //²ú1Ã¬
+                //ï¿½ï¿½1Ã¬
                 AddCard(new WeaponCard(WeaponType.SPEAR),1);
                 break;
             case MaterialType.MEAT:
-                //²ú1×·ÁÔ
+                //ï¿½ï¿½1×·ï¿½ï¿½
                 AddCard(new SkillCard(SkillType.STALK),1);
                 break;
             default:
@@ -377,28 +377,29 @@ public class MountainLand : Land
 {
     public MountainLand(int row,int col) {
         LandType = LandType.MOUNTAIN;
-        RequiredEnergy = 4;
+        RequiredEnergy = ProgressionManager.Instance != null ? 
+            ProgressionManager.Instance.GetMountainRequiredEnergy() : 4;
         Preference = 21;
         Level = 1;
         MapRow = row;
         MapCol = col;
     }
     public override void PassiveEffect() {
-        // É½ÂöµØÐÎµÄ±»¶¯Ð§¹û 4Ê±²ú2Ê¯
+        // É½ï¿½ï¿½ï¿½ï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ 4Ê±ï¿½ï¿½2Ê¯
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("É½ÂöµØÐÎ±»¶¯Ð§¹û´¥·¢");
+            Debug.Log("É½ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddCard(new MaterialCard(MaterialType.STONE),2);
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //µÃ1¼á¹Ì
+                //ï¿½ï¿½1ï¿½ï¿½ï¿½
                 AddSoild(1);
                 break;
             case MaterialType.HAY:
-                //2ÉýÉ½Çð²ú3³é
+                //2ï¿½ï¿½É½ï¿½ï¿½ï¿½3ï¿½ï¿½
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
                     ChangeLandType(LandType.HILL);
@@ -406,11 +407,11 @@ public class MountainLand : Land
                 }
                 break;
             case MaterialType.STONE:
-                //²ú3¹öÊ¯
+                //ï¿½ï¿½3ï¿½ï¿½Ê¯
                 AddCard(new WeaponCard(WeaponType.ROLLROCK),3);
                 break;
             case MaterialType.MEAT:
-                //µÃ1ÁÔÈ¦
+                //ï¿½ï¿½1ï¿½ï¿½È¦
                 AddHunterarea(1);
                 break;
             default:
@@ -419,9 +420,9 @@ public class MountainLand : Land
     }
 
     public override void ExtraEffect() {
-        //Ã¿»ØºÏÓÐ¡°ÏàÁÚËÄ¸ñÄÚÉ½ÂöÊýÁ¿¡±*10%µÄ¸ÅÂÊ»ñµÃ1³äÄÜ
+        //Ã¿ï¿½Øºï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*10%ï¿½Ä¸ï¿½ï¿½Ê»ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½
         if(IsRandomEventTriggered(10 * MapManager.Instance.CountAdjacentLandType(MapRow,MapCol,LandType.MOUNTAIN))) {
-            Debug.Log("É½ÂöµØÐÎ¶îÍâÐ§¹û´¥·¢");
+            Debug.Log("É½ï¿½ï¿½ï¿½ï¿½ï¿½Î¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddEnergy(1);
         }
     }
@@ -439,25 +440,25 @@ public class JungleLand : Land
         MapCol = col;
     }
     public override void PassiveEffect() {
-        //1Ê±²ú1Ä¾
+        //1Ê±ï¿½ï¿½1Ä¾
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("ÃÜÁÖµØÐÎ±»¶¯Ð§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.WOOD),1); //Ìí¼ÓÒ»¸öÄ¾²Ä²ÄÁÏ¿¨µ½ÅÆ¿â
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            Debug.Log("ï¿½ï¿½ï¿½Öµï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.WOOD),1); //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ä¾ï¿½Ä²ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
 
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //2ÉýÄ¾ÎÝ
+                //2ï¿½ï¿½Ä¾ï¿½ï¿½
                 StorageIn(MaterialType.WOOD);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.WOOD) {
                     ChangeLandType(LandType.CABIN);
                 }
                 break;
             case MaterialType.HAY:
-                //2²ú1ÐÜ
+                //2ï¿½ï¿½1ï¿½ï¿½
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
                     SpawnAnimal(AnimalType.BEAR);
@@ -466,14 +467,14 @@ public class JungleLand : Land
                 }
                 break;
             case MaterialType.STONE:
-                //3ÉýÐ¡Õò
+                //3ï¿½ï¿½Ð¡ï¿½ï¿½
                 StorageIn(MaterialType.STONE);
                 if (storageCardNum >= 3 && storageCardType == MaterialType.STONE) {
                     ChangeLandType(LandType.TOWN);
                 }
                 break;
             case MaterialType.MEAT:
-                //²ú³é2Èâ
+                //ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½
                 AddExtraDraw((int)MaterialType.MEAT,2);
                 break;
             default:
@@ -496,21 +497,21 @@ public class WheatLand : Land
         MapCol = col;
     }
     public override void PassiveEffect() {
-        //4Ê±²ú2²Ý
+        //4Ê±ï¿½ï¿½2ï¿½ï¿½
         if (EnergyCounter >= RequiredEnergy) {
-            Debug.Log("ÂóÌïµØÐÎ±»¶¯Ð§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.HAY),2); //Ìí¼Ó2¸ö¸É²Ý²ÄÁÏ¿¨µ½ÅÆ¿â
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.HAY),2); //ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½É²Ý²ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //²ú1ÊÕ¸î
+                //ï¿½ï¿½1ï¿½Õ¸ï¿½
                 AddCard(new SkillCard(SkillType.HARVEST),1);
                 break;
             case MaterialType.HAY:
-                //2²ú³é3²Ý
+                //2ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
                     AddExtraDraw((int)MaterialType.HAY,3);
@@ -519,12 +520,12 @@ public class WheatLand : Land
                 }
                 break;
             case MaterialType.STONE:
-                //µÃ1¼á¹Ì2³äÄÜ
+                //ï¿½ï¿½1ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½
                 AddSoild(1);
                 AddEnergy(2);
                 break;
             case MaterialType.MEAT:
-                //µÃ3³äÄÜ
+                //ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½
                 AddEnergy(3);
                 break;
             default:
@@ -533,10 +534,10 @@ public class WheatLand : Land
     }
 
     public override void ExtraEffect() {
-        //30%²ú1²Ý
+        //30%ï¿½ï¿½1ï¿½ï¿½
         if (IsRandomEventTriggered(30)) {
-            Debug.Log("ÂóÌïµØÐÎ¶îÍâÐ§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.HAY),1); //Ìí¼ÓÒ»¸ö¸É²Ý²ÄÁÏ¿¨µ½ÅÆ¿â
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.HAY),1); //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½É²Ý²ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
         }
     }
 }
@@ -553,31 +554,31 @@ public class CabinLand : Land
     }
 
     public override void PassiveEffect() {
-        // Ä¾ÎÝµØÐÎµÄ±»¶¯Ð§¹û
+        // Ä¾ï¿½Ýµï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         if (EnergyCounter >= RequiredEnergy) {
-            //4Ê±²ú1³é
-            Debug.Log("Ä¾ÎÝµØÐÎ±»¶¯Ð§¹û´¥·¢");
+            //4Ê±ï¿½ï¿½1ï¿½ï¿½
+            Debug.Log("Ä¾ï¿½Ýµï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddExtraDraw(CardType.MATERIAL);
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //²ú1ÁÔÈ¦
+                //ï¿½ï¿½1ï¿½ï¿½È¦
                 AddHunterarea(1);
                 break;
             case MaterialType.HAY:
-                //²ú1ÊÕ¸î
+                //ï¿½ï¿½1ï¿½Õ¸ï¿½
                 AddCard(new SkillCard(SkillType.HARVEST),1);
                 break;
             case MaterialType.STONE:
-                //²ú3¹öÊ¯
+                //ï¿½ï¿½3ï¿½ï¿½Ê¯
                 AddCard(new WeaponCard(WeaponType.ROLLROCK),3);
                 break;
             case MaterialType.MEAT:
-                //4ÉýÐ¡Õò
+                //4ï¿½ï¿½Ð¡ï¿½ï¿½
                 StorageIn(MaterialType.MEAT);
                 if (storageCardNum >= 4 && storageCardType == MaterialType.MEAT) {
                     ChangeLandType(LandType.TOWN);
@@ -589,9 +590,9 @@ public class CabinLand : Land
     }
 
     public override void ExtraEffect() {
-        //5%²ú1³é×ÊÔ´
+        //5%ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ô´
         if (IsRandomEventTriggered(5)) {
-            Debug.Log("Ä¾ÎÝµØÐÎ¶îÍâÐ§¹û´¥·¢");
+            Debug.Log("Ä¾ï¿½Ýµï¿½ï¿½Î¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddExtraDraw(CardType.MATERIAL);
         }
     }
@@ -608,10 +609,10 @@ public class ThatchLand : Land
         MapCol = col;
     }
     public override void PassiveEffect() {
-        // Ã©ÎÝµØÐÎµÄ±»¶¯Ð§¹û
+        // Ã©ï¿½Ýµï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         if (EnergyCounter >= RequiredEnergy) {
-            //5Ê±²ú2Ä¾1Ê¯
-            Debug.Log("Ã©ÎÝµØÐÎ±»¶¯Ð§¹û´¥·¢");
+            //5Ê±ï¿½ï¿½2Ä¾1Ê¯
+            Debug.Log("Ã©ï¿½Ýµï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddCard(new MaterialCard(MaterialType.WOOD),2);
             AddCard(new MaterialCard(MaterialType.STONE),1);
         } else {
@@ -620,20 +621,20 @@ public class ThatchLand : Land
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //²ú2Ã¬
+                //ï¿½ï¿½2Ã¬
                 AddCard(new WeaponCard(WeaponType.SPEAR),2);
                 break;
             case MaterialType.HAY:
-                //²ú1Öí
+                //ï¿½ï¿½1ï¿½ï¿½
                 SpawnAnimal(AnimalType.BOAR);
                 break;
             case MaterialType.STONE:
-                //²ú1¼Ó¹Ì³é1¼¼
+                //ï¿½ï¿½1ï¿½Ó¹Ì³ï¿½1ï¿½ï¿½
                 AddSoild(1);
                 AddExtraDraw(CardType.SKILL);
                 break;
             case MaterialType.MEAT:
-                //²ú2×·ÁÔ
+                //ï¿½ï¿½2×·ï¿½ï¿½
                 AddCard(new SkillCard(SkillType.STALK),2);
                 break;
             default:
@@ -642,9 +643,9 @@ public class ThatchLand : Land
     }
 
     public override void ExtraEffect() {
-        //15%µÃ1³ä
+        //15%ï¿½ï¿½1ï¿½ï¿½
         if (IsRandomEventTriggered(15)) {
-            Debug.Log("Ã©ÎÝµØÐÎ¶îÍâÐ§¹û´¥·¢");
+            Debug.Log("Ã©ï¿½Ýµï¿½ï¿½Î¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddEnergy(1);
         }
     }
@@ -668,40 +669,40 @@ public class TownLand : Land
         IsExtraEffectTriggered = false;
     }
     public override void PassiveEffect() {
-        // ³ÇÕòµØÐÎµÄ±»¶¯Ð§¹û
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         if (EnergyCounter >= RequiredEnergy) {
-            //6Ê±²ú3Èâ
-            Debug.Log("³ÇÕòµØÐÎ±»¶¯Ð§¹û´¥·¢");
-            AddCard(new MaterialCard(MaterialType.MEAT),3); //Ìí¼Ó3¸öÈâ²ÄÁÏ¿¨µ½ÅÆ¿â
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            //6Ê±ï¿½ï¿½3ï¿½ï¿½
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+            AddCard(new MaterialCard(MaterialType.MEAT),3); //ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //5Éý²Ö¿â
+                //5ï¿½ï¿½ï¿½Ö¿ï¿½
                 StorageIn(MaterialType.WOOD);
                 if (storageCardNum >= 5 && storageCardType == MaterialType.WOOD) {
                     ChangeLandType(LandType.WAREHOUSE);
                 }
                 break;
             case MaterialType.HAY:
-                //4Éý·ç³µ
+                //4ï¿½ï¿½ï¿½ç³µ
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 4 && storageCardType == MaterialType.HAY) {
                     ChangeLandType(LandType.WINDMILL);
                 }
                 break;
             case MaterialType.STONE:
-                //1ÉýËþ
+                //1ï¿½ï¿½ï¿½ï¿½
                 StorageIn(MaterialType.STONE);
                 if (storageCardNum >= 1 && storageCardType == MaterialType.STONE) {
                     ChangeLandType(LandType.TOWER);
                 }
                 break;
             case MaterialType.MEAT:
-                //µÃ2Ã¬
+                //ï¿½ï¿½2Ã¬
                 AddCard(new WeaponCard(WeaponType.SPEAR),2);
                 break;
             default:
@@ -710,7 +711,7 @@ public class TownLand : Land
     }
 
     public override void ExtraEffect() {
-        //¶îÍâ³é2¼¼Ò»´Î
+        //ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½Ò»ï¿½ï¿½
         if (!IsExtraEffectTriggered) {
             AddExtraDraw(CardType.SKILL,2);
             IsExtraEffectTriggered = true;
@@ -730,32 +731,32 @@ public class WarehouseLand : Land
         MapCol = col;
     }
     public override void PassiveEffect() {
-        // ²Ö¿âµØÐÎµÄ±»¶¯Ð§¹û
+        // ï¿½Ö¿ï¿½ï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         if (EnergyCounter >= RequiredEnergy) {
-            //2Ê±²ú1³é×ÊÔ´
-            Debug.Log("²Ö¿âµØÐÎ±»¶¯Ð§¹û´¥·¢");
+            //2Ê±ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ô´
+            Debug.Log("ï¿½Ö¿ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddExtraDraw(CardType.MATERIAL);
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //²ú1³é¸É²Ý
+                //ï¿½ï¿½1ï¿½ï¿½É²ï¿½
                 AddExtraDraw((int)MaterialType.HAY,1);
                 break;
             case MaterialType.HAY:
-                //²ú1³éÄ¾Í·
+                //ï¿½ï¿½1ï¿½ï¿½Ä¾Í·
                 AddExtraDraw((int)MaterialType.WOOD,1);
                 break;
             case MaterialType.STONE:
-                //²ú1³é×ÊÔ´,µÃ¼á¹Ì
+                //ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ô´,ï¿½Ã¼ï¿½ï¿½
                 AddExtraDraw(CardType.MATERIAL);
                 AddSoild(1);
                 break;
             case MaterialType.MEAT:
-                //²ú1³éÊ¯Í·
+                //ï¿½ï¿½1ï¿½ï¿½Ê¯Í·
                 AddExtraDraw((int)MaterialType.STONE,1);
                 break;
             default:
@@ -764,9 +765,9 @@ public class WarehouseLand : Land
     }
 
     public override void ExtraEffect() {
-        //8%²ú1³é×ÊÔ´
+        //8%ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ô´
         if (IsRandomEventTriggered(8)) {
-            Debug.Log("²Ö¿âµØÐÎ¶îÍâÐ§¹û´¥·¢");
+            Debug.Log("ï¿½Ö¿ï¿½ï¿½ï¿½Î¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddExtraDraw(CardType.MATERIAL);
         }
     }
@@ -783,32 +784,32 @@ public class TowerLand : Land
         MapCol = col;
     }
     public override void PassiveEffect() {
-        // ËþµØÐÎµÄ±»¶¯Ð§¹û
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ÎµÄ±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         if (EnergyCounter >= RequiredEnergy) {
-            //3Ê±²ú¶Ì¹­
-            Debug.Log("ËþµØÐÎ±»¶¯Ð§¹û´¥·¢");
+            //3Ê±ï¿½ï¿½ï¿½Ì¹ï¿½
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddCard(new WeaponCard(WeaponType.BOW),1);
-            EnergyCounter = 0; // ÖØÖÃ¼ÆÊýÆ÷
+            EnergyCounter = 0; // ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½
         } else {
         }
     }
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //µÃ¶Ì¹­
+                //ï¿½Ã¶Ì¹ï¿½
                 AddCard(new WeaponCard(WeaponType.BOW),1);
                 break;
             case MaterialType.HAY:
-                //µÃ2¼Ó¹Ì
+                //ï¿½ï¿½2ï¿½Ó¹ï¿½
                 AddSoild(2);
                 break;
             case MaterialType.STONE:
-                //µÃ2¶Ì¹­2Ã¬
+                //ï¿½ï¿½2ï¿½Ì¹ï¿½2Ã¬
                 AddCard(new WeaponCard(WeaponType.BOW),2);
                 AddCard(new WeaponCard(WeaponType.SPEAR),2);
                 break;
             case MaterialType.MEAT:
-                //µÃ³é2¼¼
+                //ï¿½Ã³ï¿½2ï¿½ï¿½
                 AddExtraDraw(CardType.SKILL,2);
                 break;
             default:
@@ -817,7 +818,7 @@ public class TowerLand : Land
     }
 
     public override void ExtraEffect() {
-        //ÔìÉË×îÐ¡Öµ+1 (Õâ¸öÐ§¹ûÔÚÕ½¶·ÏµÍ³ÀïÊµÏÖ)
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡Öµ+1 (ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ÏµÍ³ï¿½ï¿½Êµï¿½ï¿½)
     }
 }
 
@@ -836,8 +837,8 @@ public class WindmillLand : Land
     }
     public override void PassiveEffect() {
         if (EnergyCounter >= RequiredEnergy) {
-            //4Ê±²ú1ÊÕ¸î
-            Debug.Log("·ç³µµØÐÎ±»¶¯Ð§¹û´¥·¢");
+            //4Ê±ï¿½ï¿½1ï¿½Õ¸ï¿½
+            Debug.Log("ï¿½ç³µï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddCard(new SkillCard(SkillType.HARVEST),1);
             EnergyCounter = 0;
         }
@@ -845,11 +846,11 @@ public class WindmillLand : Land
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //²ú3¸É²Ý
+                //ï¿½ï¿½3ï¿½É²ï¿½
                 AddCard(new MaterialCard(MaterialType.HAY),3);
                 break;
             case MaterialType.HAY:
-                //2µÃ3³éÊÕ¸î
+                //2ï¿½ï¿½3ï¿½ï¿½ï¿½Õ¸ï¿½
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.HAY) {
                     AddExtraDraw((int)SkillType.HARVEST,3);
@@ -858,11 +859,11 @@ public class WindmillLand : Land
                 }
                 break;
             case MaterialType.STONE:
-                //²ú2ÊÕ¸î
+                //ï¿½ï¿½2ï¿½Õ¸ï¿½
                 AddCard(new SkillCard(SkillType.HARVEST),2);
                 break;
             case MaterialType.MEAT:
-                //²ú1¸ç²¼ÁÖ
+                //ï¿½ï¿½1ï¿½ç²¼ï¿½ï¿½
                 SpawnAnimal(AnimalType.GOBLIN);
                 break;
             default:
@@ -870,7 +871,7 @@ public class WindmillLand : Land
         }
     }
     public override void ExtraEffect() {
-        //ÊÕ¸î¶îÍâ+1³ä (Õâ¸öÐ§¹ûÔÚÊÕ¸î¼¼ÄÜÀïÊµÏÖ)
+        //ï¿½Õ¸ï¿½ï¿½ï¿½ï¿½+1ï¿½ï¿½ (ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸î¼¼ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½)
     }
 }
 
@@ -887,8 +888,8 @@ public class RuinLand : Land
     }
     public override void PassiveEffect() {
         if (EnergyCounter >= RequiredEnergy) {
-            //10Ê±²ú1Ê¯
-            Debug.Log("·ÏÐæµØÐÎ±»¶¯Ð§¹û´¥·¢");
+            //10Ê±ï¿½ï¿½1Ê¯
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             AddCard(new MaterialCard(MaterialType.STONE),1);
             EnergyCounter = 0;
         }
@@ -896,28 +897,28 @@ public class RuinLand : Land
     public override void MaterialEffect(MaterialCard materialCard) {
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
-                //3ÉýÉ­ÁÖ
+                //3ï¿½ï¿½É­ï¿½ï¿½
                 StorageIn(MaterialType.WOOD);
                 if (storageCardNum >= 3 && storageCardType == MaterialType.WOOD) {
                     ChangeLandType(LandType.FOREST);
                 }
                 break;
             case MaterialType.HAY:
-                //3ÉýÆ½Ô­
+                //3ï¿½ï¿½Æ½Ô­
                 StorageIn(MaterialType.HAY);
                 if (storageCardNum >= 3 && storageCardType == MaterialType.HAY) {
                     ChangeLandType(LandType.PLAIN);
                 }
                 break;
             case MaterialType.STONE:
-                //2ÉýÉ½Âö
+                //2ï¿½ï¿½É½ï¿½ï¿½
                 StorageIn(MaterialType.STONE);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.STONE) {
                     ChangeLandType(LandType.MOUNTAIN);
                 }
                 break;
             case MaterialType.MEAT:
-                //²ú1×·ÁÔ
+                //ï¿½ï¿½1×·ï¿½ï¿½
                 AddCard(new SkillCard(SkillType.STALK),1);
                 break;
             default:
@@ -925,6 +926,6 @@ public class RuinLand : Land
         }
     }
     public override void ExtraEffect() {
-        //ÎÞ
+        //ï¿½ï¿½
     }
 }

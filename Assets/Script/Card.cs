@@ -154,7 +154,12 @@ public class SkillCard : Card
                 targetLand.AddEnergy(2 + MapManager.Instance.GetAmountOfLandType(LandType.WINDMILL));
                 break;
             case SkillType.REINFORCE:
-                targetLand.AddSoild(1);
+                // 使用ProgressionManager处理加固技能效果
+                if (ProgressionManager.Instance != null) {
+                    ProgressionManager.Instance.ApplyReinforceEffect(targetLand);
+                } else {
+                    targetLand.AddSoild(1);
+                }
                 break;
             case SkillType.STALK:
                 targetLand.AddHunterarea(1);
@@ -197,8 +202,13 @@ public class WeaponCard : Card
     public override void ApplyEffect(Land targetLand) {
         switch (weaponType) {
             case WeaponType.ROLLROCK:
-                MapManager.Instance.DealDamageTo(targetLand,Random.Range(1,3) + (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2) 
-                    + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
+                // 使用ProgressionManager获取滚石伤害
+                int baseDamage = ProgressionManager.Instance != null ? 
+                    ProgressionManager.Instance.GetRollrockMaxDamage() : 2;
+                int damage = Random.Range(1, baseDamage + 1) + 
+                    (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2) + 
+                    MapManager.Instance.GetAmountOfLandType(LandType.TOWER);
+                MapManager.Instance.DealDamageTo(targetLand, damage);
                 break;
             case WeaponType.SPEAR:
                 MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,5)
