@@ -216,4 +216,13 @@ public class MapManager : MonoBehaviour
         }
         return LandMap[row][col];
     }
+    
+    public bool IsPlaceLegal(int row,int col) {
+        //检查目标位置是否在地图范围内且有地形
+        if (row < 0 || row >= LandMap.Count || col < 0 || col >= LandMap[0].Count) {
+            Debug.LogError("超出地图范围");
+            return false;
+        }
+        return LandMap[row][col] != null;
+    }
 }
