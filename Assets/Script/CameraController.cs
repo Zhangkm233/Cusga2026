@@ -7,7 +7,9 @@ public class CameraController : MonoBehaviour
 
     public float rotationSpeed = 30f;
     public float distanceFromTarget = 10f;
-    public float zoomSpeed = 0.3f;
+    public float zoomSpeed = 0.1f;
+    private float minDistance = 8f;
+    private float maxDistance = 25f;
 
     public GameObject target; //父物体
 
@@ -52,10 +54,10 @@ public class CameraController : MonoBehaviour
     public void ChangeDistanceByKey() {
         if (Keyboard.current.upArrowKey.isPressed) {
             distanceFromTarget -= zoomSpeed; // 调整缩放速度
-            distanceFromTarget = Mathf.Clamp(distanceFromTarget,5f,20f); // 限制缩放范围
+            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // 限制缩放范围
         } else if (Keyboard.current.downArrowKey.isPressed) {
             distanceFromTarget += zoomSpeed; // 调整缩放速度
-            distanceFromTarget = Mathf.Clamp(distanceFromTarget,5f,20f); // 限制缩放范围
+            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // 限制缩放范围
         }
     }
 
