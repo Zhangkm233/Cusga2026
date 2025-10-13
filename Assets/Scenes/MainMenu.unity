@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 197474394}
   - component: {fileID: 197474393}
   m_Layer: 5
-  m_Name: StartButton
+  m_Name: NewGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -911,7 +911,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Start
+  m_Text: 'New Game
+
+'
 --- !u!222 &1518573679
 CanvasRenderer:
   m_ObjectHideFlags: 0

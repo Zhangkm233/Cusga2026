@@ -1,4 +1,3 @@
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class SceneManager : MonoBehaviour
@@ -13,9 +12,16 @@ public class SceneManager : MonoBehaviour
     
     private void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-    
     
     // 通用场景切换
     public void LoadScene(string sceneName)
@@ -27,17 +33,4 @@ public class SceneManager : MonoBehaviour
     public void LoadMainMenu() => LoadScene(mainMenuScene);
     public void LoadProgression() => LoadScene(progressionScene);
     public void LoadGamePlay() => LoadScene(gamePlayScene);
-
-    // 退出游戏
-    public void QuitGame()
-    {
-    #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        Debug.Log("游戏已退出");
-    #else
-        Application.Quit();
-        Debug.Log("游戏已退出");
-    #endif
-    }
-
 }
