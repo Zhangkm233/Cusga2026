@@ -13,6 +13,7 @@ public class CardController : MonoBehaviour
 
     public Card card;
     public GameObject cardCanvas;
+    public Canvas parentCanvas;
     public int indexOfCards;
     public bool isSelected = false;
     
@@ -24,11 +25,19 @@ public class CardController : MonoBehaviour
     private Color originalColor;
     private TileController hoveredTile;
 
+    private RectTransform rectTransform;
+    private Vector2 originalAnchoredPosition;
+    private Vector2 dragOffset; // 用于RectTransform拖拽
+
     public CardController(Card card) {
         this.card = card;
     }
 
     private void Start() {
+        Initialize();
+    }
+
+    public void Initialize() {
         cardCanvas = transform.GetComponentInChildren<Canvas>().gameObject;
         if (cardName == null) {
             cardName = cardCanvas.transform.Find("CardName").GetComponent<TMP_Text>();
@@ -42,12 +51,12 @@ public class CardController : MonoBehaviour
         if (cardCanvas == null) {
             cardCanvas = transform.GetComponentInChildren<Canvas>().gameObject;
         }
-        
+
         // 初始化拖拽相关
         mainCamera = Camera.main;
         originalColor = GetComponent<SpriteRenderer>().color;
-        
         //UpdateCard();
+        rectTransform = this.GetComponent<RectTransform>();
     }
 
     public void UpdateCard() {
@@ -97,33 +106,76 @@ public class CardController : MonoBehaviour
     
     // 鼠标按下开始拖拽
     private void OnMouseDown() {
+        //MouseDownTransform();
+        MouseDownRect();
+    }
+
+    private void MouseDownTransform() {
         Debug.Log($"OnMouseDown called on card: {card?.CardName}, isDragging: {isDragging}");
         if (card != null && !isDragging) {
             isDragging = true;
             originalPosition = transform.position;
             Debug.Log($"开始拖拽卡片: {card.CardName}, 原始位置: {originalPosition}");
-            
+
             // 修正相机坐标转换
             Vector3 mouseScreenPos = Input.mousePosition;
             mouseScreenPos.z = mainCamera.WorldToScreenPoint(transform.position).z; // 使用卡片的深度
             Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
             mouseWorldPos.z = transform.position.z; // 保持卡片的Z轴位置
-            
+
+
             offset = transform.position - mouseWorldPos;
             Debug.Log($"鼠标偏移量: {offset}");
             UpdateSortingOrder(100); // 拖拽时置顶
         }
     }
-    
+    private void MouseDownRect() {
+        //使用rectTransform的拖拽方式
+        Debug.Log($"OnMouseDown RectTransform called on card: {card?.CardName}, isDragging: {isDragging}");
+        if (card != null && !isDragging) {
+            isDragging = true;
+            originalPosition = transform.position;
+            originalAnchoredPosition = rectTransform.anchoredPosition;
+            Debug.Log($"开始拖拽卡片: {card.CardName}, 原始位置: {originalPosition}");
+
+            Vector2 localPointerPosition;
+            // 将屏幕坐标转换为父Canvas的本地坐标，计算偏移量
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                parentCanvas.transform as RectTransform,
+                Input.mousePosition,
+                mainCamera,
+                out localPointerPosition)) {
+                dragOffset = rectTransform.anchoredPosition - localPointerPosition;
+                Debug.Log($"RectTransform偏移量计算: 卡牌位置{rectTransform.anchoredPosition}, 鼠标位置{localPointerPosition}, 偏移量{dragOffset}");
+            } else {
+                // 如果转换失败，退回到使用世界坐标计算
+                Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,transform.position.z - mainCamera.transform.position.z));
+                dragOffset = transform.position - mouseWorldPos;
+                Debug.Log($"使用世界坐标计算偏移量: {dragOffset}");
+            }
+
+            UpdateSortingOrder(100); // 拖拽时置顶
+            Debug.Log($"开始RectTransform拖拽卡片: {card.CardName}");
+        }
+    }
+
+
+
     // 鼠标拖拽中
     private void OnMouseDrag() {
+        //MouseDragTransform();
+        MouseDragRect();
+    }
+
+    private void MouseDragTransform() {
+
         if (isDragging) {
             // 修正相机坐标转换
             Vector3 mouseScreenPos = Input.mousePosition;
             mouseScreenPos.z = mainCamera.WorldToScreenPoint(transform.position).z; // 使用卡片的深度
             Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
             mouseWorldPos.z = transform.position.z; // 保持卡片的Z轴位置
-            
+
             Vector3 newPosition = mouseWorldPos + offset;
             transform.position = new Vector3(newPosition.x,newPosition.y,originalPosition.z); // 保持Z轴位置不变
 
@@ -131,7 +183,28 @@ public class CardController : MonoBehaviour
             CheckHoveredTile();
         }
     }
-    
+
+    private void MouseDragRect() {
+        if (isDragging) {
+            // 将屏幕坐标转换为父Canvas的本地坐标
+            Vector2 localPointerPosition;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                parentCanvas.transform as RectTransform,
+                Input.mousePosition,
+                mainCamera,
+                out localPointerPosition)) {
+                // 应用位置（加上偏移量以保持鼠标在卡牌上的点击位置）
+                rectTransform.anchoredPosition = localPointerPosition + dragOffset;
+                Debug.Log($"RectTransform拖拽中: 新位置{rectTransform.anchoredPosition}");
+            } else {
+                Debug.LogWarning("RectTransform拖拽坐标转换失败");
+            }
+
+            // 检查当前悬停的格子
+            CheckHoveredTile();
+        }
+    }
+
     // 鼠标释放
     private void OnMouseUp() {
         if (isDragging) {

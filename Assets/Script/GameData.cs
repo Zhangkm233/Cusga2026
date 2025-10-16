@@ -37,6 +37,8 @@ public static class GameData
                 return "麦田";
             case LandType.WINDMILL:
                 return "风车";
+            case LandType.RUIN:
+                return "废墟";
             default:
                 return "未知";
         }
