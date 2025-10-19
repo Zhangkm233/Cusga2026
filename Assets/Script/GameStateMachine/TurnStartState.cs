@@ -12,7 +12,7 @@ public class TurnStartState : GameState
         //额外抽卡阶段-按照额外抽卡效果，额外抽取对应卡牌
         DeckManager.Instance.ExtraDrawPhase();
 
-        UIManager.Instance.UpdateCards();
+        UIManager.Instance.PlayDealAnimation();
         GameManager.Instance.stateMachine.ChangePhase(GamePhase.PlayerTurn);
     }
     public override void Update() {
