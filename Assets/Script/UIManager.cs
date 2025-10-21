@@ -187,6 +187,7 @@ public class UIManager : MonoBehaviour
                 continue;
             }
             RectTransform parentRect = rect.parent as RectTransform;
+            //RectTransform parentRect = GameObject.Find("CardCanvas").GetComponent<RectTransform>();
             float targetSplineT = cardTargetSplineParameters != null && i < cardTargetSplineParameters.Length ? cardTargetSplineParameters[i] : 1f;
             float clampedTargetSplineT = Mathf.Clamp01(targetSplineT);
             float targetAngle = cardTargetAngles != null && i < cardTargetAngles.Length ? cardTargetAngles[i] : rect.localEulerAngles.z;

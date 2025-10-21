@@ -27,6 +27,11 @@ public class TileController : MonoBehaviour
         }
         
         UpdateLand();
+        MapManager.Instance.OnLandChanged.AddListener((row,col) => {
+            if (row == tileRow && col == tileCol) {
+                UpdateLand();
+            }
+        });
     }
 
     public Land GetLand() {
@@ -41,6 +46,7 @@ public class TileController : MonoBehaviour
     void UpdateLand() {
         land = GetLand();
     }
+
     
     // 接受卡片放置
     public void OnCardPlaced(Card card) {

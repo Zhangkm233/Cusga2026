@@ -24,7 +24,7 @@ public static class GameData
             case LandType.MOUNTAIN:
                 return "山脉";
             case LandType.JUNGLE:
-                return "丛林";
+                return "密林";
             case LandType.THATCH:
                 return "茅屋";
             case LandType.CABIN:
@@ -53,7 +53,7 @@ public static class GameData
             case CardType.WEAPON:
                 return "武器卡";
             case CardType.DISASTER:
-                return "灾难卡";
+                return "天灾卡";
             default:
                 return "未知";
         }

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public enum LandType
 {
@@ -117,6 +118,15 @@ public abstract class Land
         }
     }
 
+    public bool TryUseSoild() {
+        // 尝试使用坚固值抵挡一次攻击或天灾效果
+        if (soild > 0) {
+            soild -= 1;
+            return true; // 使用成功
+        }
+        return false; // 使用失败
+    }
+
     public void AddCard(Card card,int num) {
         DeckManager.Instance.AddCardToDeckFromLand(card,num,this);
     }
@@ -144,7 +154,7 @@ public abstract class Land
     public void ChangeLandType(LandType landType) {
         //这里是转变地形的函数 如果想解耦合，还需要改一改到游戏里面的调用，应该UI层面需要全部重写
         //需要在逻辑层里面添加存储 然后再显示到游戏/UE层
-
+        Debug.Log($"地形 {LandType} 变为 {landType}");
         MapManager.Instance.LandMap[mapRow][mapCol] = null;
         Land newLand = null;
         switch (landType) {
@@ -189,11 +199,7 @@ public abstract class Land
         newLand.soild = this.soild;
         newLand.hunterarea = this.hunterarea;
         MapManager.Instance.LandMap[mapRow][mapCol] = newLand;
-        //this.gameObject.AddComponent(newLand.GetType());
-        //这里我不知道写的对不对，尚待商榷
-        //Destroy(this);
-        //这里需要更改游戏内对应的gameobject
-        //OnLandChanged.Invoke(this,newLand);
+        MapManager.Instance.OnLandChanged.Invoke(mapRow,MapCol);
     }
 }
 
