@@ -7,9 +7,7 @@ using UnityEngine.Splines;
 public class UIManager : MonoBehaviour
 {
     public GameObject[] cards;
-    public TMP_Text DeckCount;
-    public TMP_Text HandCount;
-    public TMP_Text ExtraDrawCount;
+    public GameObject cardPrefab;
 
     [Header("Card Dealing Animation")]
     [SerializeField] private RectTransform deckAnchor;
@@ -270,6 +268,14 @@ public class UIManager : MonoBehaviour
         }
 
         GameObject[] foundCards = GameObject.FindGameObjectsWithTag("CardGameobject");
+        if(foundCards.Length <= DeckManager.Instance.hand.Count) {
+            //实例化足够的卡牌对象
+            int cardsToInstantiate = DeckManager.Instance.hand.Count - foundCards.Length;
+            for (int i = 0;i < cardsToInstantiate;i++) {
+                Instantiate(cardPrefab,this.transform);
+            }
+            foundCards = GameObject.FindGameObjectsWithTag("CardGameobject");
+        }
         Array.Sort(foundCards, (a, b) => a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex()));
         cards = foundCards;
     }

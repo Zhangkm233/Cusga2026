@@ -116,6 +116,19 @@ public class MapManager : MonoBehaviour
         Debug.Log($"生物{animal.AnimalName}已移动至({row},{col})");
     }
 
+    public int GetTotalAnimalCount() {
+        //获得地图上动物的总数量
+        int count = 0;
+        foreach (var row in AnimalMap) {
+            foreach (var animal in row) {
+                if (animal != null) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     public int GetAmountOfLandType(LandType landType) {
         //获得给定地形类型的数量
         int count = 0;
@@ -177,7 +190,9 @@ public class MapManager : MonoBehaviour
     }
 
     public void AnimalPhase() {
-        if (AnimalMap.Count == 0) {
+        int totalAnimals = GetTotalAnimalCount();
+        Debug.Log($"动物数量:{totalAnimals}");
+        if (totalAnimals == 0) {
             Debug.Log("没有动物");
             return;
         }
