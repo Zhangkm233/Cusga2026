@@ -33,7 +33,8 @@ Shader "Custom/ToonGouacheCutout"
 
 		Pass
 		{
-			Tags { "LightMode" = "SRPDefaultUnlit" }
+			// No SRP LightMode here: make this pass compatible with the Built-in pipeline
+			// (keep it as a simple, custom unlit-style pass)
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -78,7 +79,7 @@ Shader "Custom/ToonGouacheCutout"
 				// 纸纹叠加（乘/覆盖混合）
 				float2 paperUV = i.uv * _PaperScale;
 				float3 paper = tex2D(_PaperTex, paperUV).rrr; // 单通道
-				float3 paperMod = lerp(1.0.xxx, paper, _PaperStrength);
+				float3 paperMod = lerp(float3(1.0, 1.0, 1.0), paper, _PaperStrength);
 
 				// 轻墨线（基于菲涅耳）
 				float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos);
