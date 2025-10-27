@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Custom_NewSurfaceShader
-  m_Shader: {fileID: 4800000, guid: 92419f0752318420c9e950186dec7e91, type: 3}
+  m_Shader: {fileID: 4800000, guid: f6114c990d1e3f5499f283b961fc9859, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,15 +24,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _FoamTexture:
-        m_Texture: {fileID: 2800000, guid: e63bc0aad12db450b8f7b9599df4d709, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _PaperTex:
+        m_Texture: {fileID: 2800000, guid: 12e77b60842245f4a890b0af578b14b3, type: 3}
+        m_Scale: {x: 0.32, y: 1}
+        m_Offset: {x: -0.6, y: 0}
     - _SparkleNormalMap:
-        m_Texture: {fileID: 2800000, guid: 697039697adaf49e896f4544d3f07a3f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _WaveNormalMap:
@@ -51,28 +55,34 @@ Material:
     - _Glossiness: 0.5
     - _MaxShadowMapDistance: 0
     - _Metallic: 0
+    - _OutlineWidth: 0.03
+    - _PaperStrength: 0
+    - _PosterizeLevels: 3.21
     - _ReflectedContribution: 0
     - _SparkleAmplitude: 4.66
     - _SparkleExponent: 0.75
     - _SparkleScale: 0
-    - _SparkleSpeed: -0.6
+    - _SparkleSpeed: 0
     - _SpecularAmplitude: 1
     - _SpecularPower: 10
-    - _Wave0Amplitude: 0.1
+    - _Stylize: 0.24
+    - _Wave0Amplitude: 0.04
     - _Wave0Direction: 0.25
     - _Wave0Length: 5
-    - _Wave0Speed: 0.25
-    - _Wave1Amplitude: 0.1
+    - _Wave0Speed: 0.6
+    - _Wave1Amplitude: 0.04
     - _Wave1Direction: 0.75
     - _Wave1Length: 10
     - _Wave1NormalScale: 20
     - _Wave1NormalSpeed: 0.05
-    - _Wave1Speed: 0.25
+    - _Wave1Speed: 0.6
     m_Colors:
+    - _BaseTint: {r: 0.3803922, g: 0.57254905, b: 0.5411765, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DeepColor: {r: 0.015686266, g: 0.34720057, b: 0.43529412, a: 1}
-    - _EdgeFoamColor: {r: 1, g: 0.9858491, b: 0.9858491, a: 1}
+    - _EdgeFoamColor: {r: 0.5771182, g: 0.70477355, b: 0.9339623, a: 1}
     - _FarColor: {r: 0.5255874, g: 0.62035024, b: 0.8773585, a: 1}
+    - _OutlineColor: {r: 1, g: 0, b: 0, a: 1}
     - _SSSColor: {r: 0.058470145, g: 0, b: 0.2924528, a: 1}
     - _ShallowColor: {r: 0.047058843, g: 0.81750685, b: 0.9137255, a: 1}
     - _SparkleColor: {r: 0, g: 0, b: 0, a: 1}

@@ -1,4 +1,4 @@
-Shader "Custom/Chapter32_Ocean"
+Shader "Custom/Ocean"
 {
     Properties
     {
@@ -58,6 +58,15 @@ Shader "Custom/Chapter32_Ocean"
 
         [Header(Shadow Map)]
         _MaxShadowMapDistance   ("_MaxShadowMapDistance",       float)          = 50
+
+    [Header(Stylize)]
+    _Stylize                ("Stylize Amount",              Range(0,1))     = 0.6
+    _PosterizeLevels        ("Posterize Levels",            Range(1,8))     = 4
+    _PaperTex               ("Paper Grain",                 2D)             = "gray" {}
+    _PaperStrength          ("Paper Strength",              Range(0,1))     = 0.12
+        
+    [Header(Base Tint)]
+    _BaseTint               ("Base Tint (RGB) + Strength(A)", Color) = (1,1,1,0)
     }
 
     SubShader
@@ -98,8 +107,9 @@ Shader "Custom/Chapter32_Ocean"
             struct v2f
             {
                 float2 uv               : TEXCOORD0;
-                float4 grabPos          : TEXCOORD1;
-                float3 worldPos         : TEXCOORD2;       
+                float4 grabPos          : TEXCOORD1;   // for _GrabTexture sampling
+                float4 screenPos        : TEXCOORD2;   // for depth / screen-space sampling
+                float3 worldPos         : TEXCOORD3;       
                 UNITY_FOG_COORDS(1)
                 float4 pos : SV_POSITION;
             };
@@ -107,6 +117,7 @@ Shader "Custom/Chapter32_Ocean"
             sampler2D _CameraDepthTexture;
             sampler2D _GrabTexture;
             sampler2D _DirectionalShadowMap;
+            sampler2D _PaperTex;
 
             float4 _ShallowColor;
             float4 _DeepColor;
@@ -161,6 +172,10 @@ Shader "Custom/Chapter32_Ocean"
 
             // Shadow Map
             float _MaxShadowMapDistance;
+            float _Stylize;
+            float _PosterizeLevels;
+            float _PaperStrength;
+            float4 _BaseTint;
 
             float _wave(float2 position, float2 direction, float waveLength, float amplitude, float speed)
             {
@@ -189,6 +204,7 @@ Shader "Custom/Chapter32_Ocean"
                 o.worldPos.y += _calculateWaveHeight(o.worldPos.xz);
                 o.pos = mul(UNITY_MATRIX_VP, float4(o.worldPos, 1));
                 o.grabPos = ComputeGrabScreenPos(o.pos);
+                o.screenPos = ComputeScreenPos(o.pos); // use for depth sampling
 
                 UNITY_TRANSFER_FOG(o,o.pos);
                 return o;
@@ -196,6 +212,7 @@ Shader "Custom/Chapter32_Ocean"
 
             float3 _refractedColor(v2f i, out float2 screenCoord)
             {
+                // grab texture uses grabPos
                 screenCoord = i.grabPos.xy / i.grabPos.w;
                 float3 color = tex2D(_GrabTexture, screenCoord).rgb * _ShallowColor;
                 return color;
@@ -203,8 +220,13 @@ Shader "Custom/Chapter32_Ocean"
             
             float3 _baseColor(v2f i, float3 refractedColor, float2 screenCoord, float shadowMask, out float biasDepth, out float distanceMask)
             {
-                float depth = tex2D(_CameraDepthTexture, screenCoord).r;
-                biasDepth = abs(LinearEyeDepth(depth) - LinearEyeDepth(i.pos.z));
+                // sample camera depth using an explicit screen position (avoids mismatch with grab coords)
+                float2 depthScreen = i.screenPos.xy / i.screenPos.w;
+                float depth = tex2D(_CameraDepthTexture, depthScreen).r;
+                // compute biasDepth comparing sampled depth to fragment depth
+                float linearSampleDepth = LinearEyeDepth(depth);
+                float linearFragmentDepth = LinearEyeDepth(i.pos.z);
+                biasDepth = abs(linearSampleDepth - linearFragmentDepth);
 
                 float transmittance = exp(-_DepthDensity * biasDepth);
 
@@ -416,6 +438,7 @@ Shader "Custom/Chapter32_Ocean"
                 float3 normalTS;
                 float3 viewDirWS;
                 float3 viewReflection;
+                // original realistic contributions
                 float3 reflectedColor = _reflectedColor(i, shadowMask, distanceMask, normalTS, viewDirWS, viewReflection);
 
                 float3 edgeFoamColor = _edgeFoamColor(biasDepth, shadowMask);
@@ -424,11 +447,32 @@ Shader "Custom/Chapter32_Ocean"
                 float3 sssColor = _sssColor(i, viewDirWS);
                 float3 foamColor = _foamColor(i, normalTS, shadowMask, distanceMask);
 
+                // reduce realistic/high-frequency contributions when stylizing
+                float stylizeInfluence = saturate(_Stylize);
+                reflectedColor *= (1.0 - 0.6 * stylizeInfluence);    // reduce environment reflection
+                sparkleColor *= (1.0 - 0.8 * stylizeInfluence);      // reduce sparkles
+                specularColor *= (1.0 - 0.9 * stylizeInfluence);     // mostly remove glossy highlights
+
                 float3 finalColor = baseColor + reflectedColor + edgeFoamColor + sparkleColor + specularColor + sssColor + foamColor;
+
+                // apply a subtle paper grain (multiply blend) to warm/flatten the result
+                float2 paperUV = i.worldPos.xz * 0.1 + float2(_Time.y * 0.01, _Time.y * 0.01);
+                float3 paper = tex2D(_PaperTex, paperUV).rgb;
+                finalColor *= lerp(1.0, paper, _PaperStrength);
+
+                // posterize / quantize overall color to reduce realism
+                float levels = max(1.0, _PosterizeLevels);
+                float3 poster = floor(finalColor * levels) / levels;
+                finalColor = lerp(finalColor, poster, stylizeInfluence);
                 
+                // apply Base Tint (explicit final tint with strength in alpha)
+                // _BaseTint.rgb = tint color, _BaseTint.a = strength (0 = no change, 1 = full multiply)
+                float baseTintStrength = saturate(_BaseTint.a);
+                finalColor = lerp(finalColor, finalColor * _BaseTint.rgb, baseTintStrength);
+
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, finalColor);
-                
+
                 return float4(finalColor , 1);
             }
             ENDCG
