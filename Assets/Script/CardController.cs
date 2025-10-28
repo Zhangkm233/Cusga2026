@@ -195,7 +195,7 @@ public class CardController : MonoBehaviour
                 out localPointerPosition)) {
                 // 应用位置（加上偏移量以保持鼠标在卡牌上的点击位置）
                 rectTransform.anchoredPosition = localPointerPosition + dragOffset;
-                Debug.Log($"RectTransform拖拽中: 新位置{rectTransform.anchoredPosition}");
+                //Debug.Log($"RectTransform拖拽中: 新位置{rectTransform.anchoredPosition}");
             } else {
                 Debug.LogWarning("RectTransform拖拽坐标转换失败");
             }
@@ -384,10 +384,14 @@ public class CardController : MonoBehaviour
             } else {
                 Debug.LogError($"未找到卡片 {card.CardName} 在手牌中");
             }
-            
+
             // 隐藏卡片
-            this.gameObject.SetActive(false);
-            
+            //this.gameObject.SetActive(false);
+
+            transform.position = originalPosition;
+            UpdateSortingOrder();
+            ClearHoverEffect();
+
             // 更新UI
             UIManager.Instance.UpdateCards();
             

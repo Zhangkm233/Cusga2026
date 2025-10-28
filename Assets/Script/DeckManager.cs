@@ -288,16 +288,24 @@ public class DeckManager : MonoBehaviour
 
 
     public void DisasterPhase() {
-        //回合结束时，销毁手中剩余的资源卡和技能卡，如果剩余了天灾卡则触发天灾
+        //回合结束时，
+        //把资源卡销毁 技能卡洗回牌库 触发天灾
         Debug.Log("天灾阶段");
         foreach (Card card in hand) {
             if (card.CardType == CardType.DISASTER) {
                 //触发天灾效果
                 Debug.Log($"触发了天灾卡：{card.CardName}");
                 card.ApplyEffect(null); // 这里传入null，表示没有特定的地块
+            } else if (card.CardType == CardType.SKILL) {
+                //技能卡洗回牌库
+                Debug.Log($"技能卡{card.CardName}洗回牌库");
+                AddCardToDeck(card);
+            } else if (card.CardType == CardType.MATERIAL) {
+                //资源卡销毁
+                Debug.Log($"资源卡{card.CardName}被销毁");
             }
+            ClearHand();
         }
-        ClearHand();
     }
 
     public void BossAttack() {
@@ -308,4 +316,5 @@ public class DeckManager : MonoBehaviour
         }
         extraCertainCardType.Add(CardType.DISASTER);
     }
+
 }

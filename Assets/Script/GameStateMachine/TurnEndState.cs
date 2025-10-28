@@ -23,8 +23,9 @@ public class TurnEndState : GameState
     }
 
     private System.Collections.IEnumerator DelayedInit() {
-        // 天灾阶段-回合结束时，销毁手中剩余的资源卡和技能卡，如果剩余了天灾卡则触发天灾
-        DeckManager.Instance.ClearHand();
+        // 天灾阶段-回合结束时，销毁手中剩余的资源卡
+        // 把技能卡洗回牌库，如果剩余了天灾卡则触发天灾
+        DeckManager.Instance.DisasterPhase();
         // 动物阶段 - 所有活着的动物移动到自身所在格与相邻四格内所有空旷的格子中，最接近自己偏好地势数值的地块
         MapManager.Instance.AnimalPhase();
         if(!GameData.IsBossSpawned) {
