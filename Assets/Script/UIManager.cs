@@ -112,24 +112,6 @@ public class UIManager : MonoBehaviour
         }
         dealRoutine = StartCoroutine(DealCardsRoutine());
     }
-    
-    /*
-    public void UpdateTiles() {
-        // ��ȡ����TileGameobject���󲢸������ǵ�״̬
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("TileGameobject");
-        foreach (GameObject tile in tiles) {
-            tile.GetComponent<TileController>().UpdateTile();
-        }
-    }
-    */
-
-    /*
-    public void UpdateUI() {
-        DeckCount.text = "�ƿ�: " + DeckManager.Instance.deck.Count;
-        HandCount.text = "����: " + DeckManager.Instance.hand.Count;
-        ExtraDrawCount.text = "�������: " + GameData.extraDrawNum;
-    }
-    */
 
     public void CancelAllSelect() {
         foreach (GameObject card in cards) {
@@ -142,6 +124,7 @@ public class UIManager : MonoBehaviour
     }
 
     private IEnumerator DealCardsRoutine() {
+        GameData.IsCardAnimationPlaying = true;
         var hand = DeckManager.Instance.hand;
         if (hand == null || hand.Count == 0) {
             yield break;
@@ -251,6 +234,7 @@ public class UIManager : MonoBehaviour
 
         UpdateCardsSortingOrder();
         dealRoutine = null;
+        GameData.IsCardAnimationPlaying = false;
     }
 
     private void EnsureCardArray() {

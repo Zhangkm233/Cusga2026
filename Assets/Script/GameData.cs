@@ -9,7 +9,10 @@ public static class GameData
     public static int bossSpawnTurn = 16;
     public static int disasterPercent = 35;
     public static bool IsBossSpawned = false;
-
+    /// <summary>
+    /// 是否正在发牌
+    /// </summary>
+    public static bool IsCardAnimationPlaying = false;
     public static string HanizeLandType(LandType landType) {
         //这里需要重写
         switch (landType) {
