@@ -47,7 +47,7 @@ Material:
     m_Floats:
     - _DepthDensity: 0.485
     - _DistanceDensity: 0.00245
-    - _EdgeFoamDepth: 0.163
+    - _EdgeFoamDepth: 0.231
     - _FoamAmplitude: 1
     - _FoamNoiseScale: 0.5
     - _FoamScale: 1
@@ -57,7 +57,7 @@ Material:
     - _Metallic: 0
     - _OutlineWidth: 0.03
     - _PaperStrength: 0
-    - _PosterizeLevels: 3.21
+    - _PosterizeLevels: 2.68
     - _ReflectedContribution: 0
     - _SparkleAmplitude: 4.66
     - _SparkleExponent: 0.75
@@ -65,7 +65,7 @@ Material:
     - _SparkleSpeed: 0
     - _SpecularAmplitude: 1
     - _SpecularPower: 10
-    - _Stylize: 0.24
+    - _Stylize: 0.219
     - _Wave0Amplitude: 0.04
     - _Wave0Direction: 0.25
     - _Wave0Length: 5
