@@ -2,6 +2,7 @@ using Mono.Cecil;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -366,10 +367,25 @@ public class CardController : MonoBehaviour
             
             if (tileController.land != null) {
                 // 应用卡片效果到土地上
-                if (card is MaterialCard materialCard) {
-                    tileController.land.MaterialEffect(materialCard);
-                } else {
-                    card.ApplyEffect(tileController.land);
+                switch (card.CardType) {
+                    case CardType.MATERIAL:
+                        tileController.land.MaterialEffect((MaterialCard)card);
+                        break;
+                    case CardType.WEAPON:
+                        // 武器卡片需要检查动物占用
+                        if (MapManager.Instance.IsPositionBeenOccupiedByAnimal(tileController.land.MapRow,tileController.land.MapCol)) {
+                            card.ApplyEffect(tileController.land);
+                        } else {
+                            Debug.Log($"武器卡片 {card.CardName} 不能放置在无动物的格子上");
+                            return;
+                        }
+                        break;
+                    case CardType.SKILL:
+                        card.ApplyEffect(tileController.land);
+                        break;
+                    default:
+                        Debug.Log("卡片无法使用");
+                        return;
                 }
             } else {
                 Debug.LogError($"TileController {tileController.name} 没有land数据");
