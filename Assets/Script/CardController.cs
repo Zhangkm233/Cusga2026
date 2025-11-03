@@ -369,7 +369,7 @@ public class CardController : MonoBehaviour
                 // 应用卡片效果到土地上
                 switch (card.CardType) {
                     case CardType.MATERIAL:
-                        tileController.land.MaterialEffect((MaterialCard)card);
+                        card.ApplyEffect(tileController.land);
                         break;
                     case CardType.WEAPON:
                         // 武器卡片需要检查动物占用

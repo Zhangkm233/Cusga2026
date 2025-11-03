@@ -115,6 +115,34 @@ public class MaterialCard : Card
     }
 }
 
+public class MeatCard : MaterialCard
+{
+    public MeatCard() : base(MaterialType.MEAT) {
+        // 继承自MaterialCard，默认类型为MEAT
+    }
+}
+
+public class WoodCard : MaterialCard
+{
+    public WoodCard() : base(MaterialType.WOOD) {
+        // 继承自MaterialCard，默认类型为WOOD
+    }
+}
+
+public class StoneCard : MaterialCard
+{
+    public StoneCard() : base(MaterialType.STONE) {
+        // 继承自MaterialCard，默认类型为STONE
+    }
+}
+
+public class HayCard : MaterialCard
+{
+    public HayCard() : base(MaterialType.HAY) {
+        // 继承自MaterialCard，默认类型为HAY
+    }
+}
+
 public class SkillCard : Card
 {
     public SkillType skillType; //技能类型
@@ -167,6 +195,27 @@ public class SkillCard : Card
         }
     }
 }
+
+public class HarvestCard : SkillCard
+{
+    public HarvestCard() : base(SkillType.HARVEST) {
+        // 继承自SkillCard，默认类型为HARVEST
+    }
+}
+
+public class ReinforceCard : SkillCard
+{
+    public ReinforceCard() : base(SkillType.REINFORCE) {
+        // 继承自SkillCard，默认类型为REINFORCE
+    }
+}
+public class StalkCard : SkillCard
+{
+    public StalkCard() : base(SkillType.STALK) {
+        // 继承自SkillCard，默认类型为STALK
+    }
+}
+
 
 public class WeaponCard : Card
 {
@@ -224,6 +273,29 @@ public class WeaponCard : Card
     }
 }
 
+public class RollrockCard : WeaponCard
+{
+    public RollrockCard() : base(WeaponType.ROLLROCK) {
+        // 继承自WeaponCard，默认类型为ROLLROCK
+    }
+}
+
+public class SpearCard : WeaponCard
+{
+    public SpearCard() : base(WeaponType.SPEAR) {
+        // 继承自WeaponCard，默认类型为SPEAR
+    }
+}
+
+public class BowCard : WeaponCard
+{
+    public BowCard() : base(WeaponType.BOW) {
+        // 继承自WeaponCard，默认类型为BOW
+    }
+}
+
+
+
 public class DisasterCard : Card
 {
     private int TypeOfDisaster = 0;
@@ -253,6 +325,7 @@ public class DisasterCard : Card
                 break;
         }
     }
+
     public override void ApplyEffect(Land targetLand) {
         switch (TypeOfDisaster) {
             case 1:
@@ -287,5 +360,26 @@ public class DisasterCard : Card
             default:
                 break;
         }
+    }
+}
+
+public class StormCard : DisasterCard
+{
+    public StormCard() : base() {
+        // 继承自DisasterCard
+    }
+}
+
+public class FloodCard : DisasterCard
+{
+    public FloodCard() : base() {
+        // 继承自DisasterCard
+    }
+}
+
+public class BlazeCard : DisasterCard
+{
+    public BlazeCard() : base() {
+        // 继承自DisasterCard
     }
 }
