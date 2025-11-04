@@ -340,13 +340,15 @@ public class CardController : MonoBehaviour
             } else {
                 Debug.Log("3D射线检测未击中任何对象");
             }
-            
+
+            ReturnToOriginPosition();
+
             // 没有放置到有效位置，返回原位置
-            transform.position = originalPosition;
-            UpdateSortingOrder(); // 恢复原来的层级
+            //transform.position = originalPosition;
+            //UpdateSortingOrder(); // 恢复原来的层级
             
             // 清除悬停效果
-            ClearHoverEffect();
+            //ClearHoverEffect();
         }
     }
     
@@ -377,6 +379,7 @@ public class CardController : MonoBehaviour
                             card.ApplyEffect(tileController.land);
                         } else {
                             Debug.Log($"武器卡片 {card.CardName} 不能放置在无动物的格子上");
+                            ReturnToOriginPosition();
                             return;
                         }
                         break;
@@ -385,10 +388,13 @@ public class CardController : MonoBehaviour
                         break;
                     default:
                         Debug.Log("卡片无法使用");
+                        ReturnToOriginPosition();
                         return;
                 }
             } else {
                 Debug.LogError($"TileController {tileController.name} 没有land数据");
+                ReturnToOriginPosition();
+                return;
             }
             
             // 从手牌中移除这张卡片
@@ -484,5 +490,11 @@ public class CardController : MonoBehaviour
             SetTileHighlight(hoveredTile, false);
             hoveredTile = null;
         }
+    }
+
+    private void ReturnToOriginPosition() {
+        transform.position = originalPosition;
+        UpdateSortingOrder(); // 恢复原来的层级
+        ClearHoverEffect();
     }
 }

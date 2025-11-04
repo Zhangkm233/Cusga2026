@@ -620,6 +620,7 @@ public class ThatchLand : Land
             Debug.Log("茅屋地形被动效果触发");
             AddCard(new WoodCard(),2);
             AddCard(new StoneCard(),1);
+            EnergyCounter = 0; // 重置计数器
         } else {
         }
     }

@@ -196,10 +196,20 @@ public class MapManager : MonoBehaviour
             Debug.Log("没有动物");
             return;
         }
+        List<Animal> animalsToMove = new List<Animal>();
         foreach (var row in AnimalMap) {
-            foreach (var animal in row) {
-                animal.MoveToPreferLand();
+            if (row.Count > 0) {
+                foreach (var animal in row) {
+                    if (animal != null) {
+                        animalsToMove.Add(animal);
+                    }
+                }
+            } else {
+                Debug.Log($"该行没有动物");
             }
+        }
+        foreach (var animal in animalsToMove) {
+            animal.MoveToPreferLand();
         }
     }
 

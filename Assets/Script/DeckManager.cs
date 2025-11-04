@@ -300,8 +300,8 @@ public class DeckManager : MonoBehaviour
                 //资源卡销毁
                 Debug.Log($"资源卡{card.CardName}被销毁");
             }
-            ClearHand();
         }
+        ClearHand();
     }
 
     public void BossAttack() {
