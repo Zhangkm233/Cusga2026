@@ -40,11 +40,7 @@ public class DeckManager : MonoBehaviour
     }
 
     public void TestAddCard() {
-        AddCardToDeck(new MaterialCard(MaterialType.WOOD),10);
-        AddCardToDeck(new MaterialCard(MaterialType.HAY),10);
-        AddCardToDeck(new MaterialCard(MaterialType.STONE),10);
-        AddCardToDeck(new SkillCard(SkillType.HARVEST),5);
-        AddCardToDeck(new SkillCard(SkillType.STALK),5);
+
     }
 
     public void ShuffleDeck() {
@@ -242,11 +238,11 @@ public class DeckManager : MonoBehaviour
             }
             if (reduceCertainCardType.Contains(CardType.SKILL)) {
                 for (int i = 0;i < 3 - reduceCertainCardType.Count(x => x == CardType.SKILL);i++) {
-                    DrawCertainCardByType(CardType.SKILL);
+                    DrawCertainCardByTypes(CardType.SKILL,CardType.WEAPON);
                 }
             } else {
                 for (int i = 0;i < 3;i++) {
-                    DrawCertainCardByType(CardType.SKILL);
+                    DrawCertainCardByTypes(CardType.SKILL,CardType.WEAPON);
                 }
             }
             reduceCertainCardType.Clear();
@@ -257,7 +253,7 @@ public class DeckManager : MonoBehaviour
                 DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
             }
             for (int i = 0;i < 3;i++) {
-                DrawCertainCardByType(CardType.SKILL);
+                DrawCertainCardByTypes(CardType.SKILL,CardType.WEAPON);
             }
         }
         Debug.Log($"手牌数量：{hand.Count}张");

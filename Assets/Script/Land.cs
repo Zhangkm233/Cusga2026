@@ -219,7 +219,7 @@ public class HillLand : Land
         // 山丘地形的被动效果 4时产1石
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("山丘地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.STONE),1); //添加一个石头材料卡到牌库
+            AddCard(new StoneCard(),1); //添加一个石头材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         }
     }
@@ -236,7 +236,7 @@ public class HillLand : Land
                 break;
             case MaterialType.HAY:
                 //产2木材
-                AddCard(new MaterialCard(MaterialType.WOOD),2);
+                AddCard(new WoodCard(),2);
                 break;
             case MaterialType.STONE:
                 //1升山脉
@@ -258,7 +258,7 @@ public class HillLand : Land
         //这里还没写 应该是20%产1石
         if(IsRandomEventTriggered(20)) {
             Debug.Log("山丘地形额外效果触发");
-            AddCard(new MaterialCard(MaterialType.STONE),1  ); //添加一个石头材料卡到牌库
+            AddCard(new StoneCard(),1  ); //添加一个石头材料卡到牌库
         }
     }
 }
@@ -278,7 +278,7 @@ public class PlainLand : Land
         // 平原地形的被动效果 3时产1草
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("平原地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.HAY),1); //添加一个干草材料卡到牌库
+            AddCard(new HayCard(),1); //添加一个干草材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         }
     }
@@ -310,7 +310,7 @@ public class PlainLand : Land
                 StorageIn(MaterialType.MEAT);
                 if (storageCardNum >= 2 && storageCardType == MaterialType.MEAT) {
                     SpawnAnimal(AnimalType.GOBLIN);
-                    AddCard(new SkillCard(SkillType.STALK),1);
+                    AddCard(new StalkCard(),1);
                     storageCardNum = 0;
                     storageCardType = MaterialType.NULL;
                 }
@@ -345,7 +345,7 @@ public class ForestLand : Land
         // 森林地形的被动效果 2时产1木
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("森林地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.WOOD),1); //添加一个木材材料卡到牌库
+            AddCard(new WoodCard(),1); //添加一个木材材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         }
     }
@@ -364,11 +364,11 @@ public class ForestLand : Land
                 break;
             case MaterialType.STONE:
                 //产1矛
-                AddCard(new WeaponCard(WeaponType.SPEAR),1);
+                AddCard(new SpearCard(),1);
                 break;
             case MaterialType.MEAT:
                 //产1追猎
-                AddCard(new SkillCard(SkillType.STALK),1);
+                AddCard(new StalkCard(),1);
                 break;
             default:
                 break;
@@ -393,7 +393,7 @@ public class MountainLand : Land
         // 山脉地形的被动效果 4时产2石
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("山脉地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.STONE),2);
+            AddCard(new StoneCard(),2);
             EnergyCounter = 0; // 重置计数器
         }
     }
@@ -413,7 +413,7 @@ public class MountainLand : Land
                 break;
             case MaterialType.STONE:
                 //产3滚石
-                AddCard(new WeaponCard(WeaponType.ROLLROCK),3);
+                AddCard(new RollrockCard(),3);
                 break;
             case MaterialType.MEAT:
                 //得1猎圈
@@ -448,7 +448,7 @@ public class JungleLand : Land
         //1时产1木
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("密林地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.WOOD),1); //添加一个木材材料卡到牌库
+            AddCard(new WoodCard(),1); //添加一个木材材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         }
     }
@@ -505,7 +505,7 @@ public class WheatLand : Land
         //4时产2草
         if (EnergyCounter >= RequiredEnergy) {
             Debug.Log("麦田地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.HAY),2); //添加2个干草材料卡到牌库
+            AddCard(new HayCard(),2); //添加2个干草材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         }
     }
@@ -513,7 +513,7 @@ public class WheatLand : Land
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
                 //产1收割
-                AddCard(new SkillCard(SkillType.HARVEST),1);
+                AddCard(new HarvestCard(),1);
                 break;
             case MaterialType.HAY:
                 //2产抽3草
@@ -542,7 +542,7 @@ public class WheatLand : Land
         //30%产1草
         if (IsRandomEventTriggered(30)) {
             Debug.Log("麦田地形额外效果触发");
-            AddCard(new MaterialCard(MaterialType.HAY),1); //添加一个干草材料卡到牌库
+            AddCard(new HayCard(),1); //添加一个干草材料卡到牌库
         }
     }
 }
@@ -576,11 +576,11 @@ public class CabinLand : Land
                 break;
             case MaterialType.HAY:
                 //产1收割
-                AddCard(new SkillCard(SkillType.HARVEST),1);
+                AddCard(new HarvestCard(),1);
                 break;
             case MaterialType.STONE:
                 //产3滚石
-                AddCard(new WeaponCard(WeaponType.ROLLROCK),3);
+                AddCard(new RollrockCard(),3);
                 break;
             case MaterialType.MEAT:
                 //4升小镇
@@ -618,8 +618,8 @@ public class ThatchLand : Land
         if (EnergyCounter >= RequiredEnergy) {
             //5时产2木1石
             Debug.Log("茅屋地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.WOOD),2);
-            AddCard(new MaterialCard(MaterialType.STONE),1);
+            AddCard(new WoodCard(),2);
+            AddCard(new StoneCard(),1);
         } else {
         }
     }
@@ -627,7 +627,7 @@ public class ThatchLand : Land
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
                 //产2矛
-                AddCard(new WeaponCard(WeaponType.SPEAR),2);
+                AddCard(new SpearCard(),2);
                 break;
             case MaterialType.HAY:
                 //产1猪
@@ -640,7 +640,7 @@ public class ThatchLand : Land
                 break;
             case MaterialType.MEAT:
                 //产2追猎
-                AddCard(new SkillCard(SkillType.STALK),2);
+                AddCard(new StalkCard(),2);
                 break;
             default:
                 break;
@@ -678,7 +678,7 @@ public class TownLand : Land
         if (EnergyCounter >= RequiredEnergy) {
             //6时产3肉
             Debug.Log("城镇地形被动效果触发");
-            AddCard(new MaterialCard(MaterialType.MEAT),3); //添加3个肉材料卡到牌库
+            AddCard(new MeatCard(),3); //添加3个肉材料卡到牌库
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -708,7 +708,7 @@ public class TownLand : Land
                 break;
             case MaterialType.MEAT:
                 //得2矛
-                AddCard(new WeaponCard(WeaponType.SPEAR),2);
+                AddCard(new SpearCard(),2);
                 break;
             default:
                 break;
@@ -793,7 +793,7 @@ public class TowerLand : Land
         if (EnergyCounter >= RequiredEnergy) {
             //3时产短弓
             Debug.Log("塔地形被动效果触发");
-            AddCard(new WeaponCard(WeaponType.BOW),1);
+            AddCard(new BowCard(),1);
             EnergyCounter = 0; // 重置计数器
         } else {
         }
@@ -802,7 +802,7 @@ public class TowerLand : Land
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
                 //得短弓
-                AddCard(new WeaponCard(WeaponType.BOW),1);
+                AddCard(new BowCard(),1);
                 break;
             case MaterialType.HAY:
                 //得2加固
@@ -810,8 +810,8 @@ public class TowerLand : Land
                 break;
             case MaterialType.STONE:
                 //得2短弓2矛
-                AddCard(new WeaponCard(WeaponType.BOW),2);
-                AddCard(new WeaponCard(WeaponType.SPEAR),2);
+                AddCard(new BowCard(),2);
+                AddCard(new SpearCard(),2);
                 break;
             case MaterialType.MEAT:
                 //得抽2技
@@ -844,7 +844,7 @@ public class WindmillLand : Land
         if (EnergyCounter >= RequiredEnergy) {
             //4时产1收割
             Debug.Log("风车地形被动效果触发");
-            AddCard(new SkillCard(SkillType.HARVEST),1);
+            AddCard(new HarvestCard(),1);
             EnergyCounter = 0;
         }
     }
@@ -852,7 +852,7 @@ public class WindmillLand : Land
         switch (materialCard.materialType) {
             case MaterialType.WOOD:
                 //产3干草
-                AddCard(new MaterialCard(MaterialType.HAY),3);
+                AddCard(new HayCard(),3);
                 break;
             case MaterialType.HAY:
                 //2得3抽收割
@@ -865,7 +865,7 @@ public class WindmillLand : Land
                 break;
             case MaterialType.STONE:
                 //产2收割
-                AddCard(new SkillCard(SkillType.HARVEST),2);
+                AddCard(new HarvestCard(),2);
                 break;
             case MaterialType.MEAT:
                 //产1哥布林
@@ -895,7 +895,7 @@ public class RuinLand : Land
         if (EnergyCounter >= RequiredEnergy) {
             //10时产1石
             Debug.Log("废墟地形被动效果触发！");
-            AddCard(new MaterialCard(MaterialType.STONE),1);
+            AddCard(new StoneCard(),1);
             EnergyCounter = 0;
         }
     }
@@ -924,7 +924,7 @@ public class RuinLand : Land
                 break;
             case MaterialType.MEAT:
                 //产1追猎
-                AddCard(new SkillCard(SkillType.STALK),1);
+                AddCard(new StalkCard(),1);
                 break;
             default:
                 break;

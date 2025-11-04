@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -124,9 +125,18 @@ public class UIManager : MonoBehaviour
     }
 
     private IEnumerator DealCardsRoutine() {
+        Debug.Log("开始发牌动画");
         GameData.IsCardAnimationPlaying = true;
         var hand = DeckManager.Instance.hand;
         if (hand == null || hand.Count == 0) {
+            Debug.Log("手牌为空，跳过发牌动画");
+            // 隐藏所有卡牌
+            for (int i = 0;i < cards.Length;i++) {
+                if (cards[i] != null) {
+                    cards[i].SetActive(false);
+                }
+            }
+            GameData.IsCardAnimationPlaying = false;
             yield break;
         }
 

@@ -2318,11 +2318,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5168056626921021410, guid: 928220e4dc023134da6987e2b2ea8705, type: 3}
       propertyPath: m_Name
-      value: tile 2 2 (1)
+      value: tile 2 1
       objectReference: {fileID: 0}
     - target: {fileID: 5333464183031514398, guid: 928220e4dc023134da6987e2b2ea8705, type: 3}
       propertyPath: tileCol
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5333464183031514398, guid: 928220e4dc023134da6987e2b2ea8705, type: 3}
       propertyPath: tileRow
@@ -4920,8 +4920,8 @@ Transform:
   - {fileID: 1668166770}
   - {fileID: 945507080}
   - {fileID: 69240740}
-  - {fileID: 1058279110}
   - {fileID: 1501283554}
+  - {fileID: 1058279110}
   - {fileID: 458967218}
   - {fileID: 546500168}
   - {fileID: 1247713486}

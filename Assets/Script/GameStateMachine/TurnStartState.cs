@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 public class TurnStartState : GameState
@@ -15,6 +16,7 @@ public class TurnStartState : GameState
     }
     public override void Update() {
         if(GameData.IsCardAnimationPlaying == false) {
+            Debug.Log("卡牌发牌动画结束，进入玩家回合");
             GameManager.Instance.stateMachine.ChangePhase(GamePhase.PlayerTurn);
         }
     }

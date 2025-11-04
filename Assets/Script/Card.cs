@@ -217,8 +217,7 @@ public class StalkCard : SkillCard
 }
 
 
-public class WeaponCard : Card
-{
+public class WeaponCard : Card{
     public WeaponType weaponType; //武器类型
 
     public WeaponCard(WeaponType weaponType) {
