@@ -7,6 +7,7 @@ TagManager:
   - TileGameobject
   - CardGameobject
   - UiGameobject
+  - BossGameobject
   layers:
   - Default
   - TransparentFX

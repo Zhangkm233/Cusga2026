@@ -7,7 +7,7 @@ public enum AnimalType
     BOAR, //猪
 }
 
-public class Animal
+public class Animal : IDamageable
 {
     private string animalName; //动物名称
     private int health; //生命值

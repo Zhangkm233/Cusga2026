@@ -20,8 +20,9 @@ public class BossTurnState : GameState
     }
 
     private System.Collections.IEnumerator DelayedInit() {
-
         if (GameData.IsBossSpawned) {
+            Debug.Log("Boss战已触发，执行Boss攻击阶段");
+            BossManager.Instance.UpdateBossData();
             DeckManager.Instance.BossAttack();
         }
 

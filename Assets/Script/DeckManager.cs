@@ -40,7 +40,7 @@ public class DeckManager : MonoBehaviour
     }
 
     public void TestAddCard() {
-
+        AddCardToDeck(new BowCard());
     }
 
     public void ShuffleDeck() {
@@ -285,14 +285,14 @@ public class DeckManager : MonoBehaviour
 
     public void DisasterPhase() {
         //回合结束时，
-        //把资源卡销毁 技能卡洗回牌库 触发天灾
+        //把资源卡销毁 技能卡（武器牌也是一种技能）洗回牌库 触发天灾
         Debug.Log("天灾阶段");
         foreach (Card card in hand) {
             if (card.CardType == CardType.DISASTER) {
                 //触发天灾效果
                 Debug.Log($"触发了天灾卡：{card.CardName}");
                 card.ApplyEffect(null); // 这里传入null，表示没有特定的地块
-            } else if (card.CardType == CardType.SKILL) {
+            } else if (card.CardType == CardType.SKILL || card.CardType == CardType.WEAPON) {
                 //技能卡洗回牌库
                 Debug.Log($"技能卡{card.CardName}洗回牌库");
                 AddCardToDeck(card);

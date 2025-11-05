@@ -238,6 +238,7 @@ public class MapManager : MonoBehaviour
         }
         int randomIndex = Random.Range(0,candidateLands.Count);
         Land landToTransform = candidateLands[randomIndex];
+        Debug.Log($"试图转换{landToTransform.MapRow},{landToTransform.MapCol}为{landType}");
         TransformLandAt(landToTransform.MapRow,landToTransform.MapCol,landType);
     }
 

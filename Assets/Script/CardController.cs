@@ -107,7 +107,10 @@ public class CardController : MonoBehaviour
     
     // 鼠标按下开始拖拽
     private void OnMouseDown() {
-        //MouseDownTransform();
+        if(GameManager.Instance.stateMachine.CurrentPhase != GamePhase.PlayerTurn) {
+            Debug.Log("当前不是玩家回合，无法拖拽卡片");
+            return;
+        }
         MouseDownRect();
     }
 
@@ -283,6 +286,9 @@ public class CardController : MonoBehaviour
                             PlaceCardOnTile(tileController);
                             return;
                         }
+                        if (collider.CompareTag("BossGameobject")) {
+                            PlaceCardOnBoss();
+                        }
                     }
                 }
             }
@@ -334,6 +340,13 @@ public class CardController : MonoBehaviour
                                 return;
                             }
                         }
+
+                        //检测是否击中Boss
+                        if (hit2.collider != null && hit2.collider.CompareTag("BossGameobject")) {
+                            Debug.Log("检测到击中Boss，尝试放置卡片到Boss");
+                            PlaceCardOnBoss();
+                            return;
+                        }
                     }
                     Debug.Log($"未击中有效格子，击中对象: {hit.collider?.name}, 标签: {hit.collider?.tag}");
                 }
@@ -350,6 +363,49 @@ public class CardController : MonoBehaviour
             // 清除悬停效果
             //ClearHoverEffect();
         }
+    }
+
+    private void PlaceCardOnBoss() {
+        switch (card.CardType) {
+            case CardType.MATERIAL:
+                Debug.Log("资源卡片无法用于Boss");
+                ReturnToOriginPosition();
+                return;
+            case CardType.WEAPON:
+                if (GameData.IsBossSpawned) {
+                    card.ApplyEffect(null);
+                    break;
+                } else {
+                    Debug.Log("Boss未生成，无法使用武器卡片");
+                    ReturnToOriginPosition();
+                    return;
+                }
+            case CardType.SKILL:
+                Debug.Log("技能卡片无法用于Boss");
+                ReturnToOriginPosition();
+                return;
+            default:
+                Debug.Log("卡片无法使用");
+                ReturnToOriginPosition();
+                return;
+        }
+        // 从手牌中移除这张卡片
+        int cardIndexInHand = DeckManager.Instance.hand.IndexOf(card);
+        Debug.Log($"尝试移除卡片 {card.CardName}，在手牌中的索引: {cardIndexInHand}，手牌数量: {DeckManager.Instance.hand.Count}");
+        if (cardIndexInHand >= 0) {
+            DeckManager.Instance.hand.RemoveAt(cardIndexInHand);
+            Debug.Log($"成功移除卡片，手牌数量变为: {DeckManager.Instance.hand.Count}");
+        } else {
+            Debug.LogError($"未找到卡片 {card.CardName} 在手牌中");
+        }
+
+        transform.position = originalPosition;
+        UpdateSortingOrder();
+        ClearHoverEffect();
+
+        Debug.Log($"卡片 {card.CardName} 已放置到Boss上并消失");
+        // 更新UI
+        UIManager.Instance.UpdateCards();
     }
     
     // 将卡片放置到格子上

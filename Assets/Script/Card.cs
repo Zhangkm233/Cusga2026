@@ -251,20 +251,17 @@ public class WeaponCard : Card{
         switch (weaponType) {
             case WeaponType.ROLLROCK:
                 // 使用ProgressionManager获取滚石伤害
-                int baseDamage = ProgressionManager.Instance != null ? 
-                    ProgressionManager.Instance.GetRollrockMaxDamage() : 2;
+                int baseDamage = ProgressionManager.Instance != null ? ProgressionManager.Instance.GetRollrockMaxDamage() : 2;
                 int damage = Random.Range(1, baseDamage + 1) + 
                     (MapManager.Instance.GetAmountOfLandType(LandType.MOUNTAIN) * 2) + 
                     MapManager.Instance.GetAmountOfLandType(LandType.TOWER);
-                MapManager.Instance.DealDamageTo(targetLand, damage);
+                DamageManager.Instance.WeaponDealDamage(targetLand, damage);
                 break;
             case WeaponType.SPEAR:
-                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,5)
-                    + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
+                DamageManager.Instance.WeaponDealDamage(targetLand,Random.Range(3,5) + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
                 break;
             case WeaponType.BOW:
-                MapManager.Instance.DealDamageTo(targetLand,Random.Range(3,8)
-                    + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
+                DamageManager.Instance.WeaponDealDamage(targetLand,Random.Range(3,8) + MapManager.Instance.GetAmountOfLandType(LandType.TOWER));
                 break;
             default:
                 break;

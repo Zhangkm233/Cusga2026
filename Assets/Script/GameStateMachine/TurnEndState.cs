@@ -10,9 +10,14 @@ public class TurnEndState : GameState
         currentCoroutine = StartCoroutine(DelayedInit());
         GameData.turnCount++;
         if(GameData.turnCount > GameData.bossSpawnTurn) {
+            if(GameData.IsBossSpawned == false) {
+                BossManager.Instance.SpawnBoss();
+                GameData.IsBossSpawned = true;
+            }
+            Debug.LogWarning($"结束第{GameData.turnCount - 1}回合，boss已生成");
             GameManager.Instance.stateMachine.ChangePhase(GamePhase.BossTurn);
-            return;
         } else {
+            Debug.LogWarning($"结束第{GameData.turnCount - 1}回合，boss未生成");
             GameManager.Instance.StartTurn();
         }
     }

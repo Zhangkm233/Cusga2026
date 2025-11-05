@@ -194,6 +194,9 @@ public abstract class Land
             case LandType.WHEATLAND:
                 newLand = new WheatLand(mapRow,mapCol);
                 break;
+            case LandType.RUIN:
+                newLand = new RuinLand(mapRow,mapCol);
+                break;
         }
         //继承所有特殊属性（坚固和猎圈之类的）（充能不继承）
         newLand.soild = this.soild;
