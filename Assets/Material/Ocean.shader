@@ -59,6 +59,13 @@ Shader "Custom/Ocean"
         [Header(Shadow Map)]
         _MaxShadowMapDistance   ("_MaxShadowMapDistance",       float)          = 50
 
+    [Header(Depth Fog)]
+    _DistanceFogColor       ("Depth Fog Color",             Color)         = (0.85, 0.93, 1.0, 1)
+    _DistanceFogStart       ("Depth Fog Start",             float)         = 30
+    _DistanceFogEnd         ("Depth Fog End",               float)         = 180
+    _DistanceFogPower       ("Depth Fog Power",             Range(0.1,4))  = 1.2
+    _DistanceFogStrength    ("Depth Fog Strength",          Range(0,1))    = 0.65
+
     [Header(Stylize)]
     _Stylize                ("Stylize Amount",              Range(0,1))     = 0.6
     _PosterizeLevels        ("Posterize Levels",            Range(1,8))     = 4
@@ -172,6 +179,11 @@ Shader "Custom/Ocean"
 
             // Shadow Map
             float _MaxShadowMapDistance;
+            float4 _DistanceFogColor;
+            float _DistanceFogStart;
+            float _DistanceFogEnd;
+            float _DistanceFogPower;
+            float _DistanceFogStrength;
             float _Stylize;
             float _PosterizeLevels;
             float _PaperStrength;
@@ -218,15 +230,18 @@ Shader "Custom/Ocean"
                 return color;
             }
             
-            float3 _baseColor(v2f i, float3 refractedColor, float2 screenCoord, float shadowMask, out float biasDepth, out float distanceMask)
+            float3 _baseColor(v2f i, float3 refractedColor, float2 screenCoord, float shadowMask, out float biasDepth, out float distanceMask, out float linearSceneDepth, out float linearFragmentDepth)
             {
                 // sample camera depth using an explicit screen position (avoids mismatch with grab coords)
                 float2 depthScreen = i.screenPos.xy / i.screenPos.w;
                 float depth = tex2D(_CameraDepthTexture, depthScreen).r;
                 // compute biasDepth comparing sampled depth to fragment depth
                 float linearSampleDepth = LinearEyeDepth(depth);
-                float linearFragmentDepth = LinearEyeDepth(i.pos.z);
-                biasDepth = abs(linearSampleDepth - linearFragmentDepth);
+                float fragDepth = i.screenPos.z / i.screenPos.w;
+                float linearFragDepthLocal = LinearEyeDepth(fragDepth);
+                biasDepth = abs(linearSampleDepth - linearFragDepthLocal);
+                linearSceneDepth = linearSampleDepth;
+                linearFragmentDepth = linearFragDepthLocal;
 
                 float transmittance = exp(-_DepthDensity * biasDepth);
 
@@ -433,7 +448,9 @@ Shader "Custom/Ocean"
 
                 float biasDepth;
                 float distanceMask;
-                float3 baseColor = _baseColor(i, refractedColor, screenCoord, shadowMask, biasDepth, distanceMask);
+                float linearSceneDepth;
+                float linearFragmentDepth;
+                float3 baseColor = _baseColor(i, refractedColor, screenCoord, shadowMask, biasDepth, distanceMask, linearSceneDepth, linearFragmentDepth);
                 
                 float3 normalTS;
                 float3 viewDirWS;
@@ -454,6 +471,16 @@ Shader "Custom/Ocean"
                 specularColor *= (1.0 - 0.9 * stylizeInfluence);     // mostly remove glossy highlights
 
                 float3 finalColor = baseColor + reflectedColor + edgeFoamColor + sparkleColor + specularColor + sssColor + foamColor;
+
+                // depth-driven distance fog using the scene depth buffer to fade distant water into haze
+                float depthGap = max(0, linearSceneDepth - linearFragmentDepth);
+                float fogSpan = max(_DistanceFogEnd - _DistanceFogStart, 1e-3);
+                float fogByDistance = saturate((linearFragmentDepth - _DistanceFogStart) / fogSpan);
+                float fogByGap = saturate((depthGap - _DistanceFogStart) / fogSpan);
+                float fogAmount = max(fogByDistance, fogByGap);
+                fogAmount = pow(fogAmount, _DistanceFogPower);
+                fogAmount *= _DistanceFogStrength;
+                finalColor = lerp(finalColor, _DistanceFogColor.rgb, fogAmount);
 
                 // apply a subtle paper grain (multiply blend) to warm/flatten the result
                 float2 paperUV = i.worldPos.xz * 0.1 + float2(_Time.y * 0.01, _Time.y * 0.01);

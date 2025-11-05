@@ -47,6 +47,10 @@ Material:
     m_Floats:
     - _DepthDensity: 0.485
     - _DistanceDensity: 0.00245
+    - _DistanceFogEnd: 1126
+    - _DistanceFogPower: 4
+    - _DistanceFogStart: 300
+    - _DistanceFogStrength: 1
     - _EdgeFoamDepth: 0.231
     - _FoamAmplitude: 1
     - _FoamNoiseScale: 0.5
@@ -66,6 +70,10 @@ Material:
     - _SpecularAmplitude: 1
     - _SpecularPower: 10
     - _Stylize: 0.219
+    - _VolFogDepthDensity: 8
+    - _VolFogDistanceEnd: 800
+    - _VolFogDistanceStart: 5000
+    - _VolFogIntensity: 1
     - _Wave0Amplitude: 0.04
     - _Wave0Direction: 0.25
     - _Wave0Length: 5
@@ -77,9 +85,10 @@ Material:
     - _Wave1NormalSpeed: 0.05
     - _Wave1Speed: 0.6
     m_Colors:
-    - _BaseTint: {r: 0.3803922, g: 0.57254905, b: 0.5411765, a: 1}
+    - _BaseTint: {r: 0.38039216, g: 0.57254905, b: 0.53306156, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DeepColor: {r: 0.015686266, g: 0.34720057, b: 0.43529412, a: 1}
+    - _DistanceFogColor: {r: 1, g: 1, b: 1, a: 1}
     - _EdgeFoamColor: {r: 0.5771182, g: 0.70477355, b: 0.9339623, a: 1}
     - _FarColor: {r: 0.5255874, g: 0.62035024, b: 0.8773585, a: 1}
     - _OutlineColor: {r: 1, g: 0, b: 0, a: 1}
@@ -87,5 +96,6 @@ Material:
     - _ShallowColor: {r: 0.047058843, g: 0.81750685, b: 0.9137255, a: 1}
     - _SparkleColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _VolFogColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

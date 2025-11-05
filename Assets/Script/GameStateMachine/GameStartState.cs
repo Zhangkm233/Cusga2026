@@ -5,9 +5,15 @@ public class GameStartState : GameState
 {
     public GameStartState(GameStateMachine stateMachine) : base(stateMachine) { }
     public override void Enter() {
-        Console.WriteLine("½øÈëÓÎÏ·¿ªÊ¼½×¶Î");
-        // ³õÊ¼»¯ÓÎÏ·Êý¾Ý
+        Console.WriteLine("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ê¼ï¿½×¶ï¿½");
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½
         DeckManager.Instance.ShuffleDeck();
+        var cameraController = CameraController.Instance;
+        if (cameraController != null) {
+            cameraController.transform.localRotation = Quaternion.Euler(11.5f,0f,0f);
+        } else {
+            Debug.LogWarning("CameraController.Instance is missing when entering GameStartState.");
+        }
         //DeckManager.Instance.DrawCard();
         GameManager.Instance.StartTurn();
 
@@ -15,6 +21,6 @@ public class GameStartState : GameState
     public override void Update() {
     }
     public override void Exit() {
-        Console.WriteLine("ÍË³öÓÎÏ·¿ªÊ¼×´Ì¬");
+        Console.WriteLine("ï¿½Ë³ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ê¼×´Ì¬");
     }
 }

@@ -11,7 +11,10 @@ public class CameraController : MonoBehaviour
     private float minDistance = 8f;
     private float maxDistance = 25f;
 
-    public GameObject target; //¸¸ÎïÌå
+    [SerializeField]
+    private bool autoCalibrateSight = false;
+
+    public GameObject target; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private void Awake() {
         if (Instance == null) {
@@ -31,7 +34,9 @@ public class CameraController : MonoBehaviour
     void Update() {
         HorizonMoveSightByKey();
         ChangeDistanceByKey();
-        ChangeSightByDistance();
+        if (autoCalibrateSight) {
+            ChangeSightByDistance();
+        }
     }
 
     public void RotateSight(int speed) {
@@ -53,16 +58,16 @@ public class CameraController : MonoBehaviour
 
     public void ChangeDistanceByKey() {
         if (Keyboard.current.upArrowKey.isPressed) {
-            distanceFromTarget -= zoomSpeed; // µ÷ÕûËõ·ÅËÙ¶È
-            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // ÏÞÖÆËõ·Å·¶Î§
+            distanceFromTarget -= zoomSpeed; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å·ï¿½Î§
         } else if (Keyboard.current.downArrowKey.isPressed) {
-            distanceFromTarget += zoomSpeed; // µ÷ÕûËõ·ÅËÙ¶È
-            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // ÏÞÖÆËõ·Å·¶Î§
+            distanceFromTarget += zoomSpeed; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å·ï¿½Î§
         }
     }
 
     public void ChangeSightByDistance() {
-        // ±£³ÖÏà»úÓëÄ¿±êµÄ¾àÀë
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½
         if (target != null) {
             Vector3 direction = (transform.position - target.transform.position).normalized;
             transform.position = target.transform.position + direction * distanceFromTarget;
