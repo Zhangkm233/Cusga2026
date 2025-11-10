@@ -48,4 +48,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("开始回合");
         stateMachine.ChangePhase(GamePhase.TurnStart);
     }
+
+    public void PauseGame() {
+        Debug.Log("游戏暂停");
+        stateMachine.ChangePhase(GamePhase.GamePaused);
+    }
+
+    public void ContinueGame() {
+        Debug.Log("继续游戏");
+        stateMachine.ChangePhase(GamePhase.PlayerTurn);
+    }
 }
