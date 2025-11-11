@@ -3,6 +3,9 @@ using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
+/// <summary>
+/// 地块数据 挂载在每个Tile物体上
+/// </summary>
 public class TileController : MonoBehaviour
 {
     public Land land;
@@ -19,9 +22,9 @@ public class TileController : MonoBehaviour
         while (MapManager.Instance == null || MapManager.Instance.LandMap == null || MapManager.Instance.LandMap.Count == 0) {
             yield return null;
         }
-        
+
         // 检查坐标是否在有效范围内
-        if (tileRow < 0 || tileRow >= 3 || tileCol < 0 || tileCol >= 4) {
+        if (tileRow < 0 || tileRow >= MapManager.Instance.RowCount || tileCol < 0 || tileCol >= MapManager.Instance.ColCount) {
             Debug.LogError($"TileController {gameObject.name} 坐标超出范围: ({tileRow}, {tileCol})，地图大小: 3x4");
             yield break;
         }
@@ -36,7 +39,7 @@ public class TileController : MonoBehaviour
 
     public Land GetLand() {
         // 检查坐标是否在有效范围内
-        if (tileRow < 0 || tileRow >= 3 || tileCol < 0 || tileCol >= 4) {
+        if (tileRow < 0 || tileRow >= MapManager.Instance.RowCount || tileCol < 0 || tileCol >= MapManager.Instance.ColCount) {
             Debug.LogError($"TileController {gameObject.name} 坐标超出范围: ({tileRow}, {tileCol})，地图大小: 3x4");
             return null;
         }

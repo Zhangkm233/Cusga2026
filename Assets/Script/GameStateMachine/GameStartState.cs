@@ -5,8 +5,7 @@ public class GameStartState : GameState
 {
     public GameStartState(GameStateMachine stateMachine) : base(stateMachine) { }
     public override void Enter() {
-        Console.WriteLine("������Ϸ��ʼ�׶�");
-        // ��ʼ����Ϸ����
+        Console.WriteLine("进入游戏开始阶段");
         DeckManager.Instance.ShuffleDeck();
         var cameraController = CameraController.Instance;
         if (cameraController != null) {
@@ -14,13 +13,12 @@ public class GameStartState : GameState
         } else {
             Debug.LogWarning("CameraController.Instance is missing when entering GameStartState.");
         }
-        //DeckManager.Instance.DrawCard();
         GameManager.Instance.StartTurn();
 
     }
     public override void Update() {
     }
     public override void Exit() {
-        Console.WriteLine("�˳���Ϸ��ʼ״̬");
+        Console.WriteLine("退出游戏开始阶段");
     }
 }

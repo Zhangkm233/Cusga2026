@@ -2,12 +2,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// 地图管理器，挂载在GameManager物体上
+/// 提供地图数据的存取和操作功能
+/// </summary>
 public class MapManager : MonoBehaviour
 {
 
     public List<List<Land>> LandMap = new List<List<Land>>();
     public List<List<Animal>> AnimalMap = new List<List<Animal>>();
     public UnityEvent<int,int> OnLandChanged;
+
+    public int RowCount {
+        get {
+            return LandMap.Count;
+        }
+    }
+    public int ColCount {
+        get {
+            if (LandMap.Count > 0) {
+                return LandMap[0].Count;
+            } else {
+                return 0;
+            }
+        }
+    }
 
     public static MapManager Instance { get; private set; }
     private void Awake() {

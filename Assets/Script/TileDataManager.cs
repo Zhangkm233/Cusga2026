@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 地块数据显示 先用这个脚本 后面有别的方案再改
+/// 地块数据显示脚本 挂载在Tile游戏物体上
+/// 读TileController的数据并显示在UI上
 /// </summary>
 public class TileDataManager : MonoBehaviour
 {

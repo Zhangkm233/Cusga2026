@@ -1,6 +1,9 @@
 using UnityEngine;
 
 
+/// <summary>
+/// 调用状态机的游戏管理器
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public GameObject selectCard;

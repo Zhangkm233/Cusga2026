@@ -5,7 +5,9 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-
+/// <summary>
+/// 卡片显示、拖拽的代码 挂载在CardGameobject卡牌物体上
+/// </summary>
 public class CardController : MonoBehaviour
 {
     public TMP_Text cardName;

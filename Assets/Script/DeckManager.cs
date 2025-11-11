@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// 操控牌库和手牌的管理器，挂载在GameManager物体上
+/// 提供牌库和手牌的增删查改功能
+/// </summary>
 public class DeckManager : MonoBehaviour
 {
     //控制逻辑层的牌库和手牌
