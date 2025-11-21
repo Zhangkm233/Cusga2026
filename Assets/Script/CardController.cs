@@ -296,7 +296,7 @@ public class CardController : MonoBehaviour
             }
             
             // 如果仍然没有找到Tile，尝试直接通过组件查找
-            if (allTiles.Length > 0) {
+            if (allTiles.Length <= 0) {
                 Debug.Log("尝试通过组件直接查找TileController");
                 foreach (GameObject tile in allTiles) {
                     TileController tileController = tile.GetComponent<TileController>();
