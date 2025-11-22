@@ -31,6 +31,7 @@ public class CardController : MonoBehaviour
     private RectTransform rectTransform;
     private Vector2 originalAnchoredPosition;
     private Vector2 dragOffset; // 用于RectTransform拖拽
+    private Collider cardCollider;
 
     public CardController(Card card) {
         this.card = card;
@@ -56,6 +57,9 @@ public class CardController : MonoBehaviour
         }
         if(cardDescriptionPanel == null) {
             cardDescriptionPanel = transform.Find("DescriptionPanel").gameObject;
+        }
+        if (cardCollider == null) {
+            cardCollider = GetComponent<Collider>();
         }
 
         // 初始化拖拽相关
@@ -112,7 +116,7 @@ public class CardController : MonoBehaviour
     }
 
     private void EnableDescriptionPanel() {
-        if (cardDescriptionPanel != null && isDragging == false && DescriptionManager.Instance.isDragging == false) {
+        if (cardDescriptionPanel != null && isDragging == false && DescriptionManager.Instance.isDragging == false && GameManager.Instance.stateMachine.CurrentPhase == GamePhase.PlayerTurn ) {
             cardDescriptionPanel.SetActive(true);
             //根据鼠标坐标调整左侧还是右侧显示
             Vector3 mousePos = Input.mousePosition;
@@ -137,7 +141,8 @@ public class CardController : MonoBehaviour
             Debug.Log("当前不是玩家回合，无法拖拽卡片");
             return;
         }
-        MouseDownRect();
+        MouseDownRect(); 
+        if (cardCollider != null) cardCollider.enabled = false;
     }
 
     private void MouseDownTransform() {
@@ -164,8 +169,10 @@ public class CardController : MonoBehaviour
         Debug.Log($"OnMouseDown RectTransform called on card: {card?.CardName}, isDragging: {isDragging}");
         if (card != null && !isDragging) {
 
+            //设置DescriptionManager状态
             DisableDescriptionPanel();
             DescriptionManager.Instance.isDragging = true;
+            DescriptionManager.Instance.draggingCard = card;
 
             isDragging = true;
             originalPosition = transform.position;
@@ -229,7 +236,6 @@ public class CardController : MonoBehaviour
                 out localPointerPosition)) {
                 // 应用位置（加上偏移量以保持鼠标在卡牌上的点击位置）
                 rectTransform.anchoredPosition = localPointerPosition + dragOffset;
-                //Debug.Log($"RectTransform拖拽中: 新位置{rectTransform.anchoredPosition}");
             } else {
                 Debug.LogWarning("RectTransform拖拽坐标转换失败");
             }
@@ -242,9 +248,14 @@ public class CardController : MonoBehaviour
     // 鼠标释放
     private void OnMouseUp() {
         if (isDragging) {
+
+            // 设置DescriptionManager状态
             DescriptionManager.Instance.isDragging = false;
+            DescriptionManager.Instance.draggingCard = null;
 
             isDragging = false;
+
+            if (cardCollider != null) cardCollider.enabled = true;
 
             Debug.Log($"OnMouseUp called on card: {card?.CardName}");
             

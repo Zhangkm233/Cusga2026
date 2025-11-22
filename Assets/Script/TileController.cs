@@ -68,4 +68,16 @@ public class TileController : MonoBehaviour
     public bool IsThisPlaceExist() {
         return MapManager.Instance.IsPlaceLegal(tileRow,tileCol);
     }
+
+    private void OnMouseEnter() {
+        // 显示地块描述
+        if (DescriptionManager.Instance.isShowingDescription == false && GameManager.Instance.stateMachine.CurrentPhase == GamePhase.PlayerTurn) {
+            DescriptionManager.Instance.ShowDescriptionOfLand(this);
+        }
+    }
+
+    private void OnMouseExit() {
+        // 隐藏地块描述
+        DescriptionManager.Instance.HideDescription();
+    }
 }
