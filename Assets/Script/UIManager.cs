@@ -114,16 +114,6 @@ public class UIManager : MonoBehaviour
         dealRoutine = StartCoroutine(DealCardsRoutine());
     }
 
-    public void CancelAllSelect() {
-        foreach (GameObject card in cards) {
-            CardController cardController = card.GetComponent<CardController>();
-            if (cardController != null) {
-                cardController.isSelected = false;
-                cardController.UpdateCard();
-            }
-        }
-    }
-
     private IEnumerator DealCardsRoutine() {
         Debug.Log("开始发牌动画");
         GameData.IsCardAnimationPlaying = true;

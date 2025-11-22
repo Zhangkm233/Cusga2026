@@ -13,12 +13,12 @@ public class CardController : MonoBehaviour
     public TMP_Text cardName;
     public TMP_Text cardDescription;
     public TMP_Text cardType;
+    public GameObject cardDescriptionPanel;// 用于显示卡片描述的面板
 
     public Card card;
     public GameObject cardCanvas;
     public Canvas parentCanvas;
     public int indexOfCards;
-    public bool isSelected = false;
     
     // 拖拽相关变量
     public bool isDragging = false;
@@ -54,6 +54,9 @@ public class CardController : MonoBehaviour
         if (cardCanvas == null) {
             cardCanvas = transform.GetComponentInChildren<Canvas>().gameObject;
         }
+        if(cardDescriptionPanel == null) {
+            cardDescriptionPanel = transform.Find("DescriptionPanel").gameObject;
+        }
 
         // 初始化拖拽相关
         mainCamera = Camera.main;
@@ -86,13 +89,6 @@ public class CardController : MonoBehaviour
         }
         this.GetComponent<SpriteRenderer>().sortingOrder = indexOfCards;
         cardCanvas.GetComponent<Canvas>().sortingOrder = indexOfCards;
-        if (isSelected) {
-            GetComponent<SpriteRenderer>().color = new Color(1f,1f,0.5f,1f); // ѡ��ʱ��Ϊ��ɫ
-            UpdateSortingOrder(50);
-        } else {
-            GetComponent<SpriteRenderer>().color = Color.white; // δѡ��ʱ�ָ�Ϊ��ɫ
-            UpdateSortingOrder();
-        }
     }
 
     public void UpdateSortingOrder() {
@@ -106,7 +102,35 @@ public class CardController : MonoBehaviour
         cardCanvas.GetComponent<Canvas>().sortingOrder = order + 2;
         this.GetComponent<BoxCollider>().layerOverridePriority = order +2;
     }
-    
+
+    private void OnMouseEnter() {
+        EnableDescriptionPanel();
+    }
+
+    private void OnMouseExit() {
+        DisableDescriptionPanel();
+    }
+
+    private void EnableDescriptionPanel() {
+        if (cardDescriptionPanel != null && isDragging == false && DescriptionManager.Instance.isDragging == false) {
+            cardDescriptionPanel.SetActive(true);
+            //根据鼠标坐标调整左侧还是右侧显示
+            Vector3 mousePos = Input.mousePosition;
+            if (mousePos.x > Screen.width / 2) {
+                //鼠标在右侧，描述面板显示在左侧
+                cardDescriptionPanel.transform.localPosition = new Vector3(-1,0.3f,0);
+            } else {
+                //鼠标在左侧，描述面板显示在右侧
+                cardDescriptionPanel.transform.localPosition = new Vector3(1,0.3f,0);
+            }
+        }
+    }
+    private void DisableDescriptionPanel() {
+        if (cardDescriptionPanel != null) {
+            cardDescriptionPanel.SetActive(false);
+        }
+    }
+
     // 鼠标按下开始拖拽
     private void OnMouseDown() {
         if(GameManager.Instance.stateMachine.CurrentPhase != GamePhase.PlayerTurn) {
@@ -139,6 +163,10 @@ public class CardController : MonoBehaviour
         //使用rectTransform的拖拽方式
         Debug.Log($"OnMouseDown RectTransform called on card: {card?.CardName}, isDragging: {isDragging}");
         if (card != null && !isDragging) {
+
+            DisableDescriptionPanel();
+            DescriptionManager.Instance.isDragging = true;
+
             isDragging = true;
             originalPosition = transform.position;
             originalAnchoredPosition = rectTransform.anchoredPosition;
@@ -214,7 +242,10 @@ public class CardController : MonoBehaviour
     // 鼠标释放
     private void OnMouseUp() {
         if (isDragging) {
+            DescriptionManager.Instance.isDragging = false;
+
             isDragging = false;
+
             Debug.Log($"OnMouseUp called on card: {card?.CardName}");
             
             // 检查是否拖拽到棋盘格子上
