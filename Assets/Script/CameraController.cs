@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     private float minDistance = 8f;
     private float maxDistance = 25f;
 
+
     [SerializeField]
     private bool autoCalibrateSight = false;
 
@@ -48,21 +49,24 @@ public class CameraController : MonoBehaviour
     }
 
     public void HorizonMoveSightByKey() {
-        if (Keyboard.current.rightArrowKey.isPressed) {
-            RotateSight(-1);
-        } else if (Keyboard.current.leftArrowKey.isPressed) {
-            
+        if (Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed) {
             RotateSight(1);
+        } else if (Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed) {
+            RotateSight(-1);
         }
     }
 
     public void ChangeDistanceByKey() {
-        if (Keyboard.current.upArrowKey.isPressed) {
-            distanceFromTarget -= zoomSpeed; // ���������ٶ�
-            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // �������ŷ�Χ
-        } else if (Keyboard.current.downArrowKey.isPressed) {
-            distanceFromTarget += zoomSpeed; // ���������ٶ�
-            distanceFromTarget = Mathf.Clamp(distanceFromTarget,minDistance,maxDistance); // �������ŷ�Χ
+        if (Keyboard.current.upArrowKey.isPressed || Keyboard.current.wKey.isPressed) {
+            distanceFromTarget -= zoomSpeed;
+            if (distanceFromTarget < minDistance) {
+                distanceFromTarget = minDistance;
+            }
+        } else if (Keyboard.current.downArrowKey.isPressed || Keyboard.current.sKey.isPressed) {
+            distanceFromTarget += zoomSpeed;
+            if (distanceFromTarget > maxDistance) {
+                distanceFromTarget = maxDistance;
+            }
         }
     }
 
