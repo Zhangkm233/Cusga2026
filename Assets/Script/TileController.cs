@@ -57,7 +57,7 @@ public class TileController : MonoBehaviour
         UpdateLand();
         MapManager.Instance.OnLandChanged.AddListener((row,col) => {
             if (row == tileRow && col == tileCol) {
-                
+                PlayUpdateAnimation();
                 UpdateLand();
             }
         });
@@ -132,7 +132,7 @@ public class TileController : MonoBehaviour
             .SetEase(Ease.OutQuad)
         );
 
-        // 4. 回弹：拉长（Stretch）
+        // 4. 回弹：拉长
         seq.Append(transform.DOScale(
                 new Vector3(originalScale.x * stretchScaleX, originalScale.y * stretchScaleY, originalScale.z),
                 stretchDuration
