@@ -155,6 +155,7 @@ public abstract class Land
         //这里是转变地形的函数 如果想解耦合，还需要改一改到游戏里面的调用，应该UI层面需要全部重写
         //需要在逻辑层里面添加存储 然后再显示到游戏/UE层
         Debug.Log($"地形 {LandType} 变为 {landType}");
+        
         MapManager.Instance.LandMap[mapRow][mapCol] = null;
         Land newLand = null;
         switch (landType) {
