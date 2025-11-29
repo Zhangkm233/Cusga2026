@@ -1,4 +1,5 @@
 using Mono.Cecil;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -443,13 +444,15 @@ public class CardController : MonoBehaviour
             Debug.LogError($"未找到卡片 {card.CardName} 在手牌中");
         }
 
-        transform.position = originalPosition;
-        UpdateSortingOrder();
-        ClearHoverEffect();
-
-        Debug.Log($"卡片 {card.CardName} 已放置到Boss上并消失");
-        // 更新UI
-        UIManager.Instance.UpdateCards();
+        // 锁定输入并播放吸入动画
+        isDragging = false;
+        if (cardCollider != null) cardCollider.enabled = false;
+        
+        // 计算Boss中心位置（使用世界坐标）
+        GameObject bossObj = GameObject.FindGameObjectWithTag("BossGameobject");
+        Vector3 targetPos = bossObj != null ? bossObj.transform.position : transform.position;
+        
+        StartCoroutine(PlayCardAbsorptionAnimation(targetPos));
     }
     
     // 将卡片放置到格子上
@@ -507,21 +510,18 @@ public class CardController : MonoBehaviour
                 Debug.LogError($"未找到卡片 {card.CardName} 在手牌中");
             }
 
-            // 隐藏卡片
-            //this.gameObject.SetActive(false);
-
-            transform.position = originalPosition;
-            UpdateSortingOrder();
-            ClearHoverEffect();
-
-            // 更新UI
-            UIManager.Instance.UpdateCards();
+            // 锁定输入并播放吸入动画
+            isDragging = false;
+            if (cardCollider != null) cardCollider.enabled = false;
             
-            Debug.Log($"卡片 {card.CardName} 已放置到格子 ({tileController.tileRow}, {tileController.tileCol}) 并消失");
+            // 计算格子中心位置
+            Vector3 targetPos = tileController.transform.position;
+            
+            StartCoroutine(PlayCardAbsorptionAnimation(targetPos));
+            
+            Debug.Log($"卡片 {card.CardName} 已放置到格子 ({tileController.tileRow}, {tileController.tileCol})，开始吸入动画");
         }
-    }
-    
-    // 检查悬停的格子
+    }    // 检查悬停的格子
     private void CheckHoveredTile() {
         Vector3 mouseScreenPos = Input.mousePosition;
         mouseScreenPos.z = mainCamera.WorldToScreenPoint(transform.position).z;
@@ -596,5 +596,67 @@ public class CardController : MonoBehaviour
         transform.position = originalPosition;
         UpdateSortingOrder(); // 恢复原来的层级
         ClearHoverEffect();
+    }
+    //卡牌被地块吸入动画
+    private IEnumerator PlayCardAbsorptionAnimation(Vector3 targetPos) {
+        // 第一段：0.3秒内平滑移动到目标位置并缩小到0.2倍
+        float duration1 = 0.3f;
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 startScale = transform.localScale;
+        Vector3 targetScale = startScale * 0.2f;
+
+        while (elapsed < duration1) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration1;
+            
+            // 平滑插值位置和缩放
+            transform.position = Vector3.Lerp(startPos, targetPos, t);
+            transform.localScale = Vector3.Lerp(startScale, targetScale, t);
+            
+            yield return null;
+        }
+
+        // 确保到达目标位置和目标缩放
+        transform.position = targetPos;
+        transform.localScale = targetScale;
+
+        // 第二段：0.1秒内快速下沉并消失（Z轴向后移动或透明度降低）
+        float duration2 = 0.1f;
+        elapsed = 0f;
+        Vector3 sinkPos = targetPos + Vector3.back * 5f; // Z轴向后移动
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Color startColor = spriteRenderer.color;
+        Color endColor = new Color(startColor.r, startColor.g, startColor.b, 0f); // 透明度为0
+
+        while (elapsed < duration2) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration2;
+            
+            // 快速下沉
+            transform.position = Vector3.Lerp(targetPos, sinkPos, t);
+            
+            // 逐渐消失
+            spriteRenderer.color = Color.Lerp(startColor, endColor, t);
+            
+            // 同时也更新Canvas上的透明度
+            if (cardCanvas != null) {
+                CanvasGroup canvasGroup = cardCanvas.GetComponent<CanvasGroup>();
+                if (canvasGroup == null) {
+                    canvasGroup = cardCanvas.AddComponent<CanvasGroup>();
+                }
+                canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+            }
+            
+            yield return null;
+        }
+
+        // 完全隐藏卡片
+        gameObject.SetActive(false);
+        
+        // 更新UI（重新排列剩余卡片）
+        UIManager.Instance.UpdateCards();
+        
+        Debug.Log($"卡片吸入动画完成");
     }
 }
