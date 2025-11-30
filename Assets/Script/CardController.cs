@@ -652,7 +652,7 @@ public class CardController : MonoBehaviour
         }
 
         // 完全隐藏卡片
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
         
         // 更新UI（重新排列剩余卡片）
         UIManager.Instance.UpdateCards();

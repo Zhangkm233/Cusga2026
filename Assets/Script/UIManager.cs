@@ -92,6 +92,7 @@ public class UIManager : MonoBehaviour
         }
         
         UpdateCardsSortingOrder();
+        DeckManager.Instance.ShowHand();
     }
 
     public void UpdateCardsSortingOrder() {

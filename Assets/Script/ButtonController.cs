@@ -19,4 +19,12 @@ public class ButtonController : MonoBehaviour
             Debug.Log("当前无法暂停或继续游戏");
         }
     }
+
+    public void OnClickHandShowerButton() {
+        DeckManager.Instance.ShowHand();
+    }
+
+    public void OnClickDeckShowerButton() {
+        DeckManager.Instance.ShowDeck();
+    }
 }

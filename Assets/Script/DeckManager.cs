@@ -13,7 +13,7 @@ public class DeckManager : MonoBehaviour
     public static DeckManager Instance { get; private set; }
 
     [SerializeField]
-    public List<Card> deck  = new List<Card>(); // 牌库数组，可以根据需要调整大小
+    public List<Card> deck = new List<Card>(); // 牌库数组，可以根据需要调整大小
 
     [SerializeField]
     public List<Card> hand = new List<Card>();
@@ -317,4 +317,21 @@ public class DeckManager : MonoBehaviour
         extraCertainCardType.Add(CardType.DISASTER);
     }
 
+    public void ShowHand() {
+        //在debug中显示手牌信息
+        Debug.Log($"当前手牌数量：{hand.Count}");
+        //显示空位 显示序号、卡牌名字、卡牌类型
+        for(int i = 0;i < hand.Count;i++) {
+            Debug.Log($"手牌{i}：{hand[i].CardName}（类型：{hand[i].CardType}）");
+        }
+    }
+
+    public void ShowDeck() {
+        //在debug中显示牌库信息
+        Debug.Log($"当前牌库数量：{deck.Count}");
+        //显示空位 显示序号、卡牌名字、卡牌类型
+        for (int i = 0;i < deck.Count;i++) {
+            Debug.Log($"牌库{i}：{deck[i].CardName}（类型：{deck[i].CardType}）");
+        }
+    }
 }
