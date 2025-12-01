@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-// Ğ­³Ì´¦ÀíÆ÷
+// åç¨‹å¤„ç†å™¨
 public class CoroutineHandler : MonoBehaviour
 {
     private static CoroutineHandler _instance;

@@ -4,23 +4,23 @@ using UnityEngine;
 using System.Linq;
 
 /// <summary>
-/// ²Ù¿ØÅÆ¿âºÍÊÖÅÆµÄ¹ÜÀíÆ÷£¬¹ÒÔØÔÚGameManagerÎïÌåÉÏ
-/// Ìá¹©ÅÆ¿âºÍÊÖÅÆµÄÔöÉ¾²é¸Ä¹¦ÄÜ
+/// æ“æ§ç‰Œåº“å’Œæ‰‹ç‰Œçš„ç®¡ç†å™¨ï¼ŒæŒ‚è½½åœ¨GameManagerç‰©ä½“ä¸Š
+/// æä¾›ç‰Œåº“å’Œæ‰‹ç‰Œçš„å¢åˆ æŸ¥æ”¹åŠŸèƒ½
 /// </summary>
 public class DeckManager : MonoBehaviour
 {
-    //¿ØÖÆÂß¼­²ãµÄÅÆ¿âºÍÊÖÅÆ
+    //æ§åˆ¶é€»è¾‘å±‚çš„ç‰Œåº“å’Œæ‰‹ç‰Œ
     public static DeckManager Instance { get; private set; }
 
     [SerializeField]
-    public List<Card> deck = new List<Card>(); // ÅÆ¿âÊı×é£¬¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû´óĞ¡
+    public List<Card> deck = new List<Card>(); // ç‰Œåº“æ•°ç»„ï¼Œå¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´å¤§å°
 
     [SerializeField]
     public List<Card> hand = new List<Card>();
 
-    public List<int> extraCertainCardId = null;//¶îÍâ³éÈ¡ÌØ¶¨idµÄÅÆ
-    public List<CardType> extraCertainCardType = null;//¶îÍâ³éÈ¡ÌØ¶¨ÖÖÀàµÄÅÆ
-    public List<CardType> reduceCertainCardType = null;//¼õÉÙ³éÈ¡ÌØ¶¨ÖÖÀàµÄÅÆ
+    public List<int> extraCertainCardId = null;//é¢å¤–æŠ½å–ç‰¹å®šidçš„ç‰Œ
+    public List<CardType> extraCertainCardType = null;//é¢å¤–æŠ½å–ç‰¹å®šç§ç±»çš„ç‰Œ
+    public List<CardType> reduceCertainCardType = null;//å‡å°‘æŠ½å–ç‰¹å®šç§ç±»çš„ç‰Œ
 
     private int extraDrawNum = 0;
     public int ExtraDrawNum {
@@ -36,7 +36,7 @@ public class DeckManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // ÆäËû·½·¨ºÍÊôĞÔ¿ÉÒÔÔÚÕâÀïÌí¼Ó
+    // å…¶ä»–æ–¹æ³•å’Œå±æ€§å¯ä»¥åœ¨è¿™é‡Œæ·»åŠ 
 
     public void InitializingData() {
         deck.Clear();
@@ -48,76 +48,76 @@ public class DeckManager : MonoBehaviour
     }
 
     public void ShuffleDeck() {
-        // ÊµÏÖÏ´ÅÆÂß¼­
+        // å®ç°æ´—ç‰Œé€»è¾‘
         List<Card> shuffledDeck = new List<Card>(deck);
         for (int i = shuffledDeck.Count - 1;i > 0;i--) {
             int j = Random.Range(0,i + 1);
-            // ½»»»ÔªËØ
+            // äº¤æ¢å…ƒç´ 
             Card temp = shuffledDeck[i];
             shuffledDeck[i] = shuffledDeck[j];
             shuffledDeck[j] = temp;
         }
-        deck = shuffledDeck; // ¸üĞÂÅÆ¿âÎªÏ´ºÃµÄÅÆ
-        Debug.Log("ÒÑÏ´ÅÆ");
+        deck = shuffledDeck; // æ›´æ–°ç‰Œåº“ä¸ºæ´—å¥½çš„ç‰Œ
+        Debug.Log("å·²æ´—ç‰Œ");
     }
 
     public void DrawCard() {
-        // ÊµÏÖ³é¿¨Âß¼­
+        // å®ç°æŠ½å¡é€»è¾‘
         if (deck.Count == 0) {
-            Debug.LogWarning("ÅÆ¿â¿Õ£¬ÎŞ·¨×¥ÅÆ");
+            Debug.LogWarning("ç‰Œåº“ç©ºï¼Œæ— æ³•æŠ“ç‰Œ");
             return;
         }
-        Card drawnCard = deck[0]; // ¼ÙÉè³éÈ¡µÚÒ»ÕÅ¿¨
-        deck.RemoveAt(0); // ´ÓÅÆ¿âÖĞÒÆ³ı³éÈ¡µÄ¿¨Æ¬
-        hand.Add(drawnCard); // ½«³éÈ¡µÄ¿¨Æ¬Ìí¼Óµ½ÊÖÅÆÖĞ
-        Debug.Log("×¥ÁËÒ»ÕÅÅÆ");
+        Card drawnCard = deck[0]; // å‡è®¾æŠ½å–ç¬¬ä¸€å¼ å¡
+        deck.RemoveAt(0); // ä»ç‰Œåº“ä¸­ç§»é™¤æŠ½å–çš„å¡ç‰‡
+        hand.Add(drawnCard); // å°†æŠ½å–çš„å¡ç‰‡æ·»åŠ åˆ°æ‰‹ç‰Œä¸­
+        Debug.Log("æŠ“äº†ä¸€å¼ ç‰Œ");
     }
 
     public void DrawCertainCardByTypes(params CardType[] cardTypes) {
-        //³éÈ¡ÌØ¶¨ÖÖÀàÃÇµÄÅÆ
+        //æŠ½å–ç‰¹å®šç§ç±»ä»¬çš„ç‰Œ
         for (int i = 0;i < deck.Count;i++) {
             if (cardTypes.Contains<CardType>(deck[i].CardType)) {
                 Card drawnCard = deck[i];
                 deck.RemoveAt(i);
                 hand.Add(drawnCard);
-                Debug.Log($"×¥ÁËÒ»ÕÅ{drawnCard.CardType}ÅÆ£º{drawnCard.CardName}");
+                Debug.Log($"æŠ“äº†ä¸€å¼ {drawnCard.CardType}ç‰Œï¼š{drawnCard.CardName}");
                 ShuffleDeck();
                 return;
             }
         }
         foreach (CardType type in cardTypes) {
-            Debug.LogWarning($"ÅÆ¿âÖĞÃ»ÓĞ{type}ÅÆ£¬ÎŞ·¨×¥ÅÆ");
+            Debug.LogWarning($"ç‰Œåº“ä¸­æ²¡æœ‰{type}ç‰Œï¼Œæ— æ³•æŠ“ç‰Œ");
         }
     }
 
     public void DrawCertainCardByType(CardType cardType) {
-        //³éÈ¡ÌØ¶¨ÖÖÀàµÄÅÆ
+        //æŠ½å–ç‰¹å®šç§ç±»çš„ç‰Œ
         for (int i = 0;i < deck.Count;i++) {
             if (deck[i].CardType == cardType) {
                 Card drawnCard = deck[i];
                 deck.RemoveAt(i);
                 hand.Add(drawnCard);
-                Debug.Log($"×¥ÁËÒ»ÕÅ{cardType}ÅÆ£º{drawnCard.CardName}");
+                Debug.Log($"æŠ“äº†ä¸€å¼ {cardType}ç‰Œï¼š{drawnCard.CardName}");
                 ShuffleDeck();
                 return;
             }
         }
-        Debug.LogWarning($"ÅÆ¿âÖĞÃ»ÓĞ{cardType}ÅÆ£¬ÎŞ·¨×¥ÅÆ");
+        Debug.LogWarning($"ç‰Œåº“ä¸­æ²¡æœ‰{cardType}ç‰Œï¼Œæ— æ³•æŠ“ç‰Œ");
     }
 
     public void DrawCertainCardById(int id) {
-        //³éÈ¡ÌØ¶¨idµÄÅÆ
+        //æŠ½å–ç‰¹å®šidçš„ç‰Œ
         for (int i = 0;i < deck.Count;i++) {
             if (deck[i].Id == id) {
                 Card drawnCard = deck[i];
                 deck.RemoveAt(i);
                 hand.Add(drawnCard);
-                Debug.Log($"×¥ÁËÒ»ÕÅidÎª{id}µÄÅÆ£º{drawnCard.CardName}");
+                Debug.Log($"æŠ“äº†ä¸€å¼ idä¸º{id}çš„ç‰Œï¼š{drawnCard.CardName}");
                 ShuffleDeck();
                 return;
             }
         }
-        Debug.LogWarning($"ÅÆ¿âÖĞÃ»ÓĞidÎª{id}µÄÅÆ£¬ÎŞ·¨×¥ÅÆ");
+        Debug.LogWarning($"ç‰Œåº“ä¸­æ²¡æœ‰idä¸º{id}çš„ç‰Œï¼Œæ— æ³•æŠ“ç‰Œ");
     }
 
     public bool RemoveCertainCardByType(CardType cardType) {
@@ -125,11 +125,11 @@ public class DeckManager : MonoBehaviour
             if (deck[i].CardType == cardType) {
                 Card removedCard = deck[i];
                 deck.RemoveAt(i);
-                Debug.Log($"ÒÆ³ıÁËÅÆ¿âÖĞµÄÒ»ÕÅ{cardType}ÅÆ£º{removedCard.CardName}");
+                Debug.Log($"ç§»é™¤äº†ç‰Œåº“ä¸­çš„ä¸€å¼ {cardType}ç‰Œï¼š{removedCard.CardName}");
                 return true;
             }
         }
-        Debug.LogWarning($"ÅÆ¿âÖĞÃ»ÓĞ{cardType}ÅÆ£¬ÎŞ·¨ÒÆ³ı");
+        Debug.LogWarning($"ç‰Œåº“ä¸­æ²¡æœ‰{cardType}ç‰Œï¼Œæ— æ³•ç§»é™¤");
         return false;
     }
 
@@ -138,11 +138,11 @@ public class DeckManager : MonoBehaviour
             if (deck[i].Id == id) {
                 Card removedCard = deck[i];
                 deck.RemoveAt(i);
-                Debug.Log($"ÒÆ³ıÁËÅÆ¿âÖĞµÄÒ»ÕÅidÎª{id}µÄÅÆ£º{removedCard.CardName}");
+                Debug.Log($"ç§»é™¤äº†ç‰Œåº“ä¸­çš„ä¸€å¼ idä¸º{id}çš„ç‰Œï¼š{removedCard.CardName}");
                 return true;
             }
         }
-        Debug.LogWarning($"ÅÆ¿âÖĞÃ»ÓĞidÎª{id}µÄÅÆ£¬ÎŞ·¨ÒÆ³ı");
+        Debug.LogWarning($"ç‰Œåº“ä¸­æ²¡æœ‰idä¸º{id}çš„ç‰Œï¼Œæ— æ³•ç§»é™¤");
         return false;
     }
 
@@ -173,7 +173,7 @@ public class DeckManager : MonoBehaviour
             }
             return true;
         } else {
-            Debug.LogWarning($"ÅÆ¿âÖĞÃ»ÓĞ×ã¹»µÄidÎª{id}µÄÅÆ£¬ÎŞ·¨ÒÆ³ı");
+            Debug.LogWarning($"ç‰Œåº“ä¸­æ²¡æœ‰è¶³å¤Ÿçš„idä¸º{id}çš„ç‰Œï¼Œæ— æ³•ç§»é™¤");
             return false;
         }
     }
@@ -185,52 +185,52 @@ public class DeckManager : MonoBehaviour
             }
             return true;
         } else {
-            Debug.LogWarning($"ÅÆ¿âÖĞÃ»ÓĞ×ã¹»µÄ{cardType}µÄÅÆ£¬ÎŞ·¨ÒÆ³ı");
+            Debug.LogWarning($"ç‰Œåº“ä¸­æ²¡æœ‰è¶³å¤Ÿçš„{cardType}çš„ç‰Œï¼Œæ— æ³•ç§»é™¤");
             return false;
         }
     }
 
 
     public void AddCardToDeck(Card card) {
-        // ÊµÏÖ½«¿¨Æ¬Ìí¼Óµ½ÅÆ¿âµÄÂß¼­
+        // å®ç°å°†å¡ç‰‡æ·»åŠ åˆ°ç‰Œåº“çš„é€»è¾‘
         deck.Add(card);
-        Debug.Log($"¿¨ÅÆ {card.CardName} ¼ÓÈëÁËÅÆ¿â");
+        Debug.Log($"å¡ç‰Œ {card.CardName} åŠ å…¥äº†ç‰Œåº“");
     }
 
     public void AddCardToDeck(Card card,int num) {
         for (int i = 0;i < num;i++) {
             deck.Add(card);
         }
-        Debug.Log($"¿¨ÅÆ {card.CardName} ¼ÓÈëÁËÅÆ¿â {num} ÕÅ");
+        Debug.Log($"å¡ç‰Œ {card.CardName} åŠ å…¥äº†ç‰Œåº“ {num} å¼ ");
     }
 
     public void ClearDeck() {
-        // ÊµÏÖÇå¿ÕÅÆ¿âµÄÂß¼­
-        Debug.Log("ÅÆ¿âÒÑÇå¿Õ");
+        // å®ç°æ¸…ç©ºç‰Œåº“çš„é€»è¾‘
+        Debug.Log("ç‰Œåº“å·²æ¸…ç©º");
     }
 
     public void ClearHand() {
-        // ÊµÏÖÇå¿ÕÊÖÅÆµÄÂß¼­
+        // å®ç°æ¸…ç©ºæ‰‹ç‰Œçš„é€»è¾‘
         hand.Clear();
-        Debug.Log("ÊÖÅÆÒÑÇå¿Õ");
+        Debug.Log("æ‰‹ç‰Œå·²æ¸…ç©º");
     }
 
 
     public void AddCardToDeckFromLand(Card card,int num,Land land) {
-        //Áô¸øµØ¿éµ÷ÓÃ
-        //ÕâÀï¿ÉÒÔ¼ÓÒ»Ğ©¶¯»­Ö®ÀàµÄ
+        //ç•™ç»™åœ°å—è°ƒç”¨
+        //è¿™é‡Œå¯ä»¥åŠ ä¸€äº›åŠ¨ç”»ä¹‹ç±»çš„
         AddCardToDeck(card,num);
     }
 
 
     public void DrawPhase() {
-        // ³é¿¨½×¶ÎÂß¼­
-        Debug.Log("³é¿¨½×¶Î");
-        // ÕâÀï¿ÉÒÔÌí¼Ó¸ü¶àµÄÂß¼­£¬±ÈÈç¸üĞÂUI£¬´¦Àí×´Ì¬µÈ
-        //³é¿¨½×¶Î-³éÈ¡4ÕÅ×ÊÔ´¿¨£¬3ÕÅ¼¼ÄÜ¿¨
+        // æŠ½å¡é˜¶æ®µé€»è¾‘
+        Debug.Log("æŠ½å¡é˜¶æ®µ");
+        // è¿™é‡Œå¯ä»¥æ·»åŠ æ›´å¤šçš„é€»è¾‘ï¼Œæ¯”å¦‚æ›´æ–°UIï¼Œå¤„ç†çŠ¶æ€ç­‰
+        //æŠ½å¡é˜¶æ®µ-æŠ½å–4å¼ èµ„æºå¡ï¼Œ3å¼ æŠ€èƒ½å¡
         ShuffleDeck();
         if (reduceCertainCardType != null) {
-            Debug.Log($"¼õÉÙ³éÈ¡{reduceCertainCardType.Count}ÕÅÌØ¶¨ÖÖÀàµÄÅÆ");
+            Debug.Log($"å‡å°‘æŠ½å–{reduceCertainCardType.Count}å¼ ç‰¹å®šç§ç±»çš„ç‰Œ");
             if (reduceCertainCardType.Contains(CardType.MATERIAL)) {
                 for (int i = 0;i < 4 - reduceCertainCardType.Count(x => x == CardType.MATERIAL);i++) {
                     DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
@@ -252,7 +252,7 @@ public class DeckManager : MonoBehaviour
             reduceCertainCardType.Clear();
             return;
         } else {
-            Debug.Log("Õı³£³é¿¨");
+            Debug.Log("æ­£å¸¸æŠ½å¡");
             for (int i = 0;i < 4;i++) {
                 DrawCertainCardByTypes(CardType.MATERIAL,CardType.DISASTER);
             }
@@ -260,26 +260,26 @@ public class DeckManager : MonoBehaviour
                 DrawCertainCardByTypes(CardType.SKILL,CardType.WEAPON);
             }
         }
-        Debug.Log($"ÊÖÅÆÊıÁ¿£º{hand.Count}ÕÅ");
+        Debug.Log($"æ‰‹ç‰Œæ•°é‡ï¼š{hand.Count}å¼ ");
     }
 
     public void ExtraDrawPhase() {
-        //ÏÈ³éÌØ¶¨IDµÄ
-        Debug.Log($"¶îÍâ³éÈ¡{extraCertainCardId.Count}ÕÅÌØ¶¨IDµÄÅÆ");
+        //å…ˆæŠ½ç‰¹å®šIDçš„
+        Debug.Log($"é¢å¤–æŠ½å–{extraCertainCardId.Count}å¼ ç‰¹å®šIDçš„ç‰Œ");
         for (int i = 0;i < extraCertainCardId.Count;i++) {
-            Debug.Log($"¶îÍâ³éÈ¡ÌØ¶¨IDµÄÅÆ£º{extraCertainCardId[i]}");
+            Debug.Log($"é¢å¤–æŠ½å–ç‰¹å®šIDçš„ç‰Œï¼š{extraCertainCardId[i]}");
             DrawCertainCardById(extraCertainCardId[i]);
         }
         extraCertainCardId.Clear();
-        //ÔÙ³éÌØ¶¨ÖÖÀàµÄ
-        Debug.Log($"¶îÍâ³éÈ¡{extraCertainCardType.Count}ÕÅÌØ¶¨ÖÖÀàµÄÅÆ");
+        //å†æŠ½ç‰¹å®šç§ç±»çš„
+        Debug.Log($"é¢å¤–æŠ½å–{extraCertainCardType.Count}å¼ ç‰¹å®šç§ç±»çš„ç‰Œ");
         for (int i = 0;i < extraCertainCardType.Count;i++) {
-            Debug.Log($"¶îÍâ³éÈ¡ÌØ¶¨ÖÖÀàµÄÅÆ£º{extraCertainCardType[i]}");
+            Debug.Log($"é¢å¤–æŠ½å–ç‰¹å®šç§ç±»çš„ç‰Œï¼š{extraCertainCardType[i]}");
             DrawCertainCardByType(extraCertainCardType[i]);
         }
         extraCertainCardType.Clear();
-        //ÔÙ³é¶îÍâµÄ ÕâÀïÒ»°ã²»»á¶îÍâ³é
-        Debug.Log($"¶îÍâ³éÈ¡{ExtraDrawNum}ÕÅÅÆ");
+        //å†æŠ½é¢å¤–çš„ è¿™é‡Œä¸€èˆ¬ä¸ä¼šé¢å¤–æŠ½
+        Debug.Log($"é¢å¤–æŠ½å–{ExtraDrawNum}å¼ ç‰Œ");
         for (int i = 0;i < ExtraDrawNum;i++) {
             DrawCard();
         }
@@ -288,28 +288,28 @@ public class DeckManager : MonoBehaviour
 
 
     public void DisasterPhase() {
-        //»ØºÏ½áÊøÊ±£¬
-        //°Ñ×ÊÔ´¿¨Ïú»Ù ¼¼ÄÜ¿¨£¨ÎäÆ÷ÅÆÒ²ÊÇÒ»ÖÖ¼¼ÄÜ£©Ï´»ØÅÆ¿â ´¥·¢ÌìÔÖ
-        Debug.Log("ÌìÔÖ½×¶Î");
+        //å›åˆç»“æŸæ—¶ï¼Œ
+        //æŠŠèµ„æºå¡é”€æ¯ æŠ€èƒ½å¡ï¼ˆæ­¦å™¨ç‰Œä¹Ÿæ˜¯ä¸€ç§æŠ€èƒ½ï¼‰æ´—å›ç‰Œåº“ è§¦å‘å¤©ç¾
+        Debug.Log("å¤©ç¾é˜¶æ®µ");
         foreach (Card card in hand) {
             if (card.CardType == CardType.DISASTER) {
-                //´¥·¢ÌìÔÖĞ§¹û
-                Debug.Log($"´¥·¢ÁËÌìÔÖ¿¨£º{card.CardName}");
-                card.ApplyEffect(null); // ÕâÀï´«Èënull£¬±íÊ¾Ã»ÓĞÌØ¶¨µÄµØ¿é
+                //è§¦å‘å¤©ç¾æ•ˆæœ
+                Debug.Log($"è§¦å‘äº†å¤©ç¾å¡ï¼š{card.CardName}");
+                card.ApplyEffect(null); // è¿™é‡Œä¼ å…¥nullï¼Œè¡¨ç¤ºæ²¡æœ‰ç‰¹å®šçš„åœ°å—
             } else if (card.CardType == CardType.SKILL || card.CardType == CardType.WEAPON) {
-                //¼¼ÄÜ¿¨Ï´»ØÅÆ¿â
-                Debug.Log($"¼¼ÄÜ¿¨{card.CardName}Ï´»ØÅÆ¿â");
+                //æŠ€èƒ½å¡æ´—å›ç‰Œåº“
+                Debug.Log($"æŠ€èƒ½å¡{card.CardName}æ´—å›ç‰Œåº“");
                 AddCardToDeck(card);
             } else if (card.CardType == CardType.MATERIAL) {
-                //×ÊÔ´¿¨Ïú»Ù
-                Debug.Log($"×ÊÔ´¿¨{card.CardName}±»Ïú»Ù");
+                //èµ„æºå¡é”€æ¯
+                Debug.Log($"èµ„æºå¡{card.CardName}è¢«é”€æ¯");
             }
         }
         ClearHand();
     }
 
     public void BossAttack() {
-        //BossµÄ¹¥»÷»á½«ÈıÕÅÌìÔÖÖÃÈëÄãµÄÅÆ¿â£¬ÇÒÄãÏÂ»ØºÏ»á¶îÍâ³éµ½Ò»ÕÅÌìÔÖ
+        //Bossçš„æ”»å‡»ä¼šå°†ä¸‰å¼ å¤©ç¾ç½®å…¥ä½ çš„ç‰Œåº“ï¼Œä¸”ä½ ä¸‹å›åˆä¼šé¢å¤–æŠ½åˆ°ä¸€å¼ å¤©ç¾
         for (int i = 0;i < 3;i++) {
             DisasterCard disasterCard = new DisasterCard();
             AddCardToDeck(disasterCard);
@@ -318,20 +318,20 @@ public class DeckManager : MonoBehaviour
     }
 
     public void ShowHand() {
-        //ÔÚdebugÖĞÏÔÊ¾ÊÖÅÆĞÅÏ¢
-        Debug.Log($"µ±Ç°ÊÖÅÆÊıÁ¿£º{hand.Count}");
-        //ÏÔÊ¾¿ÕÎ» ÏÔÊ¾ĞòºÅ¡¢¿¨ÅÆÃû×Ö¡¢¿¨ÅÆÀàĞÍ
+        //åœ¨debugä¸­æ˜¾ç¤ºæ‰‹ç‰Œä¿¡æ¯
+        Debug.Log($"å½“å‰æ‰‹ç‰Œæ•°é‡ï¼š{hand.Count}");
+        //æ˜¾ç¤ºç©ºä½ æ˜¾ç¤ºåºå·ã€å¡ç‰Œåå­—ã€å¡ç‰Œç±»å‹
         for(int i = 0;i < hand.Count;i++) {
-            Debug.Log($"ÊÖÅÆ{i}£º{hand[i].CardName}£¨ÀàĞÍ£º{hand[i].CardType}£©");
+            Debug.Log($"æ‰‹ç‰Œ{i}ï¼š{hand[i].CardName}ï¼ˆç±»å‹ï¼š{hand[i].CardType}ï¼‰");
         }
     }
 
     public void ShowDeck() {
-        //ÔÚdebugÖĞÏÔÊ¾ÅÆ¿âĞÅÏ¢
-        Debug.Log($"µ±Ç°ÅÆ¿âÊıÁ¿£º{deck.Count}");
-        //ÏÔÊ¾¿ÕÎ» ÏÔÊ¾ĞòºÅ¡¢¿¨ÅÆÃû×Ö¡¢¿¨ÅÆÀàĞÍ
+        //åœ¨debugä¸­æ˜¾ç¤ºç‰Œåº“ä¿¡æ¯
+        Debug.Log($"å½“å‰ç‰Œåº“æ•°é‡ï¼š{deck.Count}");
+        //æ˜¾ç¤ºç©ºä½ æ˜¾ç¤ºåºå·ã€å¡ç‰Œåå­—ã€å¡ç‰Œç±»å‹
         for (int i = 0;i < deck.Count;i++) {
-            Debug.Log($"ÅÆ¿â{i}£º{deck[i].CardName}£¨ÀàĞÍ£º{deck[i].CardType}£©");
+            Debug.Log($"ç‰Œåº“{i}ï¼š{deck[i].CardName}ï¼ˆç±»å‹ï¼š{deck[i].CardType}ï¼‰");
         }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// ²Ù¿ØµØ¿éµÄÉú³É ¹ÒÔØÔÚGameManagerÎïÌåÉÏ
+/// æ“æ§åœ°å—çš„ç”Ÿæˆ æŒ‚è½½åœ¨GameManagerç‰©ä½“ä¸Š
 /// </summary>
 public class TileManager : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class TileManager : MonoBehaviour
     private GameObject tilePrefab;
 
     [SerializeField]
-    private GameObject tileParentGameobject; // µØ¿éµÄ¸¸ÎïÌå
+    private GameObject tileParentGameobject; // åœ°å—çš„çˆ¶ç‰©ä½“
     public static TileManager Instance { get; private set; }
     private void Awake() {
         if (Instance == null) {
@@ -26,7 +26,7 @@ public class TileManager : MonoBehaviour
     }
 
     private System.Collections.IEnumerator DelayedInit() {
-        // µÈ´ıMapManager³õÊ¼»¯Íê³É
+        // ç­‰å¾…MapManageråˆå§‹åŒ–å®Œæˆ
         while (MapManager.Instance == null || MapManager.Instance.LandMap == null || MapManager.Instance.LandMap.Count == 0) {
             yield return null;
         }
@@ -34,28 +34,28 @@ public class TileManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¸ù¾İMapMangerÖĞµÄµØÍ¼Êı¾İÉú³ÉµØ¿é
+    /// æ ¹æ®MapMangerä¸­çš„åœ°å›¾æ•°æ®ç”Ÿæˆåœ°å—
     /// </summary>
     public void GenerateTiles() {
         if (tilePrefab == null) {
-            Debug.LogWarning("tilePrefabÎ´ÉèÖÃ");
+            Debug.LogWarning("tilePrefabæœªè®¾ç½®");
             return;
         }
 
-        // Çå³ıÏÖÓĞµØ¿é£¨ÕâÀï¿ÉÒÔ¸Ä³É¶ÔÏó³Ø£¿£©
+        // æ¸…é™¤ç°æœ‰åœ°å—ï¼ˆè¿™é‡Œå¯ä»¥æ”¹æˆå¯¹è±¡æ± ï¼Ÿï¼‰
         GameObject[] existingTiles = GameObject.FindGameObjectsWithTag("TileGameobject");
         foreach (GameObject tile in existingTiles) {
             Destroy(tile);
         }
 
-        // Éú³ÉµØ¿é
+        // ç”Ÿæˆåœ°å—
         for (int i = 0;i < MapManager.Instance.LandMap.Count;i++) {
             for (int j = 0;j < MapManager.Instance.LandMap[i].Count;j++) {
-                //ÊµÀı»¯µØ¿é Óë0£¬0£¬0Î»ÖÃÊµÏÖ¶Ô³ÆÆ½ÆÌ
-                //TODO£ºÕâÀïµÄÎ»ÖÃĞèÒªÏ¸µ÷ ÒÔÊÊÓ¦µØ¿é´óĞ¡ºÍ¼ä¾à
+                //å®ä¾‹åŒ–åœ°å— ä¸0ï¼Œ0ï¼Œ0ä½ç½®å®ç°å¯¹ç§°å¹³é“º
+                //TODOï¼šè¿™é‡Œçš„ä½ç½®éœ€è¦ç»†è°ƒ ä»¥é€‚åº”åœ°å—å¤§å°å’Œé—´è·
                 GameObject newTile = Instantiate(tilePrefab,new Vector3(j - (MapManager.Instance.ColCount - 1) / 3f,0.5f,i - (MapManager.Instance.RowCount - 1) / 3f),Quaternion.identity);
                 newTile.name = $"Tile_{i}_{j}";
-                //ÉèÖÃ¸¸ÎïÌå
+                //è®¾ç½®çˆ¶ç‰©ä½“
                 if (tileParentGameobject == null) {
                     tileParentGameobject = new GameObject("TileParent");
                 }
@@ -67,12 +67,12 @@ public class TileManager : MonoBehaviour
                     tileController.land = MapManager.Instance.LandMap[i][j];
                     newTile.GetComponent<TileDataManager>().UpdateDataDisplay();
                 } else {
-                    Debug.LogError("TilePrefabÈ±ÉÙTileController×é¼ş");
+                    Debug.LogError("TilePrefabç¼ºå°‘TileControllerç»„ä»¶");
                 }
             }
         }
 
-        // ÊÇ²»ÊÇ»¹ĞèÒªµ÷ÕûÉãÏñ»úÎ»ÖÃÒÔÊÊÓ¦ĞÂµØÍ¼£¿ ÓĞ´ıÉÌÈ¶£¬»ØÍ·ÔÙÅª
+        // æ˜¯ä¸æ˜¯è¿˜éœ€è¦è°ƒæ•´æ‘„åƒæœºä½ç½®ä»¥é€‚åº”æ–°åœ°å›¾ï¼Ÿ æœ‰å¾…å•†æ¦·ï¼Œå›å¤´å†å¼„
 
     }
 }

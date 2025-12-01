@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DescriptionManager : MonoBehaviour
 {
-    //¹ÜÀí¿¨Æ¬/µØ¿éÃèÊö¿òµÄÏÔÊ¾ÓëÒş²Ø
-    //µØ¿éµÄÏÔÊ¾»¹Ã»×ö
+    //ç®¡ç†å¡ç‰‡/åœ°å—æè¿°æ¡†çš„æ˜¾ç¤ºä¸éšè—
+    //åœ°å—çš„æ˜¾ç¤ºè¿˜æ²¡åš
     public static DescriptionManager Instance { get; private set; }
-    public GameObject descriptionPanel; //ÃèÊö¿ò±³¾°£¨Ö÷ÎïÌå£©
-    public TMP_Text descriptionText; //ÃèÊöÎÄ±¾×é¼ş
-    public Canvas parentCanvas; //¸¸»­²¼
+    public GameObject descriptionPanel; //æè¿°æ¡†èƒŒæ™¯ï¼ˆä¸»ç‰©ä½“ï¼‰
+    public TMP_Text descriptionText; //æè¿°æ–‡æœ¬ç»„ä»¶
+    public Canvas parentCanvas; //çˆ¶ç”»å¸ƒ
     private Camera mainCamera;
     public RectTransform panelRectTransform;
 
@@ -51,14 +51,14 @@ public class DescriptionManager : MonoBehaviour
             return;
         }
 
-        //¸ù¾İµØ¿éÊı¾İÉú³ÉÃèÊöÎÄ±¾
+        //æ ¹æ®åœ°å—æ•°æ®ç”Ÿæˆæè¿°æ–‡æœ¬
         if (tileController == null) {
             Debug.LogWarning("TileController component is not assigned.");
             return;
         }
         string displayText = $"({tileController.tileRow}, {tileController.tileCol})";
         if (tileController.land == null) {
-            descriptionText.text = displayText + "\n ÎŞ";
+            descriptionText.text = displayText + "\n æ— ";
             return;
         } else {
             displayText += $"{GameData.HanizeLandType(tileController.land.LandType)}\n";
@@ -73,31 +73,31 @@ public class DescriptionManager : MonoBehaviour
             }
         }
         if (tileController.land.EnergyCounter != 0) {
-            displayText += $"ÄÜÁ¿:{tileController.land.EnergyCounter}\n";
+            displayText += $"èƒ½é‡:{tileController.land.EnergyCounter}\n";
         }
         if (tileController.land.Soild != 0) {
-            displayText += $"¼Ó¹Ì:{tileController.land.Soild}\n";
+            displayText += $"åŠ å›º:{tileController.land.Soild}\n";
         }
         if (tileController.land.Hunterarea != 0) {
-            displayText += $"ÁÔÈ¦:{tileController.land.Hunterarea}\n";
+            displayText += $"çŒåœˆ:{tileController.land.Hunterarea}\n";
         }
 
         ShowDescription(displayText);
     }
 
     public void ShowDescriptionOfDraggingCardOnLand(Land land) {
-        //ÏÔÊ¾¿¨ÅÆÍÏ×§µ½µØĞÎÉÏµÄÃèÊö
-        //*ĞèÒªÍ¶Èë¶àÉÙÏàÍ¬µÄ¿¨ÅÆÒÔ²úÉúĞ§¹û
-        //*Ëù²úÉúµÄĞ§¹ûÊÇÊ²Ã´£¨¾ÙÀı£ºÍ¶Èë3Ä¾Í·ÒÔÉı¼¶µ½ Ğ¡Õò£©
-        //*µØ¿éµ±Ç°Í¶ÈëµÄ×ÊÔ´£¨Èç¹ûÃ»ÓĞÍ¶Èë¹ı×ÊÔ´¾ÍÃ»ÓĞÕâÒ»Ïî£¬Èç¹ûÍ¶Èë¹ıÇÒÀàĞÍ²»Í¬Ôò±äÎªºìÉ«£©
+        //æ˜¾ç¤ºå¡ç‰Œæ‹–æ‹½åˆ°åœ°å½¢ä¸Šçš„æè¿°
+        //*éœ€è¦æŠ•å…¥å¤šå°‘ç›¸åŒçš„å¡ç‰Œä»¥äº§ç”Ÿæ•ˆæœ
+        //*æ‰€äº§ç”Ÿçš„æ•ˆæœæ˜¯ä»€ä¹ˆï¼ˆä¸¾ä¾‹ï¼šæŠ•å…¥3æœ¨å¤´ä»¥å‡çº§åˆ° å°é•‡ï¼‰
+        //*åœ°å—å½“å‰æŠ•å…¥çš„èµ„æºï¼ˆå¦‚æœæ²¡æœ‰æŠ•å…¥è¿‡èµ„æºå°±æ²¡æœ‰è¿™ä¸€é¡¹ï¼Œå¦‚æœæŠ•å…¥è¿‡ä¸”ç±»å‹ä¸åŒåˆ™å˜ä¸ºçº¢è‰²ï¼‰
 
         if (draggingCard == null) {
             Debug.LogWarning("No card is being dragged.");
             return;
         }
-        string displayText = $"½«{draggingCard.CardName}·ÅÖÃµ½{GameData.HanizeLandType(land.LandType)}ÉÏ\n";
-        //ÏÔÊ¾ËùĞè×ÊÔ´ÊıÁ¿ºÍĞ§¹û
-        //»¹Ã»ÊµÏÖ
+        string displayText = $"å°†{draggingCard.CardName}æ”¾ç½®åˆ°{GameData.HanizeLandType(land.LandType)}ä¸Š\n";
+        //æ˜¾ç¤ºæ‰€éœ€èµ„æºæ•°é‡å’Œæ•ˆæœ
+        //è¿˜æ²¡å®ç°
         ShowDescription(displayText);
     }
 
@@ -115,7 +115,7 @@ public class DescriptionManager : MonoBehaviour
 
     public void MoveDescriptionToMouse() {
 
-        //½«ÃèÊö¿òÒÆ¶¯µ½Êó±êÎ»ÖÃ
+        //å°†æè¿°æ¡†ç§»åŠ¨åˆ°é¼ æ ‡ä½ç½®
         Vector2 localPointerPosition;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             parentCanvas.transform as RectTransform,
@@ -123,19 +123,19 @@ public class DescriptionManager : MonoBehaviour
             mainCamera,
             out localPointerPosition)) {
 
-            //¸ù¾İÊó±êÏà¶ÔÓÚÆÁÄ»µÄ×óÓÒ£¬¸ü¸ÄÃèÊö¿òµÄÎ»ÖÃ
+            //æ ¹æ®é¼ æ ‡ç›¸å¯¹äºå±å¹•çš„å·¦å³ï¼Œæ›´æ”¹æè¿°æ¡†çš„ä½ç½®
 
             if(Input.mousePosition.x > Screen.width / 2) {
-                //Êó±êÔÚÆÁÄ»ÓÒ²à£¬ÃèÊö¿òÏÔÊ¾ÔÚ×ó²à
+                //é¼ æ ‡åœ¨å±å¹•å³ä¾§ï¼Œæè¿°æ¡†æ˜¾ç¤ºåœ¨å·¦ä¾§
                 localPointerPosition.x -= panelRectTransform.rect.width / 2 + 20;
             } else {
-                //Êó±êÔÚÆÁÄ»×ó²à£¬ÃèÊö¿òÏÔÊ¾ÔÚÓÒ²à
+                //é¼ æ ‡åœ¨å±å¹•å·¦ä¾§ï¼Œæè¿°æ¡†æ˜¾ç¤ºåœ¨å³ä¾§
                 localPointerPosition.x += panelRectTransform.rect.width / 2 + 20;
             }
 
             panelRectTransform.anchoredPosition = localPointerPosition;
         } else {
-            Debug.LogWarning("RectTransformÍÏ×§×ø±ê×ª»»Ê§°Ü");
+            Debug.LogWarning("RectTransformæ‹–æ‹½åæ ‡è½¬æ¢å¤±è´¥");
         }
     }
 }

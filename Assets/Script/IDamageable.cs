@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// ÊÜÉË½Ó¿Ú
+/// å—ä¼¤æ¥å£
 /// </summary>
 public interface IDamageable 
 { 

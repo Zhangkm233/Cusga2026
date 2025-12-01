@@ -2,21 +2,21 @@ using UnityEngine;
 
 public enum AnimalType
 {
-    GOBLIN, //¸ç²¼ÁÖ
-    BEAR, //ÐÜ
-    BOAR, //Öí
+    GOBLIN, //å“¥å¸ƒæž—
+    BEAR, //ç†Š
+    BOAR, //çŒª
 }
 
 public class Animal : IDamageable
 {
-    private string animalName; //¶¯ÎïÃû³Æ
-    private int health; //ÉúÃüÖµ
-    private Card drop; //µôÂä¿¨Æ¬
-    private int dropNum; //µôÂäÊýÁ¿
-    private int preferLand; //Æ«ºÃµØÐÎÀàÐÍ
-    private int mapRow; //ËùÔÚµØÍ¼ÐÐ
-    private int mapCol; //ËùÔÚµØÍ¼ÁÐ
-    private AnimalType animalType; //¶¯ÎïÀàÐÍ
+    private string animalName; //åŠ¨ç‰©åç§°
+    private int health; //ç”Ÿå‘½å€¼
+    private Card drop; //æŽ‰è½å¡ç‰‡
+    private int dropNum; //æŽ‰è½æ•°é‡
+    private int preferLand; //åå¥½åœ°å½¢ç±»åž‹
+    private int mapRow; //æ‰€åœ¨åœ°å›¾è¡Œ
+    private int mapCol; //æ‰€åœ¨åœ°å›¾åˆ—
+    private AnimalType animalType; //åŠ¨ç‰©ç±»åž‹
 
     public AnimalType AnimalType {
         get { return animalType; }
@@ -55,39 +55,39 @@ public class Animal : IDamageable
         this.animalType = animalType;
         switch (animalType) {
             case AnimalType.GOBLIN:
-                animalName = "¸ç²¼ÁÖ";
+                animalName = "å“¥å¸ƒæž—";
                 health = 2;
                 drop = new MaterialCard(MaterialType.MEAT);
                 dropNum = 1;
                 preferLand = 30;
                 break;
             case AnimalType.BEAR:
-                animalName = "ÐÜ";
+                animalName = "ç†Š";
                 health = 5;
                 drop = new MaterialCard(MaterialType.MEAT);
                 dropNum = 3;
                 preferLand = 20;
                 break;
             case AnimalType.BOAR:
-                animalName = "Öí";
+                animalName = "çŒª";
                 health = 3;
                 drop = new MaterialCard(MaterialType.MEAT);
                 dropNum = 4;
-                preferLand = 15; //Æ«ºÃÇðÁê
+                preferLand = 15; //åå¥½ä¸˜é™µ
                 break;
             default:
-                Debug.LogError("Î´Öª¶¯ÎïÀàÐÍ");
+                Debug.LogError("æœªçŸ¥åŠ¨ç‰©ç±»åž‹");
                 break;
         }
     }
     public void MoveToPreferLand() {
-        //¶¯ÎïÒÆ¶¯
-        //ÒÆ¶¯µ½×ÔÉíËùÔÚ¸ñÓëÏàÁÚËÄ¸ñÄÚËùÓÐ¿Õ¿õµÄ¸ñ×ÓÖÐ£¬×î½Ó½ü×Ô¼ºÆ«ºÃµØÊÆÊýÖµµÄµØ¿é
-        Debug.Log("ÒÆ¶¯");
+        //åŠ¨ç‰©ç§»åŠ¨
+        //ç§»åŠ¨åˆ°è‡ªèº«æ‰€åœ¨æ ¼ä¸Žç›¸é‚»å››æ ¼å†…æ‰€æœ‰ç©ºæ—·çš„æ ¼å­ä¸­ï¼Œæœ€æŽ¥è¿‘è‡ªå·±åå¥½åœ°åŠ¿æ•°å€¼çš„åœ°å—
+        Debug.Log("ç§»åŠ¨");
         int bestRow = mapRow;
         int bestCol = mapCol;
         int bestPreferenceDiff = Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol].Preference - preferLand);
-        if (mapRow > 0) { //ÉÏ
+        if (mapRow > 0) { //ä¸Š
             if (MapManager.Instance.LandMap[mapRow - 1][mapCol] != null && MapManager.Instance.AnimalMap[mapRow - 1][MapCol] == null ) {
                 if (Mathf.Abs(MapManager.Instance.LandMap[mapRow - 1][mapCol].Preference - preferLand) < bestPreferenceDiff) {
                     bestRow = mapRow - 1;
@@ -96,7 +96,7 @@ public class Animal : IDamageable
                 }
             }
         }
-        if (mapRow < MapManager.Instance.LandMap.Count - 1) { //ÏÂ
+        if (mapRow < MapManager.Instance.LandMap.Count - 1) { //ä¸‹
             if (MapManager.Instance.LandMap[mapRow + 1][mapCol] != null && MapManager.Instance.AnimalMap[mapRow + 1][MapCol] == null) {
                 if (Mathf.Abs(MapManager.Instance.LandMap[mapRow + 1][mapCol].Preference - preferLand) < bestPreferenceDiff) {
                     bestRow = mapRow + 1;
@@ -105,7 +105,7 @@ public class Animal : IDamageable
                 }
             }
         }
-        if (mapCol > 0) { //×ó
+        if (mapCol > 0) { //å·¦
             if (MapManager.Instance.LandMap[mapRow][mapCol - 1] != null && MapManager.Instance.AnimalMap[mapRow][MapCol - 1] == null) {
                 if (Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol - 1].Preference - preferLand) < bestPreferenceDiff) {
                     bestRow = mapRow;
@@ -114,7 +114,7 @@ public class Animal : IDamageable
                 }
             }
         }
-        if (mapCol < MapManager.Instance.LandMap[0].Count - 1) { //ÓÒ
+        if (mapCol < MapManager.Instance.LandMap[0].Count - 1) { //å³
             if (MapManager.Instance.LandMap[mapRow][mapCol + 1] != null && MapManager.Instance.AnimalMap[mapRow][MapCol + 1] == null) {
                 if (Mathf.Abs(MapManager.Instance.LandMap[mapRow][mapCol + 1].Preference - preferLand) < bestPreferenceDiff) {
                     bestRow = mapRow;
@@ -124,30 +124,30 @@ public class Animal : IDamageable
             }
         }
 
-        //ÒÆ¶¯
+        //ç§»åŠ¨
         if (bestRow != mapRow || bestCol != mapCol) {
             MapManager.Instance.MoveAnimalToMap(this,bestRow,bestCol);
         }
     }
 
     public void TakeDamage(int damage) {
-        //¶¯ÎïÊÜÉË
+        //åŠ¨ç‰©å—ä¼¤
         health -= damage;
-        Debug.Log($"¶¯Îï{animalName}ÊÜµ½ÁË{damage}µãÉËº¦£¬µ±Ç°ÉúÃüÖµÎª{health}");
+        Debug.Log($"åŠ¨ç‰©{animalName}å—åˆ°äº†{damage}ç‚¹ä¼¤å®³ï¼Œå½“å‰ç”Ÿå‘½å€¼ä¸º{health}");
         if (health <= 0) {
             Die();
         }
     }
 
     public void Die() {
-        //¶¯ÎïËÀÍö
-        Debug.Log($"¶¯Îï{animalName}ËÀÍö");
-        //µôÂä¿¨Æ¬
+        //åŠ¨ç‰©æ­»äº¡
+        Debug.Log($"åŠ¨ç‰©{animalName}æ­»äº¡");
+        //æŽ‰è½å¡ç‰‡
         for (int i = 0;i < dropNum;i++) {
             DeckManager.Instance.AddCardToDeck(drop);
         }
-        //´ÓµØÍ¼ÒÆ³ý
+        //ä»Žåœ°å›¾ç§»é™¤
         MapManager.Instance.RemoveAnimalFromMap(mapRow,mapCol);
-        //Ïú»Ù¶ÔÓ¦µÄGameObject
+        //é”€æ¯å¯¹åº”çš„GameObject
     }
 }

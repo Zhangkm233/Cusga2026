@@ -21,7 +21,7 @@ public class Boss : IDamageable
 
     public Boss() {
         health = 0;
-        bossName = " ÎÞ ";
+        bossName = " æ—  ";
     }
 
     public Boss(int health,string bossName) {
@@ -31,11 +31,11 @@ public class Boss : IDamageable
 
     public void TakeDamage(int damage) {
         if(damage <= 0) {
-            Debug.LogWarning("ÉËº¦Öµ±ØÐë´óÓÚ0");
+            Debug.LogWarning("ä¼¤å®³å€¼å¿…é¡»å¤§äºŽ0");
             return;
         }
         Health -= damage;
-        Debug.Log($"BossÊÜµ½ÁË{damage}µãÉËº¦£¬µ±Ç°ÉúÃüÖµÎª{Health}");
+        Debug.Log($"Bosså—åˆ°äº†{damage}ç‚¹ä¼¤å®³ï¼Œå½“å‰ç”Ÿå‘½å€¼ä¸º{Health}");
         OnBossHealthChanged?.Invoke(this,damage);
         if (Health <= 0) {
             Die();
@@ -43,8 +43,8 @@ public class Boss : IDamageable
     }
 
     public void Die() {
-        Debug.Log("BossËÀÍö");
-        //¼ÓÈëbossËÀÍöµÄÂß¼­
+        Debug.Log("Bossæ­»äº¡");
+        //åŠ å…¥bossæ­»äº¡çš„é€»è¾‘
         GameData.IsBossSpawned = false;
         GameData.bossSpawnTurn = GameData.turnCount + 3;
         OnBossHealthChanged?.Invoke(this,0);

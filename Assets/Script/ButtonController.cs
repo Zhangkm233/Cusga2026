@@ -6,7 +6,7 @@ public class ButtonController : MonoBehaviour
         if (GameManager.Instance.stateMachine.CurrentPhase == GamePhase.PlayerTurn) {
             GameManager.Instance.EndTurn();
         } else {
-            Debug.Log("µ±Ç°²»ÔÚÍæ¼Ò»ØºÏ£¬ÎŞ·¨½áÊø»ØºÏ");
+            Debug.Log("å½“å‰ä¸åœ¨ç©å®¶å›åˆï¼Œæ— æ³•ç»“æŸå›åˆ");
         }
     }
 
@@ -16,7 +16,7 @@ public class ButtonController : MonoBehaviour
         } else if (GameManager.Instance.stateMachine.CurrentPhase == GamePhase.GamePaused) {
             GameManager.Instance.ContinueGame();
         } else {
-            Debug.Log("µ±Ç°ÎŞ·¨ÔİÍ£»ò¼ÌĞøÓÎÏ·");
+            Debug.Log("å½“å‰æ— æ³•æš‚åœæˆ–ç»§ç»­æ¸¸æˆ");
         }
     }
 

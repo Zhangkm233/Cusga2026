@@ -14,14 +14,14 @@ public class DamageManager : MonoBehaviour
     public void WeaponDealDamage(Land targetLand,int damage) {
         if (targetLand == null) {
             ApplyDamage(BossManager.Instance.CurrentBoss,damage);
-            Debug.Log($"¶ÔBossÔì³ÉÁË{damage}µãÉËº¦");
+            Debug.Log($"å¯¹Bossé€ æˆäº†{damage}ç‚¹ä¼¤å®³");
         } else {
             if (MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol] == null) {
-                Debug.LogWarning("¸ÃµØĞÎÉÏÃ»ÓĞ¶¯Îï£¬ÎŞ·¨Ôì³ÉÉËº¦");
+                Debug.LogWarning("è¯¥åœ°å½¢ä¸Šæ²¡æœ‰åŠ¨ç‰©ï¼Œæ— æ³•é€ æˆä¼¤å®³");
                 return;
             } else {
                 ApplyDamage(MapManager.Instance.AnimalMap[targetLand.MapRow][targetLand.MapCol],damage);
-                Debug.Log($"¶ÔµØĞÎ({targetLand.MapRow},{targetLand.MapCol})ÉÏµÄ¶¯ÎïÔì³ÉÁË{damage}µãÉËº¦");
+                Debug.Log($"å¯¹åœ°å½¢({targetLand.MapRow},{targetLand.MapCol})ä¸Šçš„åŠ¨ç‰©é€ æˆäº†{damage}ç‚¹ä¼¤å®³");
             }
         }
     }

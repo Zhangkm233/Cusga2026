@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// µØ¿éÊı¾İÏÔÊ¾½Å±¾ ¹ÒÔØÔÚTileÓÎÏ·ÎïÌåÉÏ
-/// ¶ÁTileControllerµÄÊı¾İ²¢ÏÔÊ¾ÔÚUIÉÏ
+/// åœ°å—æ•°æ®æ˜¾ç¤ºè„šæœ¬ æŒ‚è½½åœ¨Tileæ¸¸æˆç‰©ä½“ä¸Š
+/// è¯»TileControllerçš„æ•°æ®å¹¶æ˜¾ç¤ºåœ¨UIä¸Š
 /// </summary>
 public class TileDataManager : MonoBehaviour
 {
@@ -26,7 +26,7 @@ public class TileDataManager : MonoBehaviour
     }
 
     public void UpdateDataDisplay() {
-        //¸üĞÂµØ¿éĞÅÏ¢ÏÔÊ¾
+        //æ›´æ–°åœ°å—ä¿¡æ¯æ˜¾ç¤º
         if (dataText == null) {
             Debug.LogWarning("Data Text component is not assigned.");
             return;
@@ -38,7 +38,7 @@ public class TileDataManager : MonoBehaviour
         string displayText = $"({tileController.tileRow}, {tileController.tileCol})";
         string displayEnergy = "";
         if (tileController.land == null) {
-            dataText.text = displayText + "\n ÎŞ";
+            dataText.text = displayText + "\n æ— ";
             return;
         } else {
             displayText += $"{GameData.HanizeLandType(tileController.land.LandType)}\n";
@@ -53,13 +53,13 @@ public class TileDataManager : MonoBehaviour
             }
         }
         if (tileController.land.EnergyCounter != 0) {
-            displayEnergy += $"ÄÜÁ¿:{tileController.land.EnergyCounter}\n";
+            displayEnergy += $"èƒ½é‡:{tileController.land.EnergyCounter}\n";
         }
         if (tileController.land.Soild != 0) {
-            displayEnergy += $"¼Ó¹Ì:{tileController.land.Soild}\n";
+            displayEnergy += $"åŠ å›º:{tileController.land.Soild}\n";
         }
         if (tileController.land.Hunterarea != 0) {
-            displayEnergy += $"ÁÔÈ¦:{tileController.land.Hunterarea}\n";
+            displayEnergy += $"çŒåœˆ:{tileController.land.Hunterarea}\n";
         }
         dataText.text = displayText;
         energyText.text = displayEnergy;

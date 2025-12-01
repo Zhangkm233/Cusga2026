@@ -24,16 +24,16 @@ public class BossManager : MonoBehaviour
 
 
     public void HandleBossHealthChanged(object sender,int damage) {
-        Debug.Log("½ÓÊÕµ½ÊÂ¼ş£ºBossÊÜµ½ÁË" + damage + "µãÉËº¦");
+        Debug.Log("æ¥æ”¶åˆ°äº‹ä»¶ï¼šBosså—åˆ°äº†" + damage + "ç‚¹ä¼¤å®³");
         UpdateBossData();
-        //¿ÉÒÔ¸ù¾İÉËº¦´óĞ¡À´²¥·Å²»Í¬¶¯»­£¿
-        //Èç¹ûÓÃ¶¯»­»úµÄ»°£¬ĞèÒª×¢ÒâÊÜÉËºÍËÀÍö¶¯»­µÄÏÎ½ÓÎÊÌâ£¨ÅĞ¶ÏÒ»ÏÂÊÇ·ñËÀÍöÔÙ²¥¶¯»­£©
+        //å¯ä»¥æ ¹æ®ä¼¤å®³å¤§å°æ¥æ’­æ”¾ä¸åŒåŠ¨ç”»ï¼Ÿ
+        //å¦‚æœç”¨åŠ¨ç”»æœºçš„è¯ï¼Œéœ€è¦æ³¨æ„å—ä¼¤å’Œæ­»äº¡åŠ¨ç”»çš„è¡”æ¥é—®é¢˜ï¼ˆåˆ¤æ–­ä¸€ä¸‹æ˜¯å¦æ­»äº¡å†æ’­åŠ¨ç”»ï¼‰
     }
 
     public void UpdateBossData() {
-        Debug.Log("¸üĞÂBossÊı¾İ");
+        Debug.Log("æ›´æ–°Bossæ•°æ®");
         if (CurrentBoss == null) {
-            NameDisplay.text = "ÎŞBoss";
+            NameDisplay.text = "æ— Boss";
             HpDisplay.text = "HP: N/A";
             return;
         }
@@ -48,7 +48,7 @@ public class BossManager : MonoBehaviour
     }
 
     public void SpawnBoss() {
-        CurrentBoss = new Boss(5,"Ï£¶ûÍßÄÈË¹");
+        CurrentBoss = new Boss(5,"å¸Œå°”ç“¦å¨œæ–¯");
         CurrentBoss.OnBossHealthChanged += HandleBossHealthChanged;
         UpdateBossData();
     }
