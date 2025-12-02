@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private bool autoCalibrateSight = false;
 
-    public GameObject target; //������
+    public GameObject target; //中心目标GameObject
 
     private void Awake() {
         if (Instance == null) {
@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
     }
 
     public void ChangeSightByDistance() {
-        // ���������Ŀ��ľ���
+        //根据当前距离调整摄像机位置和角度
         if (target != null) {
             Vector3 direction = (transform.position - target.transform.position).normalized;
             transform.position = target.transform.position + direction * distanceFromTarget;
