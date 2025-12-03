@@ -10,11 +10,11 @@ public enum CardType
 
 public enum MaterialType
 {
-    NULL = 0, //无
-    HAY = 0001, //稻草
-    WOOD = 0002, //木头
-    STONE = 0003, //石头
-    MEAT = 0004, //肉
+    NULL = 4000, //无
+    HAY = 4001, //稻草
+    WOOD = 4002, //木头
+    STONE = 4003, //石头
+    MEAT = 4004, //肉
 }
 
 public enum SkillType
@@ -84,27 +84,27 @@ public class MaterialCard : Card
             case MaterialType.HAY:
                 CardName = "稻草";
                 Description = "稻草*1";
-                Id = 0001;
+                Id = 4001;
                 break;
             case MaterialType.WOOD:
                 CardName = "木头";
                 Description = "木头*1";
-                Id = 0002;
+                Id = 4002;
                 break;
             case MaterialType.STONE:
                 CardName = "石头";
                 Description = "石头*1";
-                Id = 0003;
+                Id = 4003;
                 break;
             case MaterialType.MEAT:
                 CardName = "肉";
                 Description = "肉*1";
-                Id = 0004;
+                Id = 4004;
                 break;
             default:
                 CardName = "材料";
                 Description = "未知材料类型.";
-                Id = 0000;
+                Id = 4000;
                 break;
         }
     }

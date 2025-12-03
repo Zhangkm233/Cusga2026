@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4509c14d5a215c4884b43b3c61616b5, type: 3}
+  m_Name: CardDatabaseSO
+  m_EditorClassIdentifier: 
+  materialCardEntries:
+  - cardId: 4001
+    cardSO: {fileID: 11400000, guid: 00880c9d0f6fecb47bd99ca9f0da7db1, type: 2}
+  - cardId: 4002
+    cardSO: {fileID: 11400000, guid: 2af9c4468d651394281ffe0a77129255, type: 2}
+  - cardId: 4003
+    cardSO: {fileID: 11400000, guid: b3a16dc0c3804b246bb4d74c05b5edf3, type: 2}
+  - cardId: 4004
+    cardSO: {fileID: 11400000, guid: 5ee0a2557cb4aab4f9b9b2a8481ef76c, type: 2}
+  skillCardEntries:
+  - cardId: 1001
+    cardSO: {fileID: 11400000, guid: c39182ba975e91f4ca82f577612c7805, type: 2}
+  - cardId: 1002
+    cardSO: {fileID: 11400000, guid: e98b2877f1e77f745b5ed3938a1fd954, type: 2}
+  - cardId: 1003
+    cardSO: {fileID: 11400000, guid: 66b581d227a4a6e4faedaf7dadefaa6c, type: 2}
+  weaponCardEntries:
+  - cardId: 2001
+    cardSO: {fileID: 11400000, guid: 3e8756ccd4d89204b9554f0b8cf9366f, type: 2}
+  - cardId: 2002
+    cardSO: {fileID: 11400000, guid: 5ac22daa3ab59cb47a25c4c5ece35f80, type: 2}
+  - cardId: 2003
+    cardSO: {fileID: 11400000, guid: f77bdc6ade9185247af61ee92a673376, type: 2}
+  disasterCardEntries:
+  - cardId: 3001
+    cardSO: {fileID: 11400000, guid: 54f7f03739f70614287d80dc7b93748b, type: 2}
+  - cardId: 3002
+    cardSO: {fileID: 11400000, guid: 26024c856d07c13459b38b015c34b064, type: 2}
+  - cardId: 3003
+    cardSO: {fileID: 11400000, guid: 354a352f593409040808e5f9439328f2, type: 2}

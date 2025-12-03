@@ -218,7 +218,8 @@ public class DeckManager : MonoBehaviour
 
     public void AddCardToDeckFromLand(Card card,int num,Land land) {
         //留给地块调用
-        //这里可以加一些动画之类的
+        //地块生成卡牌进入牌库的动画
+        
         AddCardToDeck(card,num);
     }
 

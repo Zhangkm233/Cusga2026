@@ -4,19 +4,19 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public enum LandType
 {
-    HILL, //山丘
-    PLAIN, //平原
-    FOREST, //森林
-    MOUNTAIN, //山脉
-    JUNGLE, //密林
-    WHEATLAND, //麦田
-    CABIN, //木屋
-    THATCH, //茅屋
-    TOWN, //小镇
-    WAREHOUSE, //仓库
-    TOWER, //塔
-    WINDMILL, //风车
-    RUIN //废墟
+    RUIN = 0, //废墟
+    HILL = 1, //山丘
+    PLAIN = 2, //平原
+    FOREST = 3, //森林
+    MOUNTAIN = 4, //山脉
+    JUNGLE = 5, //密林
+    WHEATLAND = 6, //麦田
+    CABIN = 7, //木屋
+    THATCH = 8, //茅屋
+    TOWN = 9, //小镇
+    WAREHOUSE = 10, //仓库
+    TOWER = 11, //塔
+    WINDMILL = 12, //风车
 }
 
 public abstract class Land
