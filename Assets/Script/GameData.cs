@@ -6,7 +6,7 @@ public static class GameData
 {
     //用于存储游戏中的全局数据 提供一些静态方法
     public static int turnCount = 0;
-    public static int bossSpawnTurn = 3;
+    public static int bossSpawnTurn = 16;
     public static int disasterPercent = 35;
     public static bool IsBossSpawned = false;
     /// <summary>
@@ -62,7 +62,8 @@ public static class GameData
         }
     }
 
-    public static string HanizeMaterial(MaterialType materialType) { switch (materialType) {
+    public static string HanizeMaterial(MaterialType materialType) {
+        switch (materialType) {
             case MaterialType.NULL:
                 return " ";
             case MaterialType.HAY:

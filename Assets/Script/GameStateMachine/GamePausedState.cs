@@ -6,13 +6,13 @@ public class GamePausedState : GameState
     public GamePausedState(GameStateMachine stateMachine) : base(stateMachine) { }
 
     public override void Enter() {
-        Console.WriteLine("½øÈëÓÎÏ·Í£Ö¹½×¶Î");
+        Console.WriteLine("è¿›å…¥æ¸¸æˆåœæ­¢é˜¶æ®µ");
     }
 
     public override void Update() {
     }
 
     public override void Exit() {
-        Console.WriteLine("ÍË³öÓÎÏ·Í£Ö¹½×¶Î");
+        Console.WriteLine("é€€å‡ºæ¸¸æˆåœæ­¢é˜¶æ®µ");
     }
 }

@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
 
-// Íæ¼Ò»ØºÏ
 public class PlayerTurnState : GameState
 {
     public PlayerTurnState(GameStateMachine stateMachine) : base(stateMachine) { }
 
     public override void Enter() {
-        Console.WriteLine("½øÈëÍæ¼Ò»ØºÏ½×¶Î");
+        Console.WriteLine("è¿›å…¥ç©å®¶å›åˆé˜¶æ®µ");
     }
 
     public override void Update() {
@@ -15,6 +14,6 @@ public class PlayerTurnState : GameState
     }
 
     public override void Exit() {
-        Console.WriteLine("ÍË³öÍæ¼Ò»ØºÏ½×¶Î");
+        Console.WriteLine("é€€å‡ºç©å®¶å›åˆé˜¶æ®µ");
     }
 }

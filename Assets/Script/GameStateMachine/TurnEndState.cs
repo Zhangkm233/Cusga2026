@@ -6,54 +6,54 @@ public class TurnEndState : GameState
 {
     public TurnEndState(GameStateMachine stateMachine) : base(stateMachine) { }
     public override void Enter() {
-        Console.WriteLine("½øÈë»ØºÏ½áÊø½×¶Î");
+        Console.WriteLine("è¿›å…¥å›åˆç»“æŸé˜¶æ®µ");
         currentCoroutine = StartCoroutine(DelayedInit());
         GameData.turnCount++;
-        if(GameData.turnCount > GameData.bossSpawnTurn) {
-            if(GameData.IsBossSpawned == false) {
+        if (GameData.turnCount > GameData.bossSpawnTurn) {
+            if (GameData.IsBossSpawned == false) {
                 BossManager.Instance.SpawnBoss();
                 GameData.IsBossSpawned = true;
             }
-            Debug.LogWarning($"½áÊøµÚ{GameData.turnCount - 1}»ØºÏ£¬bossÒÑÉú³É");
+            Debug.LogWarning($"ç»“æŸç¬¬{GameData.turnCount - 1}å›åˆï¼Œbosså·²ç”Ÿæˆ");
             GameManager.Instance.stateMachine.ChangePhase(GamePhase.BossTurn);
         } else {
-            Debug.LogWarning($"½áÊøµÚ{GameData.turnCount - 1}»ØºÏ£¬bossÎ´Éú³É");
+            Debug.LogWarning($"ç»“æŸç¬¬{GameData.turnCount - 1}å›åˆï¼Œbossæœªç”Ÿæˆ");
             GameManager.Instance.StartTurn();
         }
     }
     public override void Update() {
     }
     public override void Exit() {
-        Console.WriteLine("ÍË³ö»ØºÏ½áÊø×´Ì¬");
+        Console.WriteLine("é€€å‡ºå›åˆç»“æŸçŠ¶æ€");
     }
 
     private System.Collections.IEnumerator DelayedInit() {
-        // ÌìÔÖ½×¶Î-»ØºÏ½áÊøÊ±£¬Ïú»ÙÊÖÖĞÊ£ÓàµÄ×ÊÔ´¿¨
-        // °Ñ¼¼ÄÜ¿¨Ï´»ØÅÆ¿â£¬Èç¹ûÊ£ÓàÁËÌìÔÖ¿¨Ôò´¥·¢ÌìÔÖ
+        // å¤©ç¾é˜¶æ®µ-å›åˆç»“æŸæ—¶ï¼Œé”€æ¯æ‰‹ä¸­å‰©ä½™çš„èµ„æºå¡
+        // æŠŠæŠ€èƒ½å¡æ´—å›ç‰Œåº“ï¼Œå¦‚æœå‰©ä½™äº†å¤©ç¾å¡åˆ™è§¦å‘å¤©ç¾
         DeckManager.Instance.DisasterPhase();
-        // ¶¯Îï½×¶Î - ËùÓĞ»î×ÅµÄ¶¯ÎïÒÆ¶¯µ½×ÔÉíËùÔÚ¸ñÓëÏàÁÚËÄ¸ñÄÚËùÓĞ¿Õ¿õµÄ¸ñ×ÓÖĞ£¬×î½Ó½ü×Ô¼ºÆ«ºÃµØÊÆÊıÖµµÄµØ¿é
+        // åŠ¨ç‰©é˜¶æ®µ - æ‰€æœ‰æ´»ç€çš„åŠ¨ç‰©ç§»åŠ¨åˆ°è‡ªèº«æ‰€åœ¨æ ¼ä¸ç›¸é‚»å››æ ¼å†…æ‰€æœ‰ç©ºæ—·çš„æ ¼å­ä¸­ï¼Œæœ€æ¥è¿‘è‡ªå·±åå¥½åœ°åŠ¿æ•°å€¼çš„åœ°å—
         MapManager.Instance.AnimalPhase();
-        if(!GameData.IsBossSpawned) {
-            // ³äÄÜ½×¶Î-½öµ±bossÕ½Î´´¥·¢Ê±Ö´ĞĞ£¬Ê¹³¡ÉÏËùÓĞµØ¿é»ñµÃ1³äÄÜ£¬Èç¹ûÓĞ³äÄÜÒÑÂúµÄµØ¿é£¬´¥·¢ÆäĞ§¹û
+        if (!GameData.IsBossSpawned) {
+            // å……èƒ½é˜¶æ®µ-ä»…å½“bossæˆ˜æœªè§¦å‘æ—¶æ‰§è¡Œï¼Œä½¿åœºä¸Šæ‰€æœ‰åœ°å—è·å¾—1å……èƒ½ï¼Œå¦‚æœæœ‰å……èƒ½å·²æ»¡çš„åœ°å—ï¼Œè§¦å‘å…¶æ•ˆæœ
             MapManager.Instance.EnergyPhase();
-            // ¶îÍâÊÕÒæ½×¶Î-½öµ±bossÕ½Î´´¥·¢Ê±Ö´ĞĞ£¬Èç¹ûÓĞÃ¿»ØºÏ´¥·¢µÄ¶îÍâÊÕÒæ£¬ÔÚ´ËÊ±½øĞĞÅĞ¶Ï²¢Ö´ĞĞ
+            // é¢å¤–æ”¶ç›Šé˜¶æ®µ-ä»…å½“bossæˆ˜æœªè§¦å‘æ—¶æ‰§è¡Œï¼Œå¦‚æœæœ‰æ¯å›åˆè§¦å‘çš„é¢å¤–æ”¶ç›Šï¼Œåœ¨æ­¤æ—¶è¿›è¡Œåˆ¤æ–­å¹¶æ‰§è¡Œ
             MapManager.Instance.ExtraEffectPhase();
         } else {
-            Debug.Log("BossÕ½ÒÑ´¥·¢£¬Ìø¹ı³äÄÜºÍ¶îÍâÊÕÒæ½×¶Î");
+            Debug.Log("Bossæˆ˜å·²è§¦å‘ï¼Œè·³è¿‡å……èƒ½å’Œé¢å¤–æ”¶ç›Šé˜¶æ®µ");
         }
-        //Boss¹¥»÷½×¶Î£¨ÔÚbossTurnStateÀïÃæÊµÏÖ£© - ½öµ±bossÕ½´¥·¢Ê±Ö´ĞĞ£¬boss½øĞĞ¹¥»÷
-        //»ØºÏ½áÊø½×¶Î - Ö´ĞĞ»ØºÏ½áÊø°â»ú£¬×îºó»ØºÏÊı + 1£¬Èç¹û»ØºÏÒÑÂúÔò³öÏÖboss »¹ÓĞËæ»úÌí¼ÓÌìÔÖµÄĞ§¹û
-        //Ëæ»úÌí¼ÓÌìÔÖ ´ÓµÚÈı»ØºÏ¿ªÊ¼£¬Ã¿»ØºÏÓĞ35%¸ÅÂÊ»ñµÃÒ»ÕÅÌìÔÖ£¨½øÈë×ÊÔ´ÅÆ¿â£©Èç¹ûÃ»ÓĞ»ñµÃ£¬ÔòÏÂ´Î»ñµÃ¸ÅÂÊ+20%
+        //Bossæ”»å‡»é˜¶æ®µï¼ˆåœ¨bossTurnStateé‡Œé¢å®ç°ï¼‰ - ä»…å½“bossæˆ˜è§¦å‘æ—¶æ‰§è¡Œï¼Œbossè¿›è¡Œæ”»å‡»
+        //å›åˆç»“æŸé˜¶æ®µ - æ‰§è¡Œå›åˆç»“æŸæ‰³æœºï¼Œæœ€åå›åˆæ•° + 1ï¼Œå¦‚æœå›åˆå·²æ»¡åˆ™å‡ºç°boss è¿˜æœ‰éšæœºæ·»åŠ å¤©ç¾çš„æ•ˆæœ
+        //éšæœºæ·»åŠ å¤©ç¾ ä»ç¬¬ä¸‰å›åˆå¼€å§‹ï¼Œæ¯å›åˆæœ‰35%æ¦‚ç‡è·å¾—ä¸€å¼ å¤©ç¾ï¼ˆè¿›å…¥èµ„æºç‰Œåº“ï¼‰å¦‚æœæ²¡æœ‰è·å¾—ï¼Œåˆ™ä¸‹æ¬¡è·å¾—æ¦‚ç‡+20%
         if (GameData.turnCount >= 3) {
             if (GameData.IsRandomEventTriggered(GameData.disasterPercent)) {
-                Debug.Log("»ñµÃÒ»ÕÅÌìÔÖ¿¨");
+                Debug.Log("è·å¾—ä¸€å¼ å¤©ç¾å¡");
                 DeckManager.Instance.AddCardToDeck(new DisasterCard());
             } else {
                 GameData.disasterPercent += 20;
-                Debug.Log($"¸ÅÂÊÉÏÉıµ½{GameData.disasterPercent}");
+                Debug.Log($"æ¦‚ç‡ä¸Šå‡åˆ°{GameData.disasterPercent}");
             }
         }
-        Debug.Log("Ğ­³Ì½øĞĞÍê±Ï");
+        Debug.Log("åç¨‹è¿›è¡Œå®Œæ¯•");
         yield return null;
     }
 }

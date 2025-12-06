@@ -4,18 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-// ÓÎÏ·½×¶ÎÃ¶¾Ù
+// æ¸¸æˆé˜¶æ®µæšä¸¾
 public enum GamePhase
 {
-    GameStart,   // ÓÎÏ·¿ªÊ¼ ³õÊ¼»¯Êı¾İ
-    TurnStart,   // »ØºÏ¿ªÊ¼ Ö´ĞĞÒ»Ğ©»ØºÏ¿ªÊ¼µÄÂß¼­
-    PlayerTurn,   // Íæ¼Ò»ØºÏ Íæ¼ÒÔÚÕâ¸ö½×¶Î²Å¿ÉÒÔ½øĞĞ²Ù×÷
-    TurnEnd,     // »ØºÏ½áÊø Ö´ĞĞÒ»Ğ©»ØºÏ½áÊøµÄÂß¼­
-    GamePaused,   // ÓÎÏ·ÔİÍ£ Íæ¼ÒÎŞ·¨¶ÔÓÎÏ·ÄÚ½øĞĞ²Ù×÷
-    BossTurn,   // Boss»ØºÏ Boss½øĞĞ¹¥»÷£¨¿¼ÂÇµ½¶¯»­Ñİ³ö£¬ËùÒÔÔ¤ÁôÒ»¸ö£©
+    GameStart,   // æ¸¸æˆå¼€å§‹ åˆå§‹åŒ–æ•°æ®
+    TurnStart,   // å›åˆå¼€å§‹ æ‰§è¡Œä¸€äº›å›åˆå¼€å§‹çš„é€»è¾‘
+    PlayerTurn,   // ç©å®¶å›åˆ ç©å®¶åœ¨è¿™ä¸ªé˜¶æ®µæ‰å¯ä»¥è¿›è¡Œæ“ä½œ
+    TurnEnd,     // å›åˆç»“æŸ æ‰§è¡Œä¸€äº›å›åˆç»“æŸçš„é€»è¾‘
+    GamePaused,   // æ¸¸æˆæš‚åœ ç©å®¶æ— æ³•å¯¹æ¸¸æˆå†…è¿›è¡Œæ“ä½œ
+    BossTurn,   // Bosså›åˆ Bossè¿›è¡Œæ”»å‡»ï¼ˆè€ƒè™‘åˆ°åŠ¨ç”»æ¼”å‡ºï¼Œæ‰€ä»¥é¢„ç•™ä¸€ä¸ªï¼‰
 }
 
-// »ù´¡ÓÎÏ·×´Ì¬
+// åŸºç¡€æ¸¸æˆçŠ¶æ€
 public abstract class GameState : IState
 {
     protected GameStateMachine stateMachine;
@@ -32,12 +32,12 @@ public abstract class GameState : IState
 
 
 
-    // Æô¶¯Ğ­³ÌµÄ·½·¨
+    // å¯åŠ¨åç¨‹çš„æ–¹æ³•
     protected Coroutine StartCoroutine(IEnumerator coroutine) {
         return CoroutineHandler.Instance.StartCoroutine(coroutine);
     }
 
-    // Í£Ö¹Ğ­³ÌµÄ·½·¨
+    // åœæ­¢åç¨‹çš„æ–¹æ³•
     protected void StopCoroutine(Coroutine coroutine) {
         if (coroutine != null) {
             CoroutineHandler.Instance.StopCoroutine(coroutine);
@@ -45,7 +45,7 @@ public abstract class GameState : IState
     }
 }
 
-// ÓÎÏ·×´Ì¬»ú
+// æ¸¸æˆçŠ¶æ€æœº
 public class GameStateMachine
 {
     private StateMachine stateMachine;
@@ -55,7 +55,7 @@ public class GameStateMachine
         stateMachine = new StateMachine();
         states = new Dictionary<GamePhase,GameState>
         {
-            { GamePhase.GameStart, new GameStartState(this) }, // ³õÊ¼×´Ì¬ÎªÍæ¼Ò»ØºÏ
+            { GamePhase.GameStart, new GameStartState(this) }, // åˆå§‹çŠ¶æ€ä¸ºç©å®¶å›åˆ
             { GamePhase.PlayerTurn, new PlayerTurnState(this) },
             { GamePhase.TurnStart, new TurnStartState(this) },
             { GamePhase.TurnEnd, new TurnEndState(this) },
@@ -81,7 +81,7 @@ public class GameStateMachine
                     return pair.Key;
                 }
             }
-            return GamePhase.GamePaused; // Ä¬ÈÏÖµ
+            return GamePhase.GamePaused; // é»˜è®¤å€¼
         }
     }
 }

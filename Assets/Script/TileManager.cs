@@ -3,6 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// 操控地块的生成 挂载在GameManager物体上
+/// 管理游戏内的TILE物体
 /// </summary>
 public class TileManager : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class TileManager : MonoBehaviour
 
     [SerializeField]
     private GameObject tileParentGameobject; // 地块的父物体
+
+    [SerializeField]
+    private float tileSpaceing = 1.5f; // 地块间距
+
+
+
     public static TileManager Instance { get; private set; }
     private void Awake() {
         if (Instance == null) {
@@ -30,12 +37,13 @@ public class TileManager : MonoBehaviour
         while (MapManager.Instance == null || MapManager.Instance.LandMap == null || MapManager.Instance.LandMap.Count == 0) {
             yield return null;
         }
-        //GenerateTiles();
+        GenerateTiles();
     }
 
     /// <summary>
     /// 根据MapManger中的地图数据生成地块
     /// </summary>
+    [ContextMenu("GenerateTiles")]
     public void GenerateTiles() {
         if (tilePrefab == null) {
             Debug.LogWarning("tilePrefab未设置");
@@ -53,7 +61,13 @@ public class TileManager : MonoBehaviour
             for (int j = 0;j < MapManager.Instance.LandMap[i].Count;j++) {
                 //实例化地块 与0，0，0位置实现对称平铺
                 //TODO：这里的位置需要细调 以适应地块大小和间距
-                GameObject newTile = Instantiate(tilePrefab,new Vector3(j - (MapManager.Instance.ColCount - 1) / 3f,0.5f,i - (MapManager.Instance.RowCount - 1) / 3f),Quaternion.identity);
+                //UPDATE： 调完了
+                GameObject newTile = Instantiate(tilePrefab,
+                    new Vector3(
+                        (j - (MapManager.Instance.ColCount - 1) / 2f) * tileSpaceing,
+                        0.5f,
+                        (i - (MapManager.Instance.RowCount - 1) / 2f) * tileSpaceing
+                    ),Quaternion.identity);
                 newTile.name = $"Tile_{i}_{j}";
                 //设置父物体
                 if (tileParentGameobject == null) {
@@ -73,6 +87,26 @@ public class TileManager : MonoBehaviour
         }
 
         // 是不是还需要调整摄像机位置以适应新地图？ 有待商榷，回头再弄
-
     }
+
+    public Transform GetTileTransform(int row,int col) {
+        string tileName = $"Tile_{row}_{col}";
+        GameObject tile = GameObject.Find(tileName);
+        if (tile != null) {
+            return tile.transform;
+        } else {
+            Debug.LogWarning($"未找到地块 {tileName}");
+            return null;
+        }
+    }
+
+    public Vector3 GetTilePosition(int row,int col) {
+        Transform tileTransform = GetTileTransform(row,col);
+        if (tileTransform != null) {
+            return tileTransform.position;
+        } else {
+            return Vector3.zero;
+        }
+    }
+
 }

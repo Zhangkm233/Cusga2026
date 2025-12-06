@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections;
 
 /// <summary>
 /// 操控牌库和手牌的管理器，挂载在GameManager物体上
@@ -219,7 +220,9 @@ public class DeckManager : MonoBehaviour
     public void AddCardToDeckFromLand(Card card,int num,Land land) {
         //留给地块调用
         //地块生成卡牌进入牌库的动画
-        
+
+        Debug.Log($"地块({land.MapRow},{land.MapCol})生成卡牌{card.Id}:{card.CardName} 加入了牌库 {num} 张");
+        UIManager.Instance.PlayAddCardToDeckAnimation(card,TileManager.Instance.GetTilePosition(land.MapRow,land.MapCol));
         AddCardToDeck(card,num);
     }
 
@@ -322,7 +325,7 @@ public class DeckManager : MonoBehaviour
         //在debug中显示手牌信息
         Debug.Log($"当前手牌数量：{hand.Count}");
         //显示空位 显示序号、卡牌名字、卡牌类型
-        for(int i = 0;i < hand.Count;i++) {
+        for (int i = 0;i < hand.Count;i++) {
             Debug.Log($"手牌{i}：{hand[i].CardName}（类型：{hand[i].CardType}）");
         }
     }

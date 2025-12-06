@@ -4,28 +4,30 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject[] cards;
     public GameObject cardPrefab;
+    public GameObject cardPrefab3d;
 
     [Header("Card Dealing Animation")]
     [SerializeField] private RectTransform deckAnchor;
     [SerializeField] private float dealDuration = 0.35f;
     [SerializeField] private float dealInterval = 0.08f;
     [SerializeField] private SplineContainer dealSpline;
-    [SerializeField, Range(0f, 1f)] private float dealSplineStart = 0f;
-    [SerializeField] private AnimationCurve dealCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    [SerializeField, Range(0f,1f)] private float dealSplineStart = 0f;
+    [SerializeField] private AnimationCurve dealCurve = AnimationCurve.EaseInOut(0f,0f,1f,1f);
     [Header("Card Scale Animation")]
     [SerializeField] private bool enableDealScale = true;
     [SerializeField] private float dealStartScaleMultiplier = 0.6f;
-    [SerializeField] private AnimationCurve dealScaleCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    [SerializeField] private AnimationCurve dealScaleCurve = AnimationCurve.EaseInOut(0f,0f,1f,1f);
 
     [Header("Hand Layout Curve")]
     [SerializeField] private bool arrangeCardsOnCurve = false;
     [SerializeField] private SplineContainer handSpline;
-    [SerializeField] private AnimationCurve handCurveDistribution = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+    [SerializeField] private AnimationCurve handCurveDistribution = AnimationCurve.Linear(0f,0f,1f,1f);
     [SerializeField] private bool alignHandToSplineTangent = true;
     [SerializeField] private bool alignDealToSplineTangent = true;
 
@@ -67,9 +69,9 @@ public class UIManager : MonoBehaviour
                 continue;
             }
             CardController cardController = cardControllers[i];
-            
+
             // 设置正确的索引
-            cardController.indexOfCards = i;            
+            cardController.indexOfCards = i;
             // 总是设置card数据，但只在非拖拽时更新位置
             cardController.card = DeckManager.Instance.hand[i];
             if (!cardController.isDragging) {
@@ -83,14 +85,14 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
-        
+
         // 隐藏多余的卡片
-        for (int i = DeckManager.Instance.hand.Count; i < cards.Length; i++) {
+        for (int i = DeckManager.Instance.hand.Count;i < cards.Length;i++) {
             if (cards[i] != null) {
                 cards[i].SetActive(false);
             }
         }
-        
+
         UpdateCardsSortingOrder();
         DeckManager.Instance.ShowHand();
     }
@@ -106,7 +108,7 @@ public class UIManager : MonoBehaviour
     public void PlayDealAnimation() {
         EnsureCardArray();
         CacheCardReferences();
-        int activeCardCount = Mathf.Min(DeckManager.Instance.hand.Count, cards.Length);
+        int activeCardCount = Mathf.Min(DeckManager.Instance.hand.Count,cards.Length);
         ApplyHandCurveLayout(activeCardCount);
 
         if (dealRoutine != null) {
@@ -131,10 +133,10 @@ public class UIManager : MonoBehaviour
             yield break;
         }
 
-        int cardCount = Mathf.Min(hand.Count, cards.Length);
+        int cardCount = Mathf.Min(hand.Count,cards.Length);
 
         // 预先隐藏所有卡牌，避免先全部出现
-        for (int i = 0; i < cards.Length; i++) {
+        for (int i = 0;i < cards.Length;i++) {
             if (cards[i] != null) {
                 cards[i].SetActive(false);
             }
@@ -147,7 +149,7 @@ public class UIManager : MonoBehaviour
         bool useSplineForDeal = activeDealSpline != null;
         float pathStartT = Mathf.Clamp01(dealSplineStart);
 
-        for (int i = 0; i < cardCount; i++) {
+        for (int i = 0;i < cardCount;i++) {
             if (cards[i] == null) {
                 continue;
             }
@@ -178,14 +180,14 @@ public class UIManager : MonoBehaviour
             Vector2 startPos;
             if (useSplineForDeal && parentRect != null) {
                 Vector3 worldStart = activeDealSpline.EvaluatePosition(pathStartT);
-                startPos = WorldToAnchored(worldStart, parentRect);
+                startPos = WorldToAnchored(worldStart,parentRect);
                 if (alignDealToSplineTangent) {
                     Vector3 worldTangentStart = (Vector3)activeDealSpline.EvaluateTangent(pathStartT);
-                    Vector2 localTangentStart = WorldTangentToLocal(worldTangentStart, parentRect);
-                    startAngle = DirectionToAngle(localTangentStart, startAngle);
+                    Vector2 localTangentStart = WorldTangentToLocal(worldTangentStart,parentRect);
+                    startAngle = DirectionToAngle(localTangentStart,startAngle);
                 }
             } else if (deckWorldPosition.HasValue && parentRect != null) {
-                startPos = WorldToAnchored(deckWorldPosition.Value, parentRect);
+                startPos = WorldToAnchored(deckWorldPosition.Value,parentRect);
             } else {
                 startPos = targetPos;
             }
@@ -202,25 +204,25 @@ public class UIManager : MonoBehaviour
                 float normalized = Mathf.Clamp01(dealDuration <= Mathf.Epsilon ? 1f : elapsed / dealDuration);
                 float eased = dealCurve != null ? dealCurve.Evaluate(normalized) : normalized;
                 if (useSplineForDeal && parentRect != null) {
-                    float currentT = Mathf.Lerp(pathStartT, clampedTargetSplineT, eased);
+                    float currentT = Mathf.Lerp(pathStartT,clampedTargetSplineT,eased);
                     Vector3 worldPos = activeDealSpline.EvaluatePosition(currentT);
-                    rect.anchoredPosition = WorldToAnchored(worldPos, parentRect);
+                    rect.anchoredPosition = WorldToAnchored(worldPos,parentRect);
                     if (alignDealToSplineTangent) {
                         Vector3 worldTangent = (Vector3)activeDealSpline.EvaluateTangent(currentT);
-                        Vector2 localTangent = WorldTangentToLocal(worldTangent, parentRect);
-                        float currentAngle = DirectionToAngle(localTangent, targetAngle);
+                        Vector2 localTangent = WorldTangentToLocal(worldTangent,parentRect);
+                        float currentAngle = DirectionToAngle(localTangent,targetAngle);
                         rect.localRotation = Quaternion.Euler(0f,0f,currentAngle);
                     }
                 } else {
-                    rect.anchoredPosition = Vector2.LerpUnclamped(startPos, targetPos, eased);
+                    rect.anchoredPosition = Vector2.LerpUnclamped(startPos,targetPos,eased);
                     if (alignHandToSplineTangent) {
-                        float currentAngle = Mathf.LerpAngle(startAngle, targetAngle, eased);
+                        float currentAngle = Mathf.LerpAngle(startAngle,targetAngle,eased);
                         rect.localRotation = Quaternion.Euler(0f,0f,currentAngle);
                     }
                 }
                 if (enableDealScale) {
                     float scaleT = dealScaleCurve != null ? dealScaleCurve.Evaluate(normalized) : normalized;
-                    rect.localScale = Vector3.LerpUnclamped(startScale, targetScale, scaleT);
+                    rect.localScale = Vector3.LerpUnclamped(startScale,targetScale,scaleT);
                 }
                 yield return null;
             }
@@ -241,7 +243,7 @@ public class UIManager : MonoBehaviour
     private void EnsureCardArray() {
         if (cards != null && cards.Length > 0) {
             bool hasValidEntry = false;
-            for (int i = 0; i < cards.Length; i++) {
+            for (int i = 0;i < cards.Length;i++) {
                 if (cards[i] != null) {
                     hasValidEntry = true;
                     break;
@@ -253,7 +255,7 @@ public class UIManager : MonoBehaviour
         }
 
         GameObject[] foundCards = GameObject.FindGameObjectsWithTag("CardGameobject");
-        if(foundCards.Length <= DeckManager.Instance.hand.Count) {
+        if (foundCards.Length <= DeckManager.Instance.hand.Count) {
             //实例化足够的卡牌对象
             int cardsToInstantiate = DeckManager.Instance.hand.Count - foundCards.Length;
             for (int i = 0;i < cardsToInstantiate;i++) {
@@ -261,7 +263,7 @@ public class UIManager : MonoBehaviour
             }
             foundCards = GameObject.FindGameObjectsWithTag("CardGameobject");
         }
-        Array.Sort(foundCards, (a, b) => a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex()));
+        Array.Sort(foundCards,(a,b) => a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex()));
         cards = foundCards;
     }
 
@@ -286,7 +288,7 @@ public class UIManager : MonoBehaviour
             cardControllers = new CardController[length];
         }
 
-        for (int i = 0; i < length; i++) {
+        for (int i = 0;i < length;i++) {
             if (cards[i] == null) {
                 cardRects[i] = null;
                 cardControllers[i] = null;
@@ -318,20 +320,20 @@ public class UIManager : MonoBehaviour
         }
 
         int slotCount = cards.Length;
-        float denominator = Mathf.Max(1, activeCardCount - 1);
+        float denominator = Mathf.Max(1,activeCardCount - 1);
 
-        for (int i = 0; i < slotCount; i++) {
+        for (int i = 0;i < slotCount;i++) {
             if (cards[i] == null) {
                 continue;
             }
 
             float normalizedIndex;
             if (activeCardCount <= 0) {
-                normalizedIndex = slotCount <= 1 ? 0.5f : (float)i / Mathf.Max(1, slotCount - 1);
+                normalizedIndex = slotCount <= 1 ? 0.5f : (float)i / Mathf.Max(1,slotCount - 1);
             } else if (activeCardCount == 1) {
                 normalizedIndex = 0.5f;
             } else {
-                int clampedIndex = Mathf.Clamp(i, 0, activeCardCount - 1);
+                int clampedIndex = Mathf.Clamp(i,0,activeCardCount - 1);
                 normalizedIndex = (float)clampedIndex / denominator;
             }
 
@@ -340,14 +342,14 @@ public class UIManager : MonoBehaviour
 
             RectTransform rect = cardRects != null && i < cardRects.Length ? cardRects[i] : null;
             RectTransform parentRect = rect != null ? rect.parent as RectTransform : null;
-            Vector2 targetPosition = parentRect != null ? WorldToAnchored(worldPosition, parentRect) : new Vector2(worldPosition.x, worldPosition.y);
+            Vector2 targetPosition = parentRect != null ? WorldToAnchored(worldPosition,parentRect) : new Vector2(worldPosition.x,worldPosition.y);
             float fallbackAngle = rect != null ? rect.localEulerAngles.z : 0f;
             float targetAngle = fallbackAngle;
 
             if (alignHandToSplineTangent && parentRect != null) {
                 Vector3 worldTangent = (Vector3)handSpline.EvaluateTangent(distribution);
-                Vector2 localTangent = WorldTangentToLocal(worldTangent, parentRect);
-                targetAngle = DirectionToAngle(localTangent, fallbackAngle);
+                Vector2 localTangent = WorldTangentToLocal(worldTangent,parentRect);
+                targetAngle = DirectionToAngle(localTangent,fallbackAngle);
             }
 
             if (i < cardTargetAnchoredPositions.Length) {
@@ -372,26 +374,64 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private Vector2 WorldToAnchored(Vector3 worldPosition, RectTransform referenceRect) {
+    private Vector2 WorldToAnchored(Vector3 worldPosition,RectTransform referenceRect) {
         if (referenceRect == null) {
-            return new Vector2(worldPosition.x, worldPosition.y);
+            return new Vector2(worldPosition.x,worldPosition.y);
         }
         Vector3 localPoint = referenceRect.InverseTransformPoint(worldPosition);
-        return new Vector2(localPoint.x, localPoint.y);
+        return new Vector2(localPoint.x,localPoint.y);
     }
 
-    private Vector2 WorldTangentToLocal(Vector3 worldTangent, RectTransform referenceRect) {
+    private Vector2 WorldTangentToLocal(Vector3 worldTangent,RectTransform referenceRect) {
         if (referenceRect == null) {
-            return new Vector2(worldTangent.x, worldTangent.y);
+            return new Vector2(worldTangent.x,worldTangent.y);
         }
         Vector3 localVector = referenceRect.InverseTransformVector(worldTangent);
-        return new Vector2(localVector.x, localVector.y);
+        return new Vector2(localVector.x,localVector.y);
     }
 
-    private float DirectionToAngle(Vector2 direction, float fallbackAngle) {
+    private float DirectionToAngle(Vector2 direction,float fallbackAngle) {
         if (direction.sqrMagnitude < 1e-6f) {
             return fallbackAngle;
         }
-        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        return Mathf.Atan2(direction.y,direction.x) * Mathf.Rad2Deg;
     }
+
+    public void PlayAddCardToDeckAnimation(Card card,Vector3 spawnPosition) {
+        if (cardPrefab3d == null || deckAnchor == null || card == null) {
+            return;
+        }
+
+        GameObject cardObj = Instantiate(cardPrefab3d,spawnPosition,Quaternion.identity);
+
+        // 设置卡牌图像
+        Debug.Log($"为卡牌对象设置图像，卡牌ID：{card.Id}");
+
+        CardScriptableObject cardSO = DatabaseManager.Instance.GetCardSO(card.Id);
+        if (cardSO == null) {
+            Debug.LogWarning($"PlayAddCardToDeckAnimation: 无法找到卡牌ID {card.Id} 的 ScriptableObject");
+        } else if (cardSO.CardImage == null) {
+            Debug.LogWarning($"PlayAddCardToDeckAnimation: 卡牌ID {card.Id} 的 CardImage 为空");
+        } else {
+            SpriteRenderer spriteRenderer = cardObj.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = cardSO.CardImage;
+        }
+
+        //移动+旋转+缩放
+        Debug.Log("开始播放加入卡组动画");
+        float duration = 0.7f;
+        cardObj.transform.DOMove(deckAnchor.position,duration).SetEase(Ease.InOutCubic);
+        cardObj.transform.DORotateQuaternion(deckAnchor.rotation,duration).SetEase(Ease.InOutCubic);
+        cardObj.transform.DOScale(Vector3.one * 0.2f,duration).SetEase(Ease.InOutCubic);
+        //这里因为视角问题会放大，所以缩小到0.2倍先试试，可以调整
+
+        //销毁
+        DOVirtual.DelayedCall(duration,() => {
+            Debug.Log("加入卡组动画结束，销毁卡牌对象");
+            if (cardObj != null) {
+                Destroy(cardObj);
+            }
+        });
+    }
+
 }

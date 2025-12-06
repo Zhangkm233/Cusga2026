@@ -6,23 +6,23 @@ public class TurnStartState : GameState
 {
     public TurnStartState(GameStateMachine stateMachine) : base(stateMachine) { }
     public override void Enter() {
-        Console.WriteLine("½øÈë»ØºÏ¿ªÊ¼½×¶Î");
-        Debug.LogWarning($"¿ªÊ¼µÚ{GameData.turnCount}»ØºÏ");
-        if(GameData.turnCount == 0) {
+        Console.WriteLine("è¿›å…¥å›åˆå¼€å§‹é˜¶æ®µ");
+        Debug.LogWarning($"å¼€å§‹ç¬¬{GameData.turnCount}å›åˆ");
+        if (GameData.turnCount == 0) {
             DeckManager.Instance.TestAddCard();
         }
         DeckManager.Instance.DrawPhase();
-        //¶îÍâ³é¿¨½×¶Î-°´ÕÕ¶îÍâ³é¿¨Ğ§¹û£¬¶îÍâ³éÈ¡¶ÔÓ¦¿¨ÅÆ
+        //é¢å¤–æŠ½å¡é˜¶æ®µ-æŒ‰ç…§é¢å¤–æŠ½å¡æ•ˆæœï¼Œé¢å¤–æŠ½å–å¯¹åº”å¡ç‰Œ
         DeckManager.Instance.ExtraDrawPhase();
         UIManager.Instance.PlayDealAnimation();
     }
     public override void Update() {
-        if(GameData.IsCardAnimationPlaying == false) {
-            Debug.Log("¿¨ÅÆ·¢ÅÆ¶¯»­½áÊø£¬½øÈëÍæ¼Ò»ØºÏ");
+        if (GameData.IsCardAnimationPlaying == false) {
+            Debug.Log("å¡ç‰Œå‘ç‰ŒåŠ¨ç”»ç»“æŸï¼Œè¿›å…¥ç©å®¶å›åˆ");
             GameManager.Instance.stateMachine.ChangePhase(GamePhase.PlayerTurn);
         }
     }
     public override void Exit() {
-        Console.WriteLine("ÍË³ö»ØºÏ¿ªÊ¼×´Ì¬");
+        Console.WriteLine("é€€å‡ºå›åˆå¼€å§‹çŠ¶æ€");
     }
 }

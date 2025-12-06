@@ -13,6 +13,20 @@ public class DatabaseManager : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
+
+        if (cardDatabaseSO != null) {
+            cardDatabaseSO.InitDictionary();
+        } else {
+            Debug.LogError("DatabaseManager: cardDatabaseSO 未分配！");
+        }
+        
+        if (landDatabaseSO != null) {
+            landDatabaseSO.InitDictionary();
+        } else {
+            Debug.LogError("DatabaseManager: landDatabaseSO 未分配！");
+        }
+        
+        Debug.Log("DatabaseManager初始化完成");
     }
 
     public CardScriptableObject GetCardSO(int cardId) {

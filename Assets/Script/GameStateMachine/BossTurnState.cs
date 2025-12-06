@@ -6,7 +6,7 @@ public class BossTurnState : GameState
     public BossTurnState(GameStateMachine stateMachine) : base(stateMachine) { }
 
     public override void Enter() {
-        Console.WriteLine("½øÈëBOSS»ØºÏ½×¶Î");
+        Console.WriteLine("è¿›å…¥Bosså›åˆé˜¶æ®µ");
         currentCoroutine = StartCoroutine(DelayedInit());
         GameManager.Instance.StartTurn();
     }
@@ -16,12 +16,12 @@ public class BossTurnState : GameState
     }
 
     public override void Exit() {
-        Console.WriteLine("ÍË³öBOSS»ØºÏ½×¶Î");
+        Console.WriteLine("é€€å‡ºBosså›åˆé˜¶æ®µ");
     }
 
     private System.Collections.IEnumerator DelayedInit() {
         if (GameData.IsBossSpawned) {
-            Debug.Log("BossÕ½ÒÑ´¥·¢£¬Ö´ĞĞBoss¹¥»÷½×¶Î");
+            Debug.Log("è¿›è¡ŒBosså›åˆé˜¶æ®µçš„åç¨‹");
             BossManager.Instance.UpdateBossData();
             DeckManager.Instance.BossAttack();
         }

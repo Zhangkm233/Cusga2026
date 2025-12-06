@@ -32,6 +32,7 @@ public class TileDataManager : MonoBehaviour
             return;
         }
         if (tileController == null) {
+            //这里在父物体被销毁的时候会触发一次，不用管
             Debug.LogWarning("TileController component is not assigned.");
             return;
         }

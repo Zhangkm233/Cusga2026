@@ -34,10 +34,8 @@ public class TileController : MonoBehaviour
         originalScale = transform.localScale;
 
     }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.U))
-        {
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.U)) {
             PlayUpdateAnimation();
         }
     }
@@ -53,7 +51,7 @@ public class TileController : MonoBehaviour
             Debug.LogError($"TileController {gameObject.name} 坐标超出范围: ({tileRow}, {tileCol})，地图大小: 3x4");
             yield break;
         }
-        
+
         UpdateLand();
         MapManager.Instance.OnLandChanged.AddListener((row,col) => {
             if (row == tileRow && col == tileCol) {
@@ -77,12 +75,12 @@ public class TileController : MonoBehaviour
         land = GetLand();
     }
 
-    
+
     // 接受卡片放置
     public void OnCardPlaced(Card card) {
         if (land != null && card != null) {
             Debug.Log($"卡片 {card.CardName} 放置到格子 ({tileRow}, {tileCol})");
-            
+
             // 应用卡片效果
             if (card is MaterialCard materialCard) {
                 land.MaterialEffect(materialCard);
@@ -107,8 +105,7 @@ public class TileController : MonoBehaviour
         // 隐藏地块描述
         DescriptionManager.Instance.HideDescription();
     }
-    public void PlayUpdateAnimation()
-    {
+    public void PlayUpdateAnimation() {
         if (isUpdateAnimationPlaying) return;
         isUpdateAnimationPlaying = true;
 
@@ -117,16 +114,16 @@ public class TileController : MonoBehaviour
         DG.Tweening.Sequence seq = DOTween.Sequence();
 
         // 1. 跳上去
-        seq.Append(transform.DOMoveY(originalY + jumpHeight, jumpDuration * 0.5f)
+        seq.Append(transform.DOMoveY(originalY + jumpHeight,jumpDuration * 0.5f)
             .SetEase(Ease.OutQuad));
 
         // 2. 下落
-        seq.Append(transform.DOMoveY(originalY, jumpDuration * 0.5f)
+        seq.Append(transform.DOMoveY(originalY,jumpDuration * 0.5f)
             .SetEase(Ease.InQuad));
 
         // 3. 落地瞬间：挤压（Squash）
         seq.Append(transform.DOScale(
-                new Vector3(originalScale.x * squashScaleX, originalScale.y * squashScaleY, originalScale.z),
+                new Vector3(originalScale.x * squashScaleX,originalScale.y * squashScaleY,originalScale.z),
                 squashDuration
             )
             .SetEase(Ease.OutQuad)
@@ -134,14 +131,14 @@ public class TileController : MonoBehaviour
 
         // 4. 回弹：拉长
         seq.Append(transform.DOScale(
-                new Vector3(originalScale.x * stretchScaleX, originalScale.y * stretchScaleY, originalScale.z),
+                new Vector3(originalScale.x * stretchScaleX,originalScale.y * stretchScaleY,originalScale.z),
                 stretchDuration
             )
             .SetEase(Ease.OutQuad)
         );
 
         // 5. 恢复正常比例
-        seq.Append(transform.DOScale(originalScale, 0.08f));
+        seq.Append(transform.DOScale(originalScale,0.08f));
 
         // 6. 动画结束后允许再次播放
         seq.OnComplete(() => isUpdateAnimationPlaying = false);

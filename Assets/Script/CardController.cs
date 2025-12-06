@@ -20,7 +20,7 @@ public class CardController : MonoBehaviour
     public GameObject cardCanvas;
     public Canvas parentCanvas;
     public int indexOfCards;
-    
+
     // 拖拽相关变量
     public bool isDragging = false;
     private Vector3 originalPosition;
@@ -56,7 +56,7 @@ public class CardController : MonoBehaviour
         if (cardCanvas == null) {
             cardCanvas = transform.GetComponentInChildren<Canvas>().gameObject;
         }
-        if(cardDescriptionPanel == null) {
+        if (cardDescriptionPanel == null) {
             cardDescriptionPanel = transform.Find("DescriptionPanel").gameObject;
         }
         if (cardCollider == null) {
@@ -77,7 +77,7 @@ public class CardController : MonoBehaviour
             if (DeckManager.Instance.hand.Count <= indexOfCards) {
                 card = null;
             } else {
-                card = DeckManager.Instance.hand[indexOfCards];
+                //card = DeckManager.Instance.hand[indexOfCards];
             }
         }
 
@@ -105,7 +105,7 @@ public class CardController : MonoBehaviour
     public void UpdateSortingOrder(int order) {
         this.GetComponent<SpriteRenderer>().sortingOrder = order + 1;
         cardCanvas.GetComponent<Canvas>().sortingOrder = order + 2;
-        this.GetComponent<BoxCollider>().layerOverridePriority = order +2;
+        this.GetComponent<BoxCollider>().layerOverridePriority = order + 2;
     }
 
     private void OnMouseEnter() {
@@ -117,7 +117,7 @@ public class CardController : MonoBehaviour
     }
 
     private void EnableDescriptionPanel() {
-        if (cardDescriptionPanel != null && isDragging == false && DescriptionManager.Instance.isDragging == false && GameManager.Instance.stateMachine.CurrentPhase == GamePhase.PlayerTurn ) {
+        if (cardDescriptionPanel != null && isDragging == false && DescriptionManager.Instance.isDragging == false && GameManager.Instance.stateMachine.CurrentPhase == GamePhase.PlayerTurn) {
             cardDescriptionPanel.SetActive(true);
             //根据鼠标坐标调整左侧还是右侧显示
             Vector3 mousePos = Input.mousePosition;
@@ -138,11 +138,11 @@ public class CardController : MonoBehaviour
 
     // 鼠标按下开始拖拽
     private void OnMouseDown() {
-        if(GameManager.Instance.stateMachine.CurrentPhase != GamePhase.PlayerTurn) {
+        if (GameManager.Instance.stateMachine.CurrentPhase != GamePhase.PlayerTurn) {
             Debug.Log("当前不是玩家回合，无法拖拽卡片");
             return;
         }
-        MouseDownRect(); 
+        MouseDownRect();
         if (cardCollider != null) cardCollider.enabled = false;
     }
 
@@ -259,25 +259,25 @@ public class CardController : MonoBehaviour
             if (cardCollider != null) cardCollider.enabled = true;
 
             Debug.Log($"OnMouseUp called on card: {card?.CardName}");
-            
+
             // 检查是否拖拽到棋盘格子上
             Vector3 mouseScreenPos = Input.mousePosition;
             mouseScreenPos.z = mainCamera.WorldToScreenPoint(transform.position).z;
             Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
             mouseWorldPos.z = 0;
-            
+
             Debug.Log($"鼠标屏幕位置: {Input.mousePosition}, 世界位置: {mouseWorldPos}");
-            
+
             // 使用3D射线检测，排除卡片层
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit[] hits = Physics.RaycastAll(ray);
             Debug.Log($"3D射线检测，检测到 {hits.Length} 个对象");
-            
+
             // 过滤掉卡片对象，只保留可能的Tile对象
             List<RaycastHit> tileHits = new List<RaycastHit>();
             foreach (RaycastHit raycastHit in hits) {
-                if (raycastHit.collider != null && 
-                    !raycastHit.collider.CompareTag("CardGameobject") && 
+                if (raycastHit.collider != null &&
+                    !raycastHit.collider.CompareTag("CardGameobject") &&
                     !raycastHit.collider.name.Contains("Card")) {
                     tileHits.Add(raycastHit);
                     Debug.Log($"过滤后的对象: {raycastHit.collider.name}, 标签: {raycastHit.collider.tag}");
@@ -285,30 +285,30 @@ public class CardController : MonoBehaviour
             }
             hits = tileHits.ToArray();
             Debug.Log($"过滤后剩余 {hits.Length} 个对象");
-            
+
             // 调试：查找所有Tile对象
             GameObject[] allTiles = GameObject.FindGameObjectsWithTag("TileGameobject");
             Debug.Log($"场景中找到 {allTiles.Length} 个TileGameobject标签的对象");
-            
+
             // 查找所有带有TileController组件的对象
             TileController[] tileControllers = FindObjectsByType<TileController>(FindObjectsSortMode.None);
             Debug.Log($"通过组件找到 {tileControllers.Length} 个TileController对象");
-            
+
             foreach (GameObject tile in allTiles) {
                 Collider tileCollider = tile.GetComponent<Collider>();
                 Debug.Log($"Tile: {tile.name}, 位置: {tile.transform.position}, Collider启用: {tileCollider?.enabled}, 标签: {tile.tag}");
             }
-            
+
             // 如果射线检测失败，尝试使用OverlapSphere
             if (hits.Length == 0) {
-                Collider[] colliders = Physics.OverlapSphere(mouseWorldPos, 0.5f);
+                Collider[] colliders = Physics.OverlapSphere(mouseWorldPos,0.5f);
                 Debug.Log($"3D OverlapSphere检测位置: {mouseWorldPos}, 检测到 {colliders.Length} 个对象");
-                
+
                 // 过滤掉卡片对象
                 List<Collider> tileColliders = new List<Collider>();
                 foreach (Collider collider in colliders) {
-                    if (collider != null && 
-                        !collider.CompareTag("CardGameobject") && 
+                    if (collider != null &&
+                        !collider.CompareTag("CardGameobject") &&
                         !collider.name.Contains("Card")) {
                         tileColliders.Add(collider);
                         Debug.Log($"OverlapSphere过滤后的对象: {collider.name}, 标签: {collider.tag}");
@@ -316,11 +316,11 @@ public class CardController : MonoBehaviour
                 }
                 colliders = tileColliders.ToArray();
                 Debug.Log($"OverlapSphere过滤后剩余 {colliders.Length} 个对象");
-                
-                for (int i = 0; i < colliders.Length; i++) {
+
+                for (int i = 0;i < colliders.Length;i++) {
                     Debug.Log($"  OverlapSphere对象 {i}: {colliders[i]?.name}, 标签: {colliders[i]?.tag}, 启用: {colliders[i]?.enabled}");
                 }
-                
+
                 // 尝试通过OverlapSphere找到Tile
                 foreach (Collider collider in colliders) {
                     if (collider != null) {
@@ -337,7 +337,7 @@ public class CardController : MonoBehaviour
                     }
                 }
             }
-            
+
             // 如果仍然没有找到Tile，尝试直接通过组件查找
             if (allTiles.Length <= 0) {
                 Debug.Log("尝试通过组件直接查找TileController");
@@ -345,7 +345,7 @@ public class CardController : MonoBehaviour
                     TileController tileController = tile.GetComponent<TileController>();
                     if (tileController != null) {
                         // 计算距离，如果距离很近就认为可以放置
-                        float distance = Vector3.Distance(mouseWorldPos, tile.transform.position);
+                        float distance = Vector3.Distance(mouseWorldPos,tile.transform.position);
                         Debug.Log($"Tile {tile.name} 距离鼠标位置: {distance}");
                         if (distance < 2.0f) { // 2个单位内的距离
                             Debug.Log($"通过距离检测找到TileController: {tile.name}");
@@ -355,14 +355,14 @@ public class CardController : MonoBehaviour
                     }
                 }
             }
-            
-            for (int i = 0; i < hits.Length; i++) {
+
+            for (int i = 0;i < hits.Length;i++) {
                 Debug.Log($"  3D对象 {i}: {hits[i].collider?.name}, 标签: {hits[i].collider?.tag}");
             }
-            
+
             // 首先尝试通过标签检测
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit)) {
+            if (Physics.Raycast(ray,out hit)) {
                 if (hit.collider != null && hit.collider.CompareTag("TileGameobject")) {
                     TileController tileController = hit.collider.GetComponent<TileController>();
                     if (tileController != null) {
@@ -404,7 +404,7 @@ public class CardController : MonoBehaviour
             // 没有放置到有效位置，返回原位置
             //transform.position = originalPosition;
             //UpdateSortingOrder(); // 恢复原来的层级
-            
+
             // 清除悬停效果
             //ClearHoverEffect();
         }
@@ -447,29 +447,29 @@ public class CardController : MonoBehaviour
         // 锁定输入并播放吸入动画
         isDragging = false;
         if (cardCollider != null) cardCollider.enabled = false;
-        
+
         // 计算Boss中心位置（使用世界坐标）
         GameObject bossObj = GameObject.FindGameObjectWithTag("BossGameobject");
         Vector3 targetPos = bossObj != null ? bossObj.transform.position : transform.position;
-        
+
         StartCoroutine(PlayCardAbsorptionAnimation(targetPos));
     }
-    
+
     // 将卡片放置到格子上
     private void PlaceCardOnTile(TileController tileController) {
         if (card != null) {
             // 检查坐标是否在有效范围内
-            if (tileController.tileRow < 0 || tileController.tileRow >= 3 || 
+            if (tileController.tileRow < 0 || tileController.tileRow >= 3 ||
                 tileController.tileCol < 0 || tileController.tileCol >= 4) {
                 Debug.LogError($"TileController {tileController.name} 坐标超出范围: ({tileController.tileRow}, {tileController.tileCol})");
                 return;
             }
-            
+
             // 确保TileController有land数据
             if (tileController.land == null) {
                 tileController.land = tileController.GetLand();
             }
-            
+
             if (tileController.land != null) {
                 // 应用卡片效果到土地上
                 switch (card.CardType) {
@@ -499,7 +499,7 @@ public class CardController : MonoBehaviour
                 ReturnToOriginPosition();
                 return;
             }
-            
+
             // 从手牌中移除这张卡片
             int cardIndexInHand = DeckManager.Instance.hand.IndexOf(card);
             Debug.Log($"尝试移除卡片 {card.CardName}，在手牌中的索引: {cardIndexInHand}，手牌数量: {DeckManager.Instance.hand.Count}");
@@ -513,12 +513,12 @@ public class CardController : MonoBehaviour
             // 锁定输入并播放吸入动画
             isDragging = false;
             if (cardCollider != null) cardCollider.enabled = false;
-            
+
             // 计算格子中心位置
             Vector3 targetPos = tileController.transform.position;
-            
+
             StartCoroutine(PlayCardAbsorptionAnimation(targetPos));
-            
+
             Debug.Log($"卡片 {card.CardName} 已放置到格子 ({tileController.tileRow}, {tileController.tileCol})，开始吸入动画");
         }
     }    // 检查悬停的格子
@@ -527,14 +527,14 @@ public class CardController : MonoBehaviour
         mouseScreenPos.z = mainCamera.WorldToScreenPoint(transform.position).z;
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
         mouseWorldPos.z = 0;
-        
+
         // 使用3D射线检测
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         TileController currentTile = null;
-        
+
         // 首先尝试通过标签检测
-        if (Physics.Raycast(ray, out hit)) {
+        if (Physics.Raycast(ray,out hit)) {
             if (hit.collider != null && hit.collider.CompareTag("TileGameobject")) {
                 currentTile = hit.collider.GetComponent<TileController>();
             } else if (hit.collider != null) {
@@ -543,7 +543,7 @@ public class CardController : MonoBehaviour
             }
         } else {
             // 如果射线检测失败，尝试使用OverlapSphere
-            Collider[] colliders = Physics.OverlapSphere(mouseWorldPos, 0.1f);
+            Collider[] colliders = Physics.OverlapSphere(mouseWorldPos,0.1f);
             foreach (Collider collider in colliders) {
                 if (collider != null) {
                     TileController tileController = collider.GetComponent<TileController>();
@@ -554,40 +554,40 @@ public class CardController : MonoBehaviour
                 }
             }
         }
-        
+
         // 如果悬停的格子发生变化
         if (currentTile != hoveredTile) {
             // 清除之前格子的高亮
             if (hoveredTile != null) {
-                SetTileHighlight(hoveredTile, false);
+                SetTileHighlight(hoveredTile,false);
             }
-            
+
             // 设置新格子的高亮
             hoveredTile = currentTile;
             if (hoveredTile != null) {
-                SetTileHighlight(hoveredTile, true);
+                SetTileHighlight(hoveredTile,true);
             }
         }
     }
-    
+
     // 设置格子高亮效果
-    private void SetTileHighlight(TileController tile, bool highlight) {
+    private void SetTileHighlight(TileController tile,bool highlight) {
         if (tile != null) {
             SpriteRenderer tileRenderer = tile.GetComponent<SpriteRenderer>();
             if (tileRenderer != null) {
                 if (highlight) {
-                    tileRenderer.color = new Color(0.8f, 1f, 0.8f, 1f); // 淡绿色高亮
+                    tileRenderer.color = new Color(0.8f,1f,0.8f,1f); // 淡绿色高亮
                 } else {
                     tileRenderer.color = Color.white; // 恢复原色
                 }
             }
         }
     }
-    
+
     // 清除悬停效果
     private void ClearHoverEffect() {
         if (hoveredTile != null) {
-            SetTileHighlight(hoveredTile, false);
+            SetTileHighlight(hoveredTile,false);
             hoveredTile = null;
         }
     }
@@ -609,11 +609,11 @@ public class CardController : MonoBehaviour
         while (elapsed < duration1) {
             elapsed += Time.deltaTime;
             float t = elapsed / duration1;
-            
+
             // 平滑插值位置和缩放
-            transform.position = Vector3.Lerp(startPos, targetPos, t);
-            transform.localScale = Vector3.Lerp(startScale, targetScale, t);
-            
+            transform.position = Vector3.Lerp(startPos,targetPos,t);
+            transform.localScale = Vector3.Lerp(startScale,targetScale,t);
+
             yield return null;
         }
 
@@ -627,36 +627,36 @@ public class CardController : MonoBehaviour
         Vector3 sinkPos = targetPos + Vector3.back * 5f; // Z轴向后移动
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         Color startColor = spriteRenderer.color;
-        Color endColor = new Color(startColor.r, startColor.g, startColor.b, 0f); // 透明度为0
+        Color endColor = new Color(startColor.r,startColor.g,startColor.b,0f); // 透明度为0
 
         while (elapsed < duration2) {
             elapsed += Time.deltaTime;
             float t = elapsed / duration2;
-            
+
             // 快速下沉
-            transform.position = Vector3.Lerp(targetPos, sinkPos, t);
-            
+            transform.position = Vector3.Lerp(targetPos,sinkPos,t);
+
             // 逐渐消失
-            spriteRenderer.color = Color.Lerp(startColor, endColor, t);
-            
+            spriteRenderer.color = Color.Lerp(startColor,endColor,t);
+
             // 同时也更新Canvas上的透明度
             if (cardCanvas != null) {
                 CanvasGroup canvasGroup = cardCanvas.GetComponent<CanvasGroup>();
                 if (canvasGroup == null) {
                     canvasGroup = cardCanvas.AddComponent<CanvasGroup>();
                 }
-                canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+                canvasGroup.alpha = Mathf.Lerp(1f,0f,t);
             }
-            
+
             yield return null;
         }
 
         // 完全隐藏卡片
         // gameObject.SetActive(false);
-        
+
         // 更新UI（重新排列剩余卡片）
         UIManager.Instance.UpdateCards();
-        
+
         Debug.Log($"卡片吸入动画完成");
     }
 }

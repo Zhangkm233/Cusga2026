@@ -1,7 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-// ×´Ì¬½Ó¿Ú
 public interface IState
 {
     void Enter();
