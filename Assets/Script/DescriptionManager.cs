@@ -61,7 +61,11 @@ public class DescriptionManager : MonoBehaviour
             descriptionText.text = displayText + "\n 无";
             return;
         } else {
-            displayText += $"{GameData.HanizeLandType(tileController.land.LandType)}\n";
+            LandScriptableObject landSO = DatabaseManager.Instance.GetLandSOByType(tileController.land.LandType);
+            displayText += $"{landSO.LandName}\n";
+            displayText += $"被动效果：{landSO.LandPassiveEffectInfo}({tileController.land.EnergyCounter}/{landSO.LandRequiredEnergy})\n";
+            displayText += $"额外效果：{landSO.LandExtraEffectInfo}\n";
+            displayText += $"等级:{landSO.LandLevel}\n";
         }
         if (tileController.land.storageCardType != MaterialType.NULL) {
             displayText += $"{GameData.HanizeMaterial(tileController.land.storageCardType)}:{tileController.land.storageCardNum}\n";
@@ -97,21 +101,22 @@ public class DescriptionManager : MonoBehaviour
             return;
         }
         string displayText = $"将{draggingCard.CardName}放置到{GameData.HanizeLandType(land.LandType)}上\n";
-
+        
+        LandScriptableObject landSO = DatabaseManager.Instance.GetLandSOByType(tileController.land.LandType);
         if(draggingCard.CardType == CardType.MATERIAL) {
             if(((MaterialCard)draggingCard).MaterialType == MaterialType.WOOD) {
             //显示所需数量和效果
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandWoodUpgradeNeed + "个木头以";
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandWoodUpgradeInfo + "\n";
+                displayText += landSO.LandWoodUpgradeNeed + "个木头以";
+                displayText += landSO.LandWoodUpgradeInfo + "\n";
             } else if(((MaterialCard)draggingCard).MaterialType == MaterialType.HAY){
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandHayUpgradeNeed + "个干草以";
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandHayUpgradeInfo + "\n";
+                displayText += landSO.LandHayUpgradeNeed + "个干草以";
+                displayText += landSO.LandHayUpgradeInfo + "\n";
             } else if(((MaterialCard)draggingCard).MaterialType == MaterialType.STONE) {
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandStoneUpgradeNeed + "个石头以";
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandStoneUpgradeInfo + "\n";
+                displayText += landSO.LandStoneUpgradeNeed + "个石头以";
+                displayText += landSO.LandStoneUpgradeInfo + "\n";
             } else if(((MaterialCard)draggingCard).MaterialType == MaterialType.MEAT) {
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandMeatUpgradeNeed + "个肉以";
-                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandMeatUpgradeInfo + "\n";
+                displayText += landSO.LandMeatUpgradeNeed + "个肉以";
+                displayText += landSO.LandMeatUpgradeInfo + "\n";
             }
 
             if (land.storageCardType != MaterialType.NULL) {

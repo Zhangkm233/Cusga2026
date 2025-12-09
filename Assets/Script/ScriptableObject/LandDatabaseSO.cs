@@ -22,7 +22,7 @@ public class LandDatabaseSO : ScriptableObject
     private bool isInitialized = false;
 
     public void InitDictionary() {
-        //if (isInitialized) return;
+        if (!isInitialized) return;
         idDict = new Dictionary<int,LandScriptableObject>();
         typeDict = new Dictionary<LandType,LandScriptableObject>();
         foreach (var entry in landEntries) {

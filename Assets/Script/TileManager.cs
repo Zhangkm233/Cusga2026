@@ -67,7 +67,9 @@ public class TileManager : MonoBehaviour
                 GameObject tileToinstantiate = null;
                 try
                 {
-                    tileToinstantiate = DatabaseManager.Instance.GetLandSOByType(MapManager.Instance.LandMap[i][j].LandType).LandPrefab;
+                    //tileToinstantiate = DatabaseManager.Instance.GetLandSOByType(MapManager.Instance.LandMap[i][j].LandType).LandPrefab;
+                    
+                    tileToinstantiate = tilePrefab;
                 } catch (System.Exception e)
                 {
                     Debug.LogWarning($"TileManager:无法获取地块预制体，使用默认预制体。错误信息：{e.Message}");
