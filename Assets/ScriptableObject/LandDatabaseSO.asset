@@ -15,10 +15,13 @@ MonoBehaviour:
   landEntries:
   - landId: 0
     landType: 0
-    landSO: {fileID: 0}
+    landSO: {fileID: 11400000, guid: 8d9fa56670d02224a9ff9539637c23c0, type: 2}
   - landId: 1
     landType: 1
-    landSO: {fileID: 0}
+    landSO: {fileID: 11400000, guid: d080f9a5870691745994fe0bc8e1d031, type: 2}
   - landId: 2
-    landType: 1
-    landSO: {fileID: 0}
+    landType: 2
+    landSO: {fileID: 11400000, guid: 23404f26c4b9a6f4d8dbbea7bc7e7d74, type: 2}
+  - landId: 3
+    landType: 3
+    landSO: {fileID: 11400000, guid: 9c804c781587192449f57d66e8aa692c, type: 2}

@@ -47,7 +47,7 @@ public class DescriptionManager : MonoBehaviour
 
     public void ShowDescriptionOfLand(TileController tileController) {
         if(isDragging) {
-            ShowDescriptionOfDraggingCardOnLand(tileController.land);
+            ShowDescriptionOfDraggingCardOnLand(tileController);
             return;
         }
 
@@ -85,18 +85,52 @@ public class DescriptionManager : MonoBehaviour
         ShowDescription(displayText);
     }
 
-    public void ShowDescriptionOfDraggingCardOnLand(Land land) {
+    public void ShowDescriptionOfDraggingCardOnLand(TileController tileController) {
         //显示卡牌拖拽到地形上的描述
         //*需要投入多少相同的卡牌以产生效果
         //*所产生的效果是什么（举例：投入3木头以升级到 小镇）
         //*地块当前投入的资源（如果没有投入过资源就没有这一项，如果投入过且类型不同则变为红色）
 
+        Land land = tileController.land;
         if (draggingCard == null) {
             Debug.LogWarning("No card is being dragged.");
             return;
         }
         string displayText = $"将{draggingCard.CardName}放置到{GameData.HanizeLandType(land.LandType)}上\n";
-        //显示所需资源数量和效果
+
+        if(draggingCard.CardType == CardType.MATERIAL) {
+            if(((MaterialCard)draggingCard).MaterialType == MaterialType.WOOD) {
+            //显示所需数量和效果
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandWoodUpgradeNeed + "个木头以";
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandWoodUpgradeInfo + "\n";
+            } else if(((MaterialCard)draggingCard).MaterialType == MaterialType.HAY){
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandHayUpgradeNeed + "个干草以";
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandHayUpgradeInfo + "\n";
+            } else if(((MaterialCard)draggingCard).MaterialType == MaterialType.STONE) {
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandStoneUpgradeNeed + "个石头以";
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandStoneUpgradeInfo + "\n";
+            } else if(((MaterialCard)draggingCard).MaterialType == MaterialType.MEAT) {
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandMeatUpgradeNeed + "个肉以";
+                displayText += DatabaseManager.Instance.GetLandSOByType(land.LandType).LandMeatUpgradeInfo + "\n";
+            }
+
+            if (land.storageCardType != MaterialType.NULL) {
+                if(land.storageCardType != ((MaterialCard)draggingCard).MaterialType) {
+                    displayText += $"<color=red>当前已投入{land.storageCardNum}个{GameData.HanizeMaterial(land.storageCardType)}，与拖拽卡牌类型不同</color>\n";
+                } else {
+                    displayText += $"当前已投入{land.storageCardNum}个{GameData.HanizeMaterial(land.storageCardType)}，\n再投入{land.storageCardNum + 1}个即可达成效果\n";
+                }
+            }
+        } else if(draggingCard.CardType == CardType.WEAPON) {
+            if (MapManager.Instance.GetAnimalAt(tileController.tileRow, tileController.tileCol) != null) {
+                displayText += "使用武器攻击地块上的生物\n";
+            } else {
+                displayText += "<color=red>地块上没有生物，无法使用武器</color>\n";
+            }
+        } else if(draggingCard.CardType == CardType.SKILL) {
+            //技能卡
+        }
+        
         //还没实现
         ShowDescription(displayText);
     }

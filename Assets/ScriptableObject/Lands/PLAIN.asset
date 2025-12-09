@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f91bcfe70a67440a1732ed5d48d8c3, type: 3}
+  m_Name: PLAIN
+  m_EditorClassIdentifier: 
+  landName: "\u5E73\u539F"
+  landDescription: "\u6211\u662F\u5E73\u539F"
+  landPassiveEffectInfo: "3\u65F6\u4EA71\u8349"
+  landExtraEffectInfo: "10%\u4EA71\u54E5"
+  landWoodUpgradeNeed: 3
+  landWoodUpgradeInfo: "\u5347\u6728\u5C4B"
+  landHayUpgradeNeed: 4
+  landHayUpgradeInfo: "\u5347\u8305\u5C4B"
+  landStoneUpgradeNeed: 2
+  landStoneUpgradeInfo: "\u5347\u9EA6\u7530"
+  landMeatUpgradeNeed: 2
+  landMeatUpgradeInfo: "\u4EA71\u51541\u8FFD\u730E"
+  landType: 2
+  landLevel: 0
+  landRequiredEnergy: 3
+  landPreference: 30
+  landPrefab: {fileID: 919132149155446097, guid: a5961789cd5e2644f9e0f746cc6c96d6, type: 3}

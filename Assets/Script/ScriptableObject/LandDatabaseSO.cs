@@ -17,23 +17,30 @@ public class LandDatabaseSO : ScriptableObject
 
     [SerializeField]
     private List<LandEntry> landEntries = new List<LandEntry>();
-    [SerializeField]
     private Dictionary<int,LandScriptableObject> idDict;
-    [SerializeField]
     private Dictionary<LandType,LandScriptableObject> typeDict;
     private bool isInitialized = false;
 
     public void InitDictionary() {
-        if (isInitialized) return;
+        //if (isInitialized) return;
         idDict = new Dictionary<int,LandScriptableObject>();
         typeDict = new Dictionary<LandType,LandScriptableObject>();
         foreach (var entry in landEntries) {
-            if (!idDict.ContainsKey(entry.landId))
-                idDict.Add(entry.landId,entry.landSO);
-            if (!typeDict.ContainsKey(entry.landType))
-                typeDict.Add(entry.landType,entry.landSO);
+            if (entry == null || entry.landSO == null) continue;
+            if (idDict.ContainsKey(entry.landId)) {
+                Debug.LogError($"LandDatabaseSO: 重复的 landId: {entry.landId}，请检查配置！");
+                continue;
+            }
+            idDict.Add(entry.landId, entry.landSO);
+
+            if (typeDict.ContainsKey(entry.landType)) {
+                Debug.LogError($"LandDatabaseSO: 重复的 landType: {entry.landType}，请检查配置！");
+                continue;
+            }
+            typeDict.Add(entry.landType, entry.landSO);
         }
         isInitialized = true;
+        Debug.Log($"LandDatabaseSO初始化完成，包含{landEntries.Count}个地形条目");
     }
 
     public LandScriptableObject GetLandSOById(int landId) {

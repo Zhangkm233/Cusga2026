@@ -13,12 +13,22 @@ public class GameStartState : GameState
         } else {
             Debug.LogWarning("CameraController.Instance is missing when entering GameStartState.");
         }
-        GameManager.Instance.StartTurn();
-
+        currentCoroutine = StartCoroutine(DelayedInit());
     }
+
     public override void Update() {
     }
     public override void Exit() {
         Console.WriteLine("退出游戏开始阶段");
     }
+
+    private System.Collections.IEnumerator DelayedInit() {
+        while (TileManager.Instance == null || 
+            !TileManager.Instance.IsGenerated) {
+            yield return null;
+        }
+        Debug.Log("游戏开始阶段的协程完成，开始玩家回合");
+        GameManager.Instance.StartTurn();
+    }
 }
+

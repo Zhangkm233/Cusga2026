@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f91bcfe70a67440a1732ed5d48d8c3, type: 3}
+  m_Name: FOREST
+  m_EditorClassIdentifier: 
+  landName: "\u68EE\u6797"
+  landDescription: "\u6211\u662F\u68EE\u6797"
+  landPassiveEffectInfo: "1\u65F6\u4EA71\u6728"
+  landExtraEffectInfo: "15%\u4EA7\u62BD1\u6728"
+  landWoodUpgradeInfo: "2\u5347\u5BC6\u6797"
+  landHayUpgradeInfo: "\u4EA71\u54E5"
+  landStoneUpgradeInfo: "\u4EA71\u77DB"
+  landMeatUpgradeInfo: "\u4EA71\u8FFD\u730E"
+  landType: 3
+  landLevel: 0
+  landRequiredEnergy: 1
+  landPreference: 35
+  landPrefab: {fileID: 919132149155446097, guid: 8c78f5635b8713f4e9baa67841805642, type: 3}

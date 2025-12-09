@@ -70,7 +70,7 @@ public class MapManager : MonoBehaviour
             AnimalMap.Add(animalRow);
         }
 
-        Debug.Log("地图初始化完成");
+        Debug.Log("MapManager:地图初始化完成");
     }
 
     public void StateCheck() {

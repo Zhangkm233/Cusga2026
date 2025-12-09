@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 /// <summary>
@@ -16,7 +18,7 @@ public class TileManager : MonoBehaviour
     [SerializeField]
     private float tileSpaceing = 1.5f; // 地块间距
 
-
+    public bool IsGenerated = false;
 
     public static TileManager Instance { get; private set; }
     private void Awake() {
@@ -61,8 +63,17 @@ public class TileManager : MonoBehaviour
             for (int j = 0;j < MapManager.Instance.LandMap[i].Count;j++) {
                 //实例化地块 与0，0，0位置实现对称平铺
                 //TODO：这里的位置需要细调 以适应地块大小和间距
-                //UPDATE： 调完了
-                GameObject newTile = Instantiate(tilePrefab,
+                //UPDATE： 调完了、
+                GameObject tileToinstantiate = null;
+                try
+                {
+                    tileToinstantiate = DatabaseManager.Instance.GetLandSOByType(MapManager.Instance.LandMap[i][j].LandType).LandPrefab;
+                } catch (System.Exception e)
+                {
+                    Debug.LogWarning($"TileManager:无法获取地块预制体，使用默认预制体。错误信息：{e.Message}");
+                    tileToinstantiate = tilePrefab;
+                }
+                GameObject newTile = Instantiate(tileToinstantiate,
                     new Vector3(
                         (j - (MapManager.Instance.ColCount - 1) / 2f) * tileSpaceing,
                         0.5f,
@@ -79,13 +90,23 @@ public class TileManager : MonoBehaviour
                     tileController.tileRow = i;
                     tileController.tileCol = j;
                     tileController.land = MapManager.Instance.LandMap[i][j];
+                    
                     newTile.GetComponent<TileDataManager>().UpdateDataDisplay();
                 } else {
-                    Debug.LogError("TilePrefab缺少TileController组件");
+                    tileController = newTile.AddComponent<TileController>();
+                    BoxCollider boxCollider = newTile.AddComponent<BoxCollider>();
+                    boxCollider.size = new Vector3(5f,2f,5f);
+                    //这里有bug，模型的原点不在中心
+                    //TODO：以后换模型的时候注意调整原点位置
+                    newTile.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
+                    tileController.tileRow = i;
+                    tileController.tileCol = j;
+                    tileController.land = MapManager.Instance.LandMap[i][j];
                 }
             }
         }
-
+        Debug.Log("TileManager:地块生成完成");
+        IsGenerated = true;
         // 是不是还需要调整摄像机位置以适应新地图？ 有待商榷，回头再弄
     }
 
