@@ -28,6 +28,9 @@ public class CardController : MonoBehaviour
     private Camera mainCamera;
     private Color originalColor;
     private TileController hoveredTile;
+    private SpriteRenderer spriteRenderer;
+    private Vector3 originalLocalScale;
+    private CanvasGroup cardCanvasGroup;
 
     private RectTransform rectTransform;
     private Vector2 originalAnchoredPosition;
@@ -63,6 +66,17 @@ public class CardController : MonoBehaviour
             cardCollider = GetComponent<Collider>();
         }
 
+        // 缓存渲染、缩放等引用，便于在重用时恢复状态
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null) originalColor = spriteRenderer.color;
+        originalLocalScale = transform.localScale;
+        if (cardCanvas != null) {
+            cardCanvasGroup = cardCanvas.GetComponent<CanvasGroup>();
+            if (cardCanvasGroup == null) {
+                // 不强制添加 CanvasGroup，PlayCardAbsorptionAnimation 会按需添加
+            }
+        }
+
         // 初始化拖拽相关
         mainCamera = Camera.main;
         originalColor = GetComponent<SpriteRenderer>().color;
@@ -92,8 +106,21 @@ public class CardController : MonoBehaviour
             cardDescription.text = "   ";
             cardType.text = " ";
         }
-        this.GetComponent<SpriteRenderer>().sortingOrder = indexOfCards;
-        cardCanvas.GetComponent<Canvas>().sortingOrder = indexOfCards;
+        // 恢复视觉状态，防止之前动画留下的缩放/透明状态影响后续复用
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null) {
+            spriteRenderer.color = originalColor;
+        }
+        transform.localScale = originalLocalScale;
+        if (cardCanvas != null) {
+            var cg = cardCanvas.GetComponent<CanvasGroup>();
+            if (cg != null) cg.alpha = 1f;
+        }
+        if (cardCollider != null) cardCollider.enabled = true;
+
+        if (spriteRenderer != null) spriteRenderer.sortingOrder = indexOfCards;
+        var canvasComp = cardCanvas != null ? cardCanvas.GetComponent<Canvas>() : null;
+        if (canvasComp != null) canvasComp.sortingOrder = indexOfCards;
     }
 
     public void UpdateSortingOrder() {
@@ -410,6 +437,7 @@ public class CardController : MonoBehaviour
         }
     }
 
+    // 将卡片放置到Boss上
     private void PlaceCardOnBoss() {
         switch (card.CardType) {
             case CardType.MATERIAL:
@@ -453,6 +481,14 @@ public class CardController : MonoBehaviour
         Vector3 targetPos = bossObj != null ? bossObj.transform.position : transform.position;
 
         StartCoroutine(PlayCardAbsorptionAnimation(targetPos));
+
+        UpdateSortingOrder();
+        ClearHoverEffect();
+
+        Debug.Log($"卡片 {card.CardName} 已放置到Boss上并消失");
+        // 更新UI
+        UIManager.Instance.UpdateCards();
+   //     transform.position = originalPosition;
     }
 
     // 将卡片放置到格子上
@@ -520,6 +556,12 @@ public class CardController : MonoBehaviour
             StartCoroutine(PlayCardAbsorptionAnimation(targetPos));
 
             Debug.Log($"卡片 {card.CardName} 已放置到格子 ({tileController.tileRow}, {tileController.tileCol})，开始吸入动画");
+            UpdateSortingOrder();
+            ClearHoverEffect();
+            //transform.position = originalPosition;
+            Debug.Log($"卡片 {card.CardName} 已放置到Boss上并消失");
+            // 更新UI
+           // UIManager.Instance.UpdateCards();
         }
     }    // 检查悬停的格子
     private void CheckHoveredTile() {
@@ -636,23 +678,22 @@ public class CardController : MonoBehaviour
             // 快速下沉
             transform.position = Vector3.Lerp(targetPos,sinkPos,t);
 
-            // 逐渐消失
-            spriteRenderer.color = Color.Lerp(startColor,endColor,t);
-
-            // 同时也更新Canvas上的透明度
-            if (cardCanvas != null) {
-                CanvasGroup canvasGroup = cardCanvas.GetComponent<CanvasGroup>();
-                if (canvasGroup == null) {
-                    canvasGroup = cardCanvas.AddComponent<CanvasGroup>();
-                }
-                canvasGroup.alpha = Mathf.Lerp(1f,0f,t);
-            }
 
             yield return null;
         }
 
-        // 完全隐藏卡片
-        // gameObject.SetActive(false);
+        // 恢复显示属性，确保该对象被下一次复用时不会保留动画后的状态
+        transform.position = originalPosition;
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null) spriteRenderer.color = originalColor;
+        transform.localScale = originalLocalScale;
+        if (cardCanvas != null) {
+            var cg = cardCanvas.GetComponent<CanvasGroup>();
+            if (cg != null) cg.alpha = 1f;
+        }
+
+        // 隐藏当前对象，UIManager 会在需要时将合适的卡牌对象激活并重置
+        //gameObject.SetActive(false);
 
         // 更新UI（重新排列剩余卡片）
         UIManager.Instance.UpdateCards();
